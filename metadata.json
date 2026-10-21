@@ -1,0 +1,6 @@
+{
+  "name": "TutorNest - Book a Session Flow",
+  "description": "Interactive iPhone 16 Pro Max mobile prototype of TutorNest tutor booking user flow: discovery, recurring schedule setup, weekly payments, and session management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
