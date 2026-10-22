@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { ArrowLeft, X, ChevronDown, Star, MapPin, Calculator, Globe2, Sparkles, BookOpen, MoreHorizontal, CheckCircle2 } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import {
+  ArrowLeft, Bell, BookOpen, Calculator, Check, CheckCircle2, ChevronDown,
+  ChevronRight, Globe2, MapPin, MoreHorizontal, Search, SlidersHorizontal,
+  Star, X,
+} from 'lucide-react';
 import { ScreenId, Tutor } from '../../types';
 import { TUTORS, formatCurrency } from '../../data/mockData';
 
@@ -10,287 +14,149 @@ interface SearchFilterScreenProps {
   onChangeGrade: (grade: string) => void;
   selectedLocation: string;
   onChangeLocation: (loc: string) => void;
+  onCompare: (tutors: Tutor[]) => void;
 }
 
-export const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
+const subjects = [
+  { label: 'Toán', icon: Calculator },
+  { label: 'Tiếng Anh', icon: Globe2 },
+  { label: 'Văn học', icon: BookOpen },
+  { label: 'Khác', icon: MoreHorizontal },
+];
+
+const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
   onNavigate,
   onSelectTutor,
   selectedGrade,
   onChangeGrade,
   selectedLocation,
   onChangeLocation,
+  onCompare,
 }) => {
-  const [activeSubject, setActiveSubject] = useState<'Toán' | 'Tiếng Anh' | 'Hóa học' | 'Văn học' | 'Khác'>('Toán');
+  const [query, setQuery] = useState(`Toán ${selectedGrade.toLowerCase()}`);
+  const [activeSubject, setActiveSubject] = useState('Tất cả');
   const [priceRange, setPriceRange] = useState('Tất cả');
   const [ratingFilter, setRatingFilter] = useState('Tất cả');
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedTutors, setSelectedTutors] = useState<string[]>([]);
+
+  const visibleTutors = useMemo(() => TUTORS.filter((tutor) => {
+    const searchTerm = query.toLowerCase().replace(/lớp\s*\d+/g, '').trim();
+    const searchableTutor = `${tutor.name} ${tutor.subject} ${tutor.location}`.toLowerCase();
+    const matchesQuery = !searchTerm || searchableTutor.includes(searchTerm);
+    const matchesSubject = activeSubject === 'Tất cả' || activeSubject === 'Khác' || tutor.subject === activeSubject;
+    const matchesPrice = priceRange === 'Tất cả'
+      || (priceRange === 'Dưới 500.000đ' && tutor.hourlyRate < 500000)
+      || (priceRange === '500.000đ – 800.000đ' && tutor.hourlyRate >= 500000 && tutor.hourlyRate <= 800000)
+      || (priceRange === 'Trên 800.000đ' && tutor.hourlyRate > 800000);
+    const matchesRating = ratingFilter === 'Tất cả'
+      || (ratingFilter === 'Từ 4.5 sao' && tutor.rating >= 4.5)
+      || (ratingFilter === 'Từ 4.8 sao' && tutor.rating >= 4.8);
+    return matchesQuery && matchesSubject && matchesPrice && matchesRating;
+  }), [activeSubject, priceRange, query, ratingFilter]);
+
+  const toggleTutor = (id: string) => {
+    setSelectedTutors((current) => current.includes(id)
+      ? current.filter((tutorId) => tutorId !== id)
+      : current.length < 2 ? [...current, id] : [current[1], id]);
+  };
+
+  const openComparison = () => {
+    const tutors = selectedTutors
+      .map((id) => TUTORS.find((tutor) => tutor.id === id))
+      .filter((tutor): tutor is Tutor => Boolean(tutor));
+    if (tutors.length === 2) onCompare(tutors);
+  };
+
+  const tutorCard = (tutor: Tutor) => {
+    const isSelected = selectedTutors.includes(tutor.id);
+
+    return (
+      <article key={tutor.id} className="tn-search-card">
+        <div className="tn-search-card-main">
+          <button
+            type="button"
+            className={`tn-search-select ${isSelected ? 'is-selected' : ''}`}
+            aria-label={isSelected ? `Bỏ chọn ${tutor.name}` : `Chọn ${tutor.name} để so sánh`}
+            aria-pressed={isSelected}
+            onClick={() => toggleTutor(tutor.id)}
+          >
+            {isSelected && <Check className="h-3.5 w-3.5" />}
+          </button>
+          <img src={tutor.avatarUrl} alt="" className="tn-search-avatar" />
+          <div className="tn-search-details">
+            <div className="tn-search-name-line">
+              <h2>{tutor.name}</h2>
+              {tutor.verified && <span className="tn-search-verified"><CheckCircle2 />Đã xác thực</span>}
+            </div>
+            <div className="tn-search-rating"><Star /><b>{tutor.rating}</b><span>({tutor.reviewsCount} đánh giá)</span></div>
+            <p className="tn-search-subject">{tutor.subject}<span>·</span>{tutor.gradeRange}</p>
+            <p className="tn-search-location"><MapPin />{tutor.location === 'Q.3, TP.HCM' ? 'Hà Nội' : tutor.location}</p>
+            <div className="tn-search-tags"><span>Dạy online</span><span>Dạy tại nhà</span></div>
+            <strong className="tn-search-price">{formatCurrency(tutor.hourlyRate)}/giờ</strong>
+          </div>
+        </div>
+        {isSelected && <div className="tn-search-selected-label"><CheckCircle2 />Đang so sánh</div>}
+      </article>
+    );
+  };
 
   return (
-    <div className="flex-1 flex flex-col justify-between bg-[var(--systembg__fgweak)]">
-      <div className="flex-1 overflow-y-auto no-scrollbar px-4 pt-2 pb-6 space-y-4">
-        {/* Top Search Header with Back arrow */}
-        <div className="flex items-center space-x-2 pt-1">
-          <button
-            onClick={() => onNavigate('1_home')}
-            className="w-8 h-8 rounded-full bg-[var(--systembg__modal)] border border-[var(--border__solid)] flex items-center justify-center text-[var(--text__title)] hover:bg-[var(--systembg__fgalt)] shadow-xs cursor-pointer shrink-0"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-
-          <div
-            className="flex-1 bg-[var(--systembg__modal)] rounded-2xl px-3.5 py-2 flex items-center justify-between shadow-xs ring-1"
-            style={{
-              borderColor: 'var(--primitive__green)',
-              boxShadow: '0 0 0 1px var(--primitive__green)',
-            }}
-          >
-            <span className="text-xs font-semibold text-[var(--text__heading)]">Toán lớp 9</span>
-            <button
-              onClick={() => {}}
-              className="w-4 h-4 rounded-full bg-[var(--systembg__fgbase)] text-[var(--text__body)] flex items-center justify-center cursor-pointer hover:bg-[var(--systembg__fgalt)]"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
+    <div className="tn-search-page">
+      <header className="tn-search-header">
+        <div className="tn-search-title-row">
+          <button type="button" aria-label="Quay lại" onClick={() => onNavigate('1_home')}><ArrowLeft /></button>
+          <h1>Tìm gia sư</h1>
+          <button type="button" aria-label="Thông báo" onClick={() => {}}><Bell /></button>
         </div>
-
-        {/* Horizontal Category Icons */}
-        <div className="grid grid-cols-5 gap-2 pt-1">
-          <button
-            onClick={() => setActiveSubject('Toán')}
-            className="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all shadow-xs border"
-              style={{
-                backgroundColor: activeSubject === 'Toán' ? 'var(--primitive__green)' : 'var(--systembg__modal)',
-                color: activeSubject === 'Toán' ? 'var(--text__onbrand)' : 'var(--text__body)',
-                borderColor: activeSubject === 'Toán' ? 'var(--primitive__green)' : 'var(--border__solid)',
-              }}
-            >
-              <Calculator className="w-5 h-5" />
-            </div>
-            <span
-              className={`text-[11px] ${
-                activeSubject === 'Toán' ? 'font-bold' : 'font-medium'
-              }`}
-              style={{ color: activeSubject === 'Toán' ? 'var(--primitive__green)' : 'var(--text__body)' }}
-            >
-              Toán
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubject('Tiếng Anh')}
-            className="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all shadow-xs border"
-              style={{
-                backgroundColor: activeSubject === 'Tiếng Anh' ? 'var(--primitive__green)' : 'var(--systembg__modal)',
-                color: activeSubject === 'Tiếng Anh' ? 'var(--text__onbrand)' : 'var(--category__purpledark)',
-                borderColor: activeSubject === 'Tiếng Anh' ? 'var(--primitive__green)' : 'var(--border__solid)',
-              }}
-            >
-              <Globe2 className="w-5 h-5" />
-            </div>
-            <span className="text-[11px] font-medium text-[var(--text__body)]">Tiếng Anh</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubject('Hóa học')}
-            className="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all shadow-xs border"
-              style={{
-                backgroundColor: activeSubject === 'Hóa học' ? 'var(--primitive__green)' : 'var(--systembg__modal)',
-                color: activeSubject === 'Hóa học' ? 'var(--text__onbrand)' : 'var(--category__pinkdark)',
-                borderColor: activeSubject === 'Hóa học' ? 'var(--primitive__green)' : 'var(--border__solid)',
-              }}
-            >
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <span className="text-[11px] font-medium text-[var(--text__body)]">Hóa học</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubject('Văn học')}
-            className="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all shadow-xs border"
-              style={{
-                backgroundColor: activeSubject === 'Văn học' ? 'var(--primitive__green)' : 'var(--systembg__modal)',
-                color: activeSubject === 'Văn học' ? 'var(--text__onbrand)' : 'var(--category__orangedark)',
-                borderColor: activeSubject === 'Văn học' ? 'var(--primitive__green)' : 'var(--border__solid)',
-              }}
-            >
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <span className="text-[11px] font-medium text-[var(--text__body)]">Văn học</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubject('Khác')}
-            className="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all shadow-xs border"
-              style={{
-                backgroundColor: activeSubject === 'Khác' ? 'var(--primitive__green)' : 'var(--systembg__modal)',
-                color: activeSubject === 'Khác' ? 'var(--text__onbrand)' : 'var(--text__body)',
-                borderColor: activeSubject === 'Khác' ? 'var(--primitive__green)' : 'var(--border__solid)',
-              }}
-            >
-              <MoreHorizontal className="w-5 h-5" />
-            </div>
-            <span className="text-[11px] font-medium text-[var(--text__body)]">Khác</span>
+        <div className="tn-search-input-row">
+          <label className="tn-search-input">
+            <Search />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Tìm gia sư" />
+            {query && <button type="button" aria-label="Xóa tìm kiếm" onClick={() => setQuery('')}><X /></button>}
+          </label>
+          <button type="button" className="tn-search-filter-button" onClick={() => setShowFilters((open) => !open)} aria-expanded={showFilters}>
+            <SlidersHorizontal />Bộ lọc <span>({Number(selectedGrade !== 'Tất cả') + Number(selectedLocation !== 'Tất cả khu vực')})</span>
           </button>
         </div>
-
-        {/* Filter Card: Lọc kết quả */}
-        <div className="bg-[var(--systembg__modal)] rounded-2xl p-4 border border-[var(--border__solid)] shadow-xs space-y-3.5">
-          <h4 className="text-xs font-bold text-[var(--text__heading)] tracking-wide">Lọc kết quả</h4>
-
-          {/* Lớp học */}
-          <div className="space-y-1">
-            <label className="text-[11px] font-medium text-[var(--text__body)]">Lớp học</label>
-            <div className="relative">
-              <select
-                value={selectedGrade}
-                onChange={(e) => onChangeGrade(e.target.value)}
-                className="w-full appearance-none bg-[var(--systembg__fgalt)] border border-[var(--border__solid)] rounded-xl px-3 py-2 text-xs font-medium text-[var(--text__title)] pr-8 focus:outline-none"
-              >
-                <option value="Lớp 9">Lớp 9</option>
-                <option value="Lớp 8">Lớp 8</option>
-                <option value="Lớp 10">Lớp 10</option>
-                <option value="Lớp 11">Lớp 11</option>
-                <option value="Lớp 12">Lớp 12</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-[var(--text__muted)] absolute right-2.5 top-2.5 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Khu vực */}
-          <div className="space-y-1">
-            <label className="text-[11px] font-medium text-[var(--text__body)]">Khu vực</label>
-            <div className="relative">
-              <select
-                value={selectedLocation}
-                onChange={(e) => onChangeLocation(e.target.value)}
-                className="w-full appearance-none bg-[var(--systembg__fgalt)] border border-[var(--border__solid)] rounded-xl px-3 py-2 text-xs font-medium text-[var(--text__title)] pr-8 focus:outline-none"
-              >
-                <option value="Quận 3, TP. HCM">Quận 3, TP. HCM</option>
-                <option value="Quận 1, TP. HCM">Quận 1, TP. HCM</option>
-                <option value="Quận 4, TP. HCM">Quận 4, TP. HCM</option>
-                <option value="Quận Bình Thạnh, TP. HCM">Quận Bình Thạnh, TP. HCM</option>
-                <option value="Tất cả khu vực">Tất cả khu vực</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-[var(--text__muted)] absolute right-2.5 top-2.5 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Mức giá */}
-          <div className="space-y-1">
-            <label className="text-[11px] font-medium text-[var(--text__body)]">Mức giá</label>
-            <div className="relative">
-              <select
-                value={priceRange}
-                onChange={(e) => setPriceRange(e.target.value)}
-                className="w-full appearance-none bg-[var(--systembg__fgalt)] border border-[var(--border__solid)] rounded-xl px-3 py-2 text-xs font-medium text-[var(--text__title)] pr-8 focus:outline-none"
-              >
-                <option value="Tất cả">Tất cả</option>
-                <option value="Dưới 500k">Dưới 500.000đ/giờ</option>
-                <option value="500k - 800k">500.000đ - 800.000đ/giờ</option>
-                <option value="Trên 800k">Trên 800.000đ/giờ</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-[var(--text__muted)] absolute right-2.5 top-2.5 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Đánh giá */}
-          <div className="space-y-1">
-            <label className="text-[11px] font-medium text-[var(--text__body)]">Đánh giá</label>
-            <div className="relative">
-              <select
-                value={ratingFilter}
-                onChange={(e) => setRatingFilter(e.target.value)}
-                className="w-full appearance-none bg-[var(--systembg__fgalt)] border border-[var(--border__solid)] rounded-xl px-3 py-2 text-xs font-medium text-[var(--text__title)] pr-8 focus:outline-none"
-              >
-                <option value="Tất cả">Tất cả</option>
-                <option value="4.5+">Từ 4.5 sao trở lên</option>
-                <option value="4.8+">Từ 4.8 sao trở lên</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-[var(--text__muted)] absolute right-2.5 top-2.5 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Áp dụng Button */}
-          <button
-            onClick={() => onNavigate('3_search_results')}
-            className="w-full mt-2 py-2.5 text-white rounded-xl text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-98"
-            style={{ backgroundColor: 'var(--primitive__green)' }}
-          >
-            Áp dụng
-          </button>
+        <nav className="tn-search-chips" aria-label="Lọc theo môn học">
+          {['Tất cả', ...subjects.map((subject) => subject.label)].map((label) => (
+            <button key={label} type="button" className={activeSubject === label ? 'is-active' : ''} onClick={() => setActiveSubject(label)}>{label}</button>
+          ))}
+        </nav>
+        <div className="tn-search-facets">
+          <label className="tn-search-facet"><select aria-label="Giá" value={priceRange} onChange={(event) => setPriceRange(event.target.value)}><option>Tất cả</option><option>Dưới 500.000đ</option><option>500.000đ – 800.000đ</option><option>Trên 800.000đ</option></select><span>Giá</span><ChevronDown /></label>
+          <label className="tn-search-facet"><select aria-label="Khu vực" value={selectedLocation} onChange={(event) => onChangeLocation(event.target.value)}><option value="Quận 3, TP. HCM">Quận 3</option><option value="Quận 1, TP. HCM">Quận 1</option><option value="Quận 4, TP. HCM">Quận 4</option><option value="Quận Bình Thạnh, TP. HCM">Bình Thạnh</option><option value="Tất cả khu vực">Tất cả</option></select><span>Khu vực</span><ChevronDown /></label>
+          <label className="tn-search-facet"><select aria-label="Đánh giá" value={ratingFilter} onChange={(event) => setRatingFilter(event.target.value)}><option>Tất cả</option><option>Từ 4.5 sao</option><option>Từ 4.8 sao</option></select><span>Đánh giá</span><ChevronDown /></label>
+          {selectedTutors.length > 0 && <button type="button" className="tn-search-compare-chip" disabled={selectedTutors.length < 2} onClick={openComparison}><span>So sánh</span><b>({selectedTutors.length})</b></button>}
         </div>
-
-        {/* Results preview */}
-        <div className="space-y-2.5 pt-1">
-          <h4 className="text-xs font-bold text-[var(--text__heading)]">Kết quả tìm kiếm (24)</h4>
-          <div className="space-y-2">
-            {TUTORS.slice(0, 2).map((tutor) => (
-              <div
-                key={tutor.id}
-                onClick={() => {
-                  onSelectTutor(tutor);
-                  onNavigate('4_tutor_profile');
-                }}
-                className="bg-[var(--systembg__modal)] rounded-2xl p-3 border border-[var(--border__solid)] hover:border-[var(--primitive__green)] transition-all cursor-pointer shadow-xs flex items-center space-x-3"
-              >
-                <img
-                  src={tutor.avatarUrl}
-                  alt={tutor.name}
-                  className="w-12 h-12 rounded-full object-cover shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-1.5">
-                    <h5 className="text-xs font-bold text-[var(--text__title)] truncate">
-                      {tutor.name}
-                    </h5>
-                    {tutor.verified && (
-                      <CheckCircle2
-                        className="w-3.5 h-3.5 shrink-0"
-                        style={{ color: 'var(--primitive__green)' }}
-                      />
-                    )}
-                  </div>
-                  <div className="flex items-center space-x-1 text-[10px] text-[var(--text__body)] mt-0.5">
-                    <Star
-                      className="w-3 h-3 fill-current"
-                      style={{ color: 'var(--semantic__warningdark)' }}
-                    />
-                    <span className="font-semibold text-[var(--text__title)]">{tutor.rating}</span>
-                    <span className="text-[var(--text__muted)]">({tutor.reviewsCount} đánh giá)</span>
-                  </div>
-                  <div className="text-[10px] text-[var(--text__body)] mt-0.5">
-                    {tutor.subject} • {tutor.gradeRange}
-                  </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-[10px] text-[var(--text__muted)]">{tutor.location}</span>
-                    <span
-                      className="text-xs font-bold"
-                      style={{ color: 'var(--primitive__green)' }}
-                    >
-                      {formatCurrency(tutor.hourlyRate)}/giờ
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {showFilters && (
+          <div className="tn-search-filter-popover">
+            <label>Lớp học<select value={selectedGrade} onChange={(event) => onChangeGrade(event.target.value)}><option>Lớp 6</option><option>Lớp 7</option><option>Lớp 8</option><option>Lớp 9</option><option>Lớp 10</option><option>Lớp 11</option><option>Lớp 12</option></select></label>
+            <button type="button" onClick={() => setShowFilters(false)}>Xong</button>
           </div>
-        </div>
-      </div>
+        )}
+      </header>
+
+      <main className={`tn-search-results ${selectedTutors.length > 0 ? 'has-compare' : ''}`}>
+        {visibleTutors.map(tutorCard)}
+        {visibleTutors.length === 0 && <p className="tn-search-empty">Không tìm thấy gia sư phù hợp. Hãy thử thay đổi bộ lọc.</p>}
+      </main>
+
+      {selectedTutors.length > 0 && <footer className="tn-search-compare-bar">
+        <button type="button" className="tn-search-compare-summary" disabled={selectedTutors.length < 2} onClick={openComparison}>
+          <span className="tn-search-compare-avatars">
+            {selectedTutors.map((id) => {
+              const tutor = TUTORS.find((item) => item.id === id);
+              return tutor ? <img key={id} src={tutor.avatarUrl} alt="" /> : null;
+            })}
+          </span>
+          <span className="tn-search-compare-copy"><strong>Đã chọn {selectedTutors.length} gia sư</strong><small>Xem so sánh</small></span>
+          <ChevronRight className="tn-search-compare-arrow" />
+        </button>
+      </footer>}
     </div>
   );
 };
+
+export { SearchFilterScreen };

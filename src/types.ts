@@ -10,6 +10,7 @@ export type ScreenId =
   | '9_payment_success'
   | '10_confirmation_notice'
   | '11_schedule_list'
+  | '12_compare_tutors'
   | '14_future_payments';
 
 export interface Tutor {

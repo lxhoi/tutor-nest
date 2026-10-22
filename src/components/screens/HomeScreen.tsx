@@ -17,7 +17,7 @@ interface HomeScreenProps {
 const subjects = [
   { label: 'Toán', icon: Calculator, bg: 'var(--semantic__successlight)', color: 'var(--primitive__green)' },
   { label: 'Tiếng Anh', icon: Globe2, bg: 'var(--category__purplelight)', color: 'var(--category__purpledark)' },
-  { label: 'Hóa học', icon: Sparkles, bg: 'var(--category__pinklight)', color: 'var(--category__pinkdark)' },
+  { label: 'Hoá học', icon: Sparkles, bg: 'var(--category__pinklight)', color: 'var(--category__pinkdark)' },
   { label: 'Ngữ Văn', icon: BookOpen, bg: 'var(--category__orangelight)', color: 'var(--category__orangedark)' },
   { label: 'Khác', icon: MoreHorizontal, bg: 'var(--systembg__fgbase)', color: 'var(--text__body)' },
 ];
@@ -89,7 +89,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       className="tn-home-card w-full border border-[var(--border__solid)] bg-[var(--systembg__modal)] text-left shadow-xs transition-colors hover:border-[var(--primitive__green)]"
     >
       <div className="flex items-start gap-2">
-        <img src={tutor.avatarUrl} alt="" className="h-14 w-14 shrink-0 rounded-full object-cover" />
+        <img src={tutor.avatarUrl} alt="" className="h-[76px] w-[76px] shrink-0 rounded-full object-cover" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1">
             <h3 className="truncate text-[11px] font-bold text-[var(--text__title)]">{tutor.name}</h3>
@@ -227,7 +227,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <div className="tn-home-banner relative overflow-hidden" style={{ backgroundColor: 'var(--semantic__successlight)' }}>
           <div className="relative z-10 w-[66%]">
             <h2 className="text-[11px] font-bold text-[var(--primitive__green)]">Bạn cần tư vấn?</h2>
-            <p className="mt-1 text-[8px] leading-snug text-[var(--text__body)]">Đội ngũ TutorNest luôn sẵn sàng hỗ trợ chọn gia sư phù hợp cho bạn!</p>
+            <p className="mt-1 text-[8px] leading-snug text-[var(--text__body)]">Đội ngũ TutorNest luôn sẵn sàng hỗ trợ chọn gia sư phù hợp nhất cho con bạn!</p>
             <button type="button" onClick={() => onNavigate('2_search_filter')} className="mt-1.5 rounded-full px-2.5 py-1 text-[8px] font-semibold text-[var(--text__onbrand)]" style={{ backgroundColor: 'var(--primitive__green)' }}>Tư vấn miễn phí ›</button>
           </div>
           <img src="https://images.unsplash.com/photo-1491013516836-7db643ee125a?auto=format&fit=crop&q=80&w=300" alt="Tư vấn học tập" className="absolute bottom-0 right-0 h-full w-[38%] object-cover object-center [mask-image:linear-gradient(to_right,transparent,black_30%)]" />

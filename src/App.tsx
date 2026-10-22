@@ -17,6 +17,7 @@ import { PaymentSuccessScreen } from './components/screens/PaymentSuccessScreen'
 import { ConfirmationNoticeScreen } from './components/screens/ConfirmationNoticeScreen';
 import { ScheduleListScreen } from './components/screens/ScheduleListScreen';
 import { FuturePaymentsScreen } from './components/screens/FuturePaymentsScreen';
+import { CompareTutorsScreen } from './components/screens/CompareTutorsScreen';
 import {
   Smartphone,
   LayoutGrid,
@@ -38,6 +39,7 @@ export default function App() {
   const [history, setHistory] = useState<ScreenId[]>(['1_home']);
   const [viewMode, setViewMode] = useState<'iphone' | 'board'>('iphone');
   const [booking, setBooking] = useState<BookingState>(INITIAL_BOOKING);
+  const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
   const [frameColor, setFrameColor] = useState<'desert' | 'natural' | 'black' | 'white'>('desert');
   const [scale, setScale] = useState<number>(0.95);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
@@ -65,6 +67,10 @@ export default function App() {
     let timer: NodeJS.Timeout;
     if (isAutoPlaying) {
       const currentIndex = FLOW_STEPS.findIndex((s) => s.id === currentScreen);
+      if (currentIndex < 0) {
+        setIsAutoPlaying(false);
+        return;
+      }
       timer = setTimeout(() => {
         if (currentIndex < FLOW_STEPS.length - 1) {
           const nextStep = FLOW_STEPS[currentIndex + 1].id;
@@ -101,20 +107,27 @@ export default function App() {
 
   const resetFlow = () => {
     setBooking(INITIAL_BOOKING);
+    setComparisonTutors([]);
     setCurrentScreen('1_home');
     setHistory(['1_home']);
     setIsAutoPlaying(false);
   };
 
   const currentStepIndex = FLOW_STEPS.findIndex((s) => s.id === currentScreen);
+  const isCompareScreen = currentScreen === '12_compare_tutors';
 
   const goToPreviousStep = () => {
+    if (isCompareScreen) {
+      navigateTo('2_search_filter');
+      return;
+    }
     if (currentStepIndex > 0) {
       navigateTo(FLOW_STEPS[currentStepIndex - 1].id);
     }
   };
 
   const goToNextStep = () => {
+    if (isCompareScreen) return;
     if (currentStepIndex < FLOW_STEPS.length - 1) {
       navigateTo(FLOW_STEPS[currentStepIndex + 1].id);
     }
@@ -140,6 +153,18 @@ export default function App() {
             onChangeGrade={(g) => updateBooking({ grade: g })}
             selectedLocation={booking.location}
             onChangeLocation={(l) => updateBooking({ location: l })}
+            onCompare={(tutors) => {
+              setComparisonTutors(tutors);
+              navigateTo('12_compare_tutors');
+            }}
+          />
+        );
+      case '12_compare_tutors':
+        return (
+          <CompareTutorsScreen
+            tutors={comparisonTutors}
+            onNavigate={navigateTo}
+            onSelectTutor={handleSelectTutor}
           />
         );
       case '3_search_results':
@@ -252,7 +277,7 @@ export default function App() {
         <div className="flex items-center space-x-2">
           <button
             onClick={goToPreviousStep}
-            disabled={currentStepIndex <= 0}
+            disabled={!isCompareScreen && currentStepIndex <= 0}
             className="w-7 h-7 rounded-lg bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 text-neutral-200 flex items-center justify-center cursor-pointer transition-colors"
             title="Bước trước"
           >
@@ -269,11 +294,12 @@ export default function App() {
                 {step.number}. {step.label}
               </option>
             ))}
+            <option value="12_compare_tutors">12. So sánh 2 gia sư</option>
           </select>
 
           <button
             onClick={goToNextStep}
-            disabled={currentStepIndex >= FLOW_STEPS.length - 1}
+            disabled={isCompareScreen || currentStepIndex >= FLOW_STEPS.length - 1}
             className="w-7 h-7 rounded-lg bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 text-neutral-200 flex items-center justify-center cursor-pointer transition-colors"
             title="Bước tiếp theo"
           >
@@ -359,10 +385,10 @@ export default function App() {
               {/* Step indicator tag */}
               <div className="pointer-events-auto flex items-center space-x-2 bg-neutral-900/90 border border-neutral-800/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs shadow-lg">
                 <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px]">
-                  {FLOW_STEPS[currentStepIndex]?.number || 1}
+                  {isCompareScreen ? 12 : FLOW_STEPS[currentStepIndex]?.number || 1}
                 </span>
                 <span className="font-semibold text-neutral-200">
-                  {FLOW_STEPS[currentStepIndex]?.label}
+                  {isCompareScreen ? 'So sánh 2 gia sư' : FLOW_STEPS[currentStepIndex]?.label}
                 </span>
               </div>
 
