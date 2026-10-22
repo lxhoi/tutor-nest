@@ -24,6 +24,20 @@ const subjects = [
   { label: 'Khác', icon: MoreHorizontal },
 ];
 
+const normalize = (value: string) => value
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/đ/g, 'd')
+  .replace(/Đ/g, 'D')
+  .toLowerCase();
+
+const locationAliases: Record<string, string> = {
+  'Quận 1, TP. HCM': 'Q.1, TP.HCM',
+  'Quận 3, TP. HCM': 'Q.3, TP.HCM',
+  'Quận 4, TP. HCM': 'Q.4, TP.HCM',
+  'Quận Bình Thạnh, TP. HCM': 'Bình Thạnh, TP.HCM',
+};
+
 const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
   onNavigate,
   onSelectTutor,
@@ -33,7 +47,7 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
   onChangeLocation,
   onCompare,
 }) => {
-  const [query, setQuery] = useState(`Toán ${selectedGrade.toLowerCase()}`);
+  const [query, setQuery] = useState(`toan ${normalize(selectedGrade)}`);
   const [activeSubject, setActiveSubject] = useState('Tất cả');
   const [priceRange, setPriceRange] = useState('Tất cả');
   const [ratingFilter, setRatingFilter] = useState('Tất cả');
@@ -41,10 +55,19 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
   const [selectedTutors, setSelectedTutors] = useState<string[]>([]);
 
   const visibleTutors = useMemo(() => TUTORS.filter((tutor) => {
-    const searchTerm = query.toLowerCase().replace(/lớp\s*\d+/g, '').trim();
-    const searchableTutor = `${tutor.name} ${tutor.subject} ${tutor.location}`.toLowerCase();
+    const searchTerm = normalize(query).replace(/lop\s*\d+/g, '').trim();
+    const searchableTutor = normalize(`${tutor.name} ${tutor.subject} ${tutor.location}`);
     const matchesQuery = !searchTerm || searchableTutor.includes(searchTerm);
-    const matchesSubject = activeSubject === 'Tất cả' || activeSubject === 'Khác' || tutor.subject === activeSubject;
+    const matchesSubject = activeSubject === 'Tất cả' || activeSubject === 'Khác'
+      || normalize(tutor.subject) === normalize(activeSubject)
+      || (activeSubject === 'Văn học' && normalize(tutor.subject) === 'ngu van');
+    const gradeNumber = Number(selectedGrade.match(/\d+/)?.[0]);
+    const gradeRange = tutor.gradeRange.match(/(\d+)\s*-\s*(\d+)/);
+    const matchesGrade = selectedGrade === 'Tất cả' || !gradeNumber || !gradeRange
+      || (gradeNumber >= Number(gradeRange[1]) && gradeNumber <= Number(gradeRange[2]));
+    const selectedArea = locationAliases[selectedLocation];
+    const matchesLocation = selectedLocation === 'Tất cả khu vực' || !selectedArea
+      || tutor.location === selectedArea;
     const matchesPrice = priceRange === 'Tất cả'
       || (priceRange === 'Dưới 500.000đ' && tutor.hourlyRate < 500000)
       || (priceRange === '500.000đ – 800.000đ' && tutor.hourlyRate >= 500000 && tutor.hourlyRate <= 800000)
@@ -52,8 +75,8 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
     const matchesRating = ratingFilter === 'Tất cả'
       || (ratingFilter === 'Từ 4.5 sao' && tutor.rating >= 4.5)
       || (ratingFilter === 'Từ 4.8 sao' && tutor.rating >= 4.8);
-    return matchesQuery && matchesSubject && matchesPrice && matchesRating;
-  }), [activeSubject, priceRange, query, ratingFilter]);
+    return matchesQuery && matchesSubject && matchesGrade && matchesLocation && matchesPrice && matchesRating;
+  }), [activeSubject, priceRange, query, ratingFilter, selectedGrade, selectedLocation]);
 
   const toggleTutor = (id: string) => {
     setSelectedTutors((current) => current.includes(id)
@@ -86,7 +109,7 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
           <img src={tutor.avatarUrl} alt="" className="tn-search-avatar" />
           <div className="tn-search-details">
             <div className="tn-search-name-line">
-              <h2>{tutor.name}</h2>
+              <h2><button type="button" onClick={() => { onSelectTutor(tutor); onNavigate('4_tutor_profile'); }}>{tutor.name}</button></h2>
               {tutor.verified && <span className="tn-search-verified"><CheckCircle2 />Đã xác thực</span>}
             </div>
             <div className="tn-search-rating"><Star /><b>{tutor.rating}</b><span>({tutor.reviewsCount} đánh giá)</span></div>

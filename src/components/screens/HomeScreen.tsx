@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Search, Bell, Star, MapPin, ChevronRight, ChevronDown, Calculator, Globe2,
-  Sparkles, BookOpen, MoreHorizontal, GraduationCap, CheckCircle2, Clock,
+  Sparkles, BookOpen, MoreHorizontal, CheckCircle2, Clock,
   ClipboardList, Target, LocateFixed, CalendarDays,
 } from 'lucide-react';
 import { BookingState, ScreenId, Tutor } from '../../types';
@@ -35,7 +35,88 @@ const articles = [
   { title: 'Làm thế nào để duy trì động lực học tập', minutes: 6, image: 'photo-1509062522246-3755977927d7' },
 ];
 
+const featuredTutors: Tutor[] = [
+  { ...TUTORS[0], location: 'Hà Nội' },
+  {
+    id: 'tran-trong-tin', name: 'Trần Trọng Tín', verified: true, rating: 4.7,
+    reviewsCount: 54, subject: 'Hoá học', gradeRange: 'Lớp 6 - 12', location: 'TP. Hồ Chí Minh',
+    hourlyRate: 600000, avatarUrl: TUTORS[2].avatarUrl, experienceYears: 6,
+    university: 'Đại học Khoa học Tự nhiên', certificates: ['Chứng chỉ giảng dạy'], tags: ['Hóa học thực hành'],
+  },
+  {
+    id: 'pham-nhat-anh', name: 'Phạm Nhật Anh', verified: true, rating: 4.8,
+    reviewsCount: 24, subject: 'Ngữ Văn', gradeRange: 'Lớp 6 - 12', location: 'Hà Nội',
+    hourlyRate: 800000, avatarUrl: TUTORS[3].avatarUrl, experienceYears: 5,
+    university: 'Đại học Sư phạm Hà Nội', certificates: ['Chứng chỉ Sư phạm'], tags: ['Ngữ văn'],
+  },
+  {
+    id: 'le-kim-tuyet', name: 'Lê Kim Tuyết', verified: true, rating: 4.9,
+    reviewsCount: 24, subject: 'Tiếng Anh', gradeRange: 'Lớp 6 - 12', location: 'Hà Nội',
+    hourlyRate: 500000, avatarUrl: TUTORS[1].avatarUrl, experienceYears: 4,
+    university: 'Đại học Ngoại ngữ', certificates: ['IELTS 7.5'], tags: ['Giao tiếp tiếng Anh'],
+  },
+];
+
+const nearbyTutors: Tutor[] = [
+  {
+    id: 'tran-nhat-trinh', name: 'Trần Nhật Trinh', verified: true, rating: 4.7,
+    reviewsCount: 24, subject: 'Toán', gradeRange: 'Lớp 1 - 5', location: 'Hà Nội',
+    hourlyRate: 500000, avatarUrl: TUTORS[3].avatarUrl, experienceYears: 4,
+    university: 'Đại học Sư phạm Hà Nội', certificates: ['Chứng chỉ Sư phạm'], tags: ['Toán tiểu học'],
+  },
+  {
+    id: 'le-hoang-chi', name: 'Lê Hoàng Chi', verified: true, rating: 4.9,
+    reviewsCount: 24, subject: 'Tiếng Anh', gradeRange: 'Lớp 3 - 5', location: 'Hà Nội',
+    hourlyRate: 500000, avatarUrl: TUTORS[1].avatarUrl, experienceYears: 5,
+    university: 'Đại học Ngoại ngữ', certificates: ['IELTS 7.5'], tags: ['Tiếng Anh tiểu học'],
+  },
+  {
+    id: 'mai-anh-dao', name: 'Mai Anh Đào', verified: true, rating: 4.9,
+    reviewsCount: 24, subject: 'Vật lí', gradeRange: 'Lớp 6 - 12', location: 'Cần Thơ',
+    hourlyRate: 500000, avatarUrl: TUTORS[0].avatarUrl, experienceYears: 5,
+    university: 'Đại học Cần Thơ', certificates: ['Chứng chỉ Sư phạm'], tags: ['Vật lí'],
+  },
+];
+
 const weekdayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+
+const HomeLearningIllustration: React.FC<{ className: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 240 150" role="img" aria-label="Gia đình cùng học tập" preserveAspectRatio="xMidYMax meet">
+    <g fill="#8DCB9C" opacity=".8">
+      <ellipse cx="23" cy="35" rx="7" ry="16" transform="rotate(-35 23 35)" />
+      <ellipse cx="43" cy="23" rx="7" ry="15" transform="rotate(24 43 23)" />
+      <ellipse cx="210" cy="38" rx="8" ry="18" transform="rotate(35 210 38)" />
+      <ellipse cx="226" cy="24" rx="7" ry="16" transform="rotate(-20 226 24)" />
+      <ellipse cx="193" cy="18" rx="6" ry="12" transform="rotate(-48 193 18)" />
+    </g>
+    <path d="M29 145c6-43 9-77 12-110M213 146c1-49 3-81 13-117" fill="none" stroke="#6EB986" strokeWidth="3" />
+    <path d="M74 150c-7-27 0-48 22-56l19-7 33 4 21 13c12 8 17 25 19 46" fill="#53AE7B" />
+    <path d="M116 66c0-21 13-35 32-35 20 0 32 14 32 36v14c0 18-14 31-32 31-19 0-32-14-32-32z" fill="#F1C7A5" />
+    <path d="M116 66c-2-21 8-38 26-42 19-4 36 8 40 26l-8 7c-11-2-17-8-23-17-8 13-19 20-35 21z" fill="#26312D" />
+    <path d="M109 147c-4-23-3-39 8-53l15 13 15-3 15 10 2 33" fill="#78C899" />
+    <path d="M87 80c0-15 9-25 22-25 14 0 23 11 23 26v10c0 14-9 23-23 23-13 0-22-10-22-24z" fill="#F4C8A7" />
+    <path d="M86 78c1-17 10-29 25-29 12 0 21 7 23 21-10-2-18-8-22-14-6 8-14 13-26 14z" fill="#303B38" />
+    <path d="M72 149c2-17 6-29 18-39l17 7 14 32" fill="#E59A68" />
+    <path d="M55 138c17-4 35-7 52-7s36 3 54 7v10H55z" fill="#F5F2E8" stroke="#D4DCCF" strokeWidth="2" />
+    <path d="M133 138c17-6 35-8 53-8s36 3 51 8v10h-104z" fill="#FFFDF6" stroke="#D4DCCF" strokeWidth="2" />
+    <path d="M133 139v9" stroke="#B7CBB7" strokeWidth="2" />
+    <path d="M114 119c7 6 15 8 23 8" fill="none" stroke="#F1C7A5" strokeWidth="7" strokeLinecap="round" />
+  </svg>
+);
+
+const HomePlantIllustration = () => (
+  <svg className="tn-home-plant-art" viewBox="0 0 80 110" role="img" aria-label="Chậu cây xanh">
+    <g fill="#42B184">
+      <ellipse cx="38" cy="35" rx="9" ry="27" transform="rotate(-25 38 35)" />
+      <ellipse cx="54" cy="39" rx="9" ry="30" transform="rotate(27 54 39)" />
+      <ellipse cx="25" cy="52" rx="8" ry="23" transform="rotate(-44 25 52)" />
+      <ellipse cx="59" cy="59" rx="8" ry="25" transform="rotate(48 59 59)" />
+      <ellipse cx="42" cy="52" rx="7" ry="30" />
+    </g>
+    <path d="M18 68h48l-7 34H25z" fill="#EF5C4A" />
+    <path d="M15 66h54v8H15z" fill="#D94C41" />
+  </svg>
+);
 
 const parseLocalDate = (value: string) => {
   const [day, month, year] = value.split('/').map(Number);
@@ -125,10 +206,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <div className="tn-home-artboard">
         {/* Header and search */}
         <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg text-[var(--text__onbrand)]" style={{ backgroundColor: 'var(--primitive__green)' }}><GraduationCap className="h-4 w-4" /></div>
-            <span className="text-2xl font-bold tracking-tight text-[var(--primitive__green)]">TutorNest</span>
-          </div>
+          <img src="/tutornest-logo.svg" alt="TutorNest" className="tn-home-logo" />
           <div className="flex items-center gap-2">
             <button type="button" aria-label="Thông báo" className="relative flex h-7 w-7 items-center justify-center rounded-full text-[var(--text__body)]"><Bell className="h-4 w-4" /><i className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-[var(--semantic__alertdark)]" /></button>
             <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100" alt="Tài khoản" className="h-7 w-7 rounded-full object-cover" />
@@ -178,14 +256,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <p className="mt-1 text-[8px] leading-snug text-[var(--text__muted)]">Hồ sơ đã xác minh<br />Linh hoạt lịch học</p>
             <button type="button" onClick={() => onNavigate('2_search_filter')} className="mt-1.5 rounded-full px-2.5 py-1 text-[8px] font-semibold text-[var(--text__onbrand)]" style={{ backgroundColor: 'var(--primitive__green)' }}>Bắt đầu tìm kiếm ›</button>
           </div>
-          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=340" alt="Phụ huynh đồng hành cùng con học tập" className="absolute bottom-0 right-0 h-full w-[43%] object-cover object-center [mask-image:linear-gradient(to_right,transparent,black_24%)]" />
+          <HomeLearningIllustration className="tn-home-family-art absolute bottom-0 right-0 h-full w-[48%]" />
         </div>
         <div className="flex justify-center gap-1"><i className="h-1 w-1 rounded-full bg-[var(--primitive__green)]" /><i className="h-1 w-1 rounded-full bg-[var(--systembg__fgbase)]" /><i className="h-1 w-1 rounded-full bg-[var(--systembg__fgbase)]" /></div>
 
         {/* Featured tutors */}
         <section>
           {sectionHeading('Gia sư nổi bật', () => onNavigate('3_search_results'))}
-          <div className="space-y-1.5">{TUTORS.map((tutor, index) => tutorCard(tutor, index))}</div>
+          <div className="space-y-1.5">{featuredTutors.map((tutor, index) => tutorCard(tutor, index))}</div>
         </section>
 
         {/* Grade groups */}
@@ -208,7 +286,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <span className="flex-1"><b className="block text-[9px] text-[var(--text__title)]">Tìm gia sư quanh khu vực của bạn</b><small className="block text-[8px] text-[var(--text__muted)]">Hà Nội · Cách đây 5km</small></span>
             <ChevronRight className="h-4 w-4 text-[var(--primitive__green)]" />
           </button>
-          <div className="space-y-1.5">{TUTORS.slice(1, 4).map((tutor, index) => tutorCard(tutor, index + 10))}</div>
+          <div className="space-y-1.5">{nearbyTutors.map((tutor, index) => tutorCard(tutor, index + 10))}</div>
         </section>
 
         {/* Learning goals */}
@@ -230,7 +308,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <p className="mt-1 text-[8px] leading-snug text-[var(--text__body)]">Đội ngũ TutorNest luôn sẵn sàng hỗ trợ chọn gia sư phù hợp nhất cho con bạn!</p>
             <button type="button" onClick={() => onNavigate('2_search_filter')} className="mt-1.5 rounded-full px-2.5 py-1 text-[8px] font-semibold text-[var(--text__onbrand)]" style={{ backgroundColor: 'var(--primitive__green)' }}>Tư vấn miễn phí ›</button>
           </div>
-          <img src="https://images.unsplash.com/photo-1491013516836-7db643ee125a?auto=format&fit=crop&q=80&w=300" alt="Tư vấn học tập" className="absolute bottom-0 right-0 h-full w-[38%] object-cover object-center [mask-image:linear-gradient(to_right,transparent,black_30%)]" />
+          <HomeLearningIllustration className="tn-home-family-art tn-home-family-art--advice absolute bottom-0 right-0 h-full w-[42%]" />
         </div>
 
         {/* Articles */}
@@ -262,7 +340,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <p className="mt-1 text-[8px] text-[var(--text__body)]">Bắt đầu ngay để con bạn tiến bộ hơn mỗi ngày</p>
             <button type="button" onClick={() => onNavigate('2_search_filter')} className="mt-2 rounded-full px-2.5 py-1 text-[8px] font-semibold text-[var(--text__onbrand)]" style={{ backgroundColor: 'var(--primitive__green)' }}>Tìm gia sư ngay ›</button>
           </div>
-          <div className="absolute bottom-2 right-3 text-5xl" aria-hidden="true">🪴</div>
+          <HomePlantIllustration />
         </div>
         </div>
       </div>

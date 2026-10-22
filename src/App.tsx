@@ -261,12 +261,7 @@ export default function App() {
       <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/90 backdrop-blur-md px-4 flex items-center justify-between shrink-0 z-40">
         {/* Brand & Title */}
         <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-extrabold text-sm md:text-base tracking-tight text-white">
-              Tutor<span className="text-emerald-400">Nest</span>
-            </span>
-          </div>
+          <img src="/tutornest-logo.svg" alt="TutorNest" className="h-[18px] w-auto" />
           <span className="hidden sm:inline-block text-neutral-600">|</span>
           <span className="hidden sm:inline-block text-xs font-medium text-neutral-300">
             iPhone 16 Pro Max Flow Prototype
