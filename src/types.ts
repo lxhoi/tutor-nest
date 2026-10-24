@@ -4,8 +4,10 @@ export type ScreenId =
   | '3_search_results'
   | '4_tutor_profile'
   | '5_select_schedule'
+  | '6_select_time'
   | '6_confirm_booking'
   | '7_weekly_payment_options'
+  | '8_confirm_booking'
   | '8_first_week_payment'
   | '9_payment_success'
   | '10_confirmation_notice'
@@ -48,6 +50,10 @@ export interface BookingState {
   startDate: string; // '15/10/2026'
   endDate: string; // '10/12/2026'
   timeSlot: string; // '18:00 - 20:00'
+  timeOfDay?: 'morning' | 'afternoon' | 'evening';
+  sessionDuration?: string;
+  sessionMode?: 'online' | 'offline';
+  learningNote?: string;
   totalSessions: number;
   hourlyRate: number;
   totalAmount: number;

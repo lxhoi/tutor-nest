@@ -10,6 +10,7 @@ import { SearchFilterScreen } from './components/screens/SearchFilterScreen';
 import { SearchResultsScreen } from './components/screens/SearchResultsScreen';
 import { TutorProfileScreen } from './components/screens/TutorProfileScreen';
 import { SelectScheduleScreen } from './components/screens/SelectScheduleScreen';
+import { SelectTimeSlotScreen } from './components/screens/SelectTimeSlotScreen';
 import { ConfirmBookingScreen } from './components/screens/ConfirmBookingScreen';
 import { PaymentOptionsScreen } from './components/screens/PaymentOptionsScreen';
 import { FirstWeekPaymentScreen } from './components/screens/FirstWeekPaymentScreen';
@@ -190,9 +191,9 @@ export default function App() {
             onNavigate={navigateTo}
           />
         );
-      case '6_confirm_booking':
+      case '6_select_time':
         return (
-          <ConfirmBookingScreen
+          <SelectTimeSlotScreen
             booking={booking}
             updateBooking={updateBooking}
             onNavigate={navigateTo}
@@ -204,6 +205,16 @@ export default function App() {
             booking={booking}
             updateBooking={updateBooking}
             onNavigate={navigateTo}
+          />
+        );
+      case '8_confirm_booking':
+      case '6_confirm_booking':
+        return (
+          <ConfirmBookingScreen
+            booking={booking}
+            updateBooking={updateBooking}
+            onNavigate={navigateTo}
+            onPaymentSuccess={handlePaymentSuccess}
           />
         );
       case '8_first_week_payment':

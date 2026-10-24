@@ -28,7 +28,7 @@ export const FlowOverviewBoard: React.FC<FlowOverviewBoardProps> = ({
               Flow 1: Book a session (Parent)
             </h1>
             <p className="text-sm text-neutral-400 mt-1">
-              Tìm gia sư phù hợp → Xem hồ sơ → Chọn lịch học → Thanh toán (theo tuần) → Xác nhận đặt lịch
+              Tìm gia sư → Xem hồ sơ → Chọn lịch học → Chọn thời gian → Chọn kiểu thanh toán → Xác nhận đặt lịch
             </p>
           </div>
 

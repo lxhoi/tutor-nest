@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
   ArrowLeft, Bell, BookOpen, Calculator, Check, CheckCircle2, ChevronDown,
-  ChevronRight, Globe2, MapPin, MoreHorizontal, Search, SlidersHorizontal,
+  ChevronRight, Copy, Globe2, MapPin, MoreHorizontal, Search, SlidersHorizontal,
   Star, X,
 } from 'lucide-react';
 import { ScreenId, Tutor } from '../../types';
@@ -53,6 +53,7 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
   const [ratingFilter, setRatingFilter] = useState('Tất cả');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTutors, setSelectedTutors] = useState<string[]>([]);
+  const [isCompareMode, setIsCompareMode] = useState(false);
 
   const visibleTutors = useMemo(() => TUTORS.filter((tutor) => {
     const searchTerm = normalize(query).replace(/lop\s*\d+/g, '').trim();
@@ -95,21 +96,52 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
     const isSelected = selectedTutors.includes(tutor.id);
 
     return (
-      <article key={tutor.id} className="tn-search-card">
+      <article
+        key={tutor.id}
+        className="tn-search-card"
+        onClick={() => {
+          if (isCompareMode) {
+            toggleTutor(tutor.id);
+          } else {
+            onSelectTutor(tutor);
+            onNavigate('4_tutor_profile');
+          }
+        }}
+      >
         <div className="tn-search-card-main">
-          <button
-            type="button"
-            className={`tn-search-select ${isSelected ? 'is-selected' : ''}`}
-            aria-label={isSelected ? `Bỏ chọn ${tutor.name}` : `Chọn ${tutor.name} để so sánh`}
-            aria-pressed={isSelected}
-            onClick={() => toggleTutor(tutor.id)}
-          >
-            {isSelected && <Check className="h-3.5 w-3.5" />}
-          </button>
+          {isCompareMode && (
+            <button
+              type="button"
+              className={`tn-search-select ${isSelected ? 'is-selected' : ''}`}
+              aria-label={isSelected ? `Bỏ chọn ${tutor.name}` : `Chọn ${tutor.name} để so sánh`}
+              aria-pressed={isSelected}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleTutor(tutor.id);
+              }}
+            >
+              {isSelected && <Check className="h-3.5 w-3.5" />}
+            </button>
+          )}
           <img src={tutor.avatarUrl} alt="" className="tn-search-avatar" />
           <div className="tn-search-details">
             <div className="tn-search-name-line">
-              <h2><button type="button" onClick={() => { onSelectTutor(tutor); onNavigate('4_tutor_profile'); }}>{tutor.name}</button></h2>
+              <h2>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    if (isCompareMode) {
+                      e.stopPropagation();
+                      toggleTutor(tutor.id);
+                    } else {
+                      onSelectTutor(tutor);
+                      onNavigate('4_tutor_profile');
+                    }
+                  }}
+                >
+                  {tutor.name}
+                </button>
+              </h2>
               {tutor.verified && <span className="tn-search-verified"><CheckCircle2 />Đã xác thực</span>}
             </div>
             <div className="tn-search-rating"><Star /><b>{tutor.rating}</b><span>({tutor.reviewsCount} đánh giá)</span></div>
@@ -119,7 +151,7 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
             <strong className="tn-search-price">{formatCurrency(tutor.hourlyRate)}/giờ</strong>
           </div>
         </div>
-        {isSelected && <div className="tn-search-selected-label"><CheckCircle2 />Đang so sánh</div>}
+        {isCompareMode && isSelected && <div className="tn-search-selected-label"><CheckCircle2 />Đang so sánh</div>}
       </article>
     );
   };
@@ -151,7 +183,23 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
           <label className="tn-search-facet"><select aria-label="Giá" value={priceRange} onChange={(event) => setPriceRange(event.target.value)}><option>Tất cả</option><option>Dưới 500.000đ</option><option>500.000đ – 800.000đ</option><option>Trên 800.000đ</option></select><span>Giá</span><ChevronDown /></label>
           <label className="tn-search-facet"><select aria-label="Khu vực" value={selectedLocation} onChange={(event) => onChangeLocation(event.target.value)}><option value="Quận 3, TP. HCM">Quận 3</option><option value="Quận 1, TP. HCM">Quận 1</option><option value="Quận 4, TP. HCM">Quận 4</option><option value="Quận Bình Thạnh, TP. HCM">Bình Thạnh</option><option value="Tất cả khu vực">Tất cả</option></select><span>Khu vực</span><ChevronDown /></label>
           <label className="tn-search-facet"><select aria-label="Đánh giá" value={ratingFilter} onChange={(event) => setRatingFilter(event.target.value)}><option>Tất cả</option><option>Từ 4.5 sao</option><option>Từ 4.8 sao</option></select><span>Đánh giá</span><ChevronDown /></label>
-          {selectedTutors.length > 0 && <button type="button" className="tn-search-compare-chip" disabled={selectedTutors.length < 2} onClick={openComparison}><span>So sánh</span><b>({selectedTutors.length})</b></button>}
+          <div className="tn-search-facet-divider" aria-hidden="true" />
+          <button
+            type="button"
+            className={`tn-search-compare-btn ${isCompareMode ? 'is-active' : ''}`}
+            onClick={() => {
+              if (isCompareMode) {
+                setIsCompareMode(false);
+                setSelectedTutors([]);
+              } else {
+                setIsCompareMode(true);
+              }
+            }}
+            aria-pressed={isCompareMode}
+          >
+            {isCompareMode ? <X className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            <span>So sánh{isCompareMode ? ` (${selectedTutors.length})` : ''}</span>
+          </button>
         </div>
         {showFilters && (
           <div className="tn-search-filter-popover">
@@ -161,23 +209,28 @@ const SearchFilterScreen: React.FC<SearchFilterScreenProps> = ({
         )}
       </header>
 
-      <main className={`tn-search-results ${selectedTutors.length > 0 ? 'has-compare' : ''}`}>
+      <main className={`tn-search-results ${isCompareMode && selectedTutors.length > 0 ? 'has-compare' : ''}`}>
         {visibleTutors.map(tutorCard)}
         {visibleTutors.length === 0 && <p className="tn-search-empty">Không tìm thấy gia sư phù hợp. Hãy thử thay đổi bộ lọc.</p>}
       </main>
 
-      {selectedTutors.length > 0 && <footer className="tn-search-compare-bar">
-        <button type="button" className="tn-search-compare-summary" disabled={selectedTutors.length < 2} onClick={openComparison}>
-          <span className="tn-search-compare-avatars">
-            {selectedTutors.map((id) => {
-              const tutor = TUTORS.find((item) => item.id === id);
-              return tutor ? <img key={id} src={tutor.avatarUrl} alt="" /> : null;
-            })}
-          </span>
-          <span className="tn-search-compare-copy"><strong>Đã chọn {selectedTutors.length} gia sư</strong><small>Xem so sánh</small></span>
-          <ChevronRight className="tn-search-compare-arrow" />
-        </button>
-      </footer>}
+      {isCompareMode && selectedTutors.length > 0 && (
+        <footer className="tn-search-compare-bar">
+          <button type="button" className="tn-search-compare-summary" disabled={selectedTutors.length < 2} onClick={openComparison}>
+            <span className="tn-search-compare-avatars">
+              {selectedTutors.map((id) => {
+                const tutor = TUTORS.find((item) => item.id === id);
+                return tutor ? <img key={id} src={tutor.avatarUrl} alt="" /> : null;
+              })}
+            </span>
+            <span className="tn-search-compare-copy">
+              <strong>Đã chọn {selectedTutors.length} gia sư</strong>
+              <small>{selectedTutors.length < 2 ? 'Chọn thêm 1 gia sư để so sánh' : 'Xem so sánh'}</small>
+            </span>
+            <ChevronRight className="tn-search-compare-arrow" />
+          </button>
+        </footer>
+      )}
     </div>
   );
 };

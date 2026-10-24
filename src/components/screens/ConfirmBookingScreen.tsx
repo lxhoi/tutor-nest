@@ -1,5 +1,24 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Star, MapPin, CheckCircle2, ChevronRight, Video, Calendar, Clock, CreditCard, ShieldCheck, X } from 'lucide-react';
+import {
+  ArrowLeft,
+  Star,
+  MapPin,
+  CheckCircle2,
+  ChevronRight,
+  Video,
+  Home as HomeIcon,
+  Calendar,
+  Clock,
+  CreditCard,
+  ShieldCheck,
+  Edit3,
+  X,
+  Sparkles,
+  Loader2,
+  Building2,
+  QrCode,
+  Smartphone,
+} from 'lucide-react';
 import { ScreenId, BookingState, PaymentPlan } from '../../types';
 import { formatCurrency } from '../../data/mockData';
 
@@ -7,43 +26,18 @@ interface ConfirmBookingScreenProps {
   booking: BookingState;
   updateBooking?: (fields: Partial<BookingState>) => void;
   onNavigate: (screen: ScreenId) => void;
+  onPaymentSuccess?: () => void;
 }
 
 export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
   booking,
   updateBooking,
   onNavigate,
+  onPaymentSuccess,
 }) => {
   const [isPolicyModalOpen, setIsPolicyModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const tutor = booking.tutor;
-
-  const paymentPlanOptions: { id: PaymentPlan; title: string; badge?: string; priceText: string; desc: string }[] = [
-    {
-      id: 'weekly',
-      title: 'Thanh toán theo tuần',
-      badge: 'Khuyên dùng',
-      priceText: `${formatCurrency(booking.weeklyAmount)}/tuần`,
-      desc: `${booking.selectedDays.length} buổi/tuần • Trả trước đầu mỗi tuần`,
-    },
-    {
-      id: 'full',
-      title: 'Thanh toán trọn gói 8 tuần',
-      priceText: `${formatCurrency(booking.totalAmount * 0.95)}`,
-      desc: 'Giảm 5% khi đóng toàn bộ 16 buổi',
-    },
-    {
-      id: 'per_session',
-      title: 'Thanh toán từng buổi',
-      priceText: `${formatCurrency(booking.hourlyRate)}/buổi`,
-      desc: 'Linh hoạt, trả phí sau khi hoàn thành mỗi buổi học',
-    },
-  ];
-
-  const handleSelectPlan = (plan: PaymentPlan) => {
-    if (updateBooking) {
-      updateBooking({ paymentPlan: plan });
-    }
-  };
 
   const getPayAmount = () => {
     if (booking.paymentPlan === 'full') {
@@ -55,14 +49,42 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
     return booking.weeklyAmount;
   };
 
-  const getPayLabel = () => {
-    if (booking.paymentPlan === 'full') {
-      return `Thanh toán trọn gói (${formatCurrency(getPayAmount())})`;
+  const getPlanInfo = () => {
+    switch (booking.paymentPlan) {
+      case 'full':
+        return {
+          title: 'Thanh toán trọn gói 8 tuần',
+          badge: 'Ưu đãi -5%',
+          desc: '16 buổi học đã được giảm 5% khi đóng toàn bộ khóa',
+          paymentLabel: 'Thanh toán trọn gói',
+        };
+      case 'per_session':
+        return {
+          title: 'Thanh toán từng buổi',
+          badge: 'Linh hoạt',
+          desc: 'Thanh toán sau mỗi buổi học kết thúc',
+          paymentLabel: 'Thanh toán buổi 1',
+        };
+      default:
+        return {
+          title: 'Thanh toán theo tuần',
+          badge: 'Khuyên dùng',
+          desc: '2 buổi / tuần • Trả trước đầu mỗi tuần học',
+          paymentLabel: 'Thanh toán Tuần 1',
+        };
     }
-    if (booking.paymentPlan === 'per_session') {
-      return `Tiếp tục đặt lịch (${formatCurrency(getPayAmount())}/buổi)`;
-    }
-    return `Tiếp tục chọn ngân hàng (${formatCurrency(getPayAmount())})`;
+  };
+
+  const planInfo = getPlanInfo();
+  const payAmount = getPayAmount();
+
+  const handleConfirmAndPay = () => {
+    setIsProcessing(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+      onPaymentSuccess?.();
+      onNavigate('9_payment_success');
+    }, 1000);
   };
 
   return (
@@ -70,7 +92,7 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
       {/* Top Bar */}
       <div className="px-4 pt-2 flex items-center justify-between shrink-0 bg-[var(--systembg__modal)] pb-2 border-b border-[var(--systembg__fgbase)]">
         <button
-          onClick={() => onNavigate('5_select_schedule')}
+          onClick={() => onNavigate('7_weekly_payment_options')}
           className="w-8 h-8 rounded-full bg-[var(--systembg__fgalt)] flex items-center justify-center text-[var(--text__title)] hover:bg-[var(--systembg__fgbase)] cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -110,14 +132,23 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
           </div>
         </div>
 
-        {/* Thông tin buổi học */}
+        {/* Thông tin lịch & Thời gian học (từ Màn 5 & Màn 6) */}
         <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-2.5">
-          <h4 className="text-xs font-bold text-[var(--text__heading)]">Thông tin buổi học</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold text-[var(--text__heading)]">Lịch & Thời gian học</h4>
+            <button
+              onClick={() => onNavigate('6_select_time')}
+              className="text-[11px] font-semibold text-[var(--primitive__green)] flex items-center gap-0.5 hover:underline cursor-pointer"
+            >
+              <Edit3 className="w-3 h-3" />
+              <span>Chỉnh sửa</span>
+            </button>
+          </div>
 
           <div className="space-y-2 text-xs">
             <div className="flex items-center justify-between text-[var(--text__body)]">
               <div className="flex items-center space-x-2">
-                <Calendar className="w-3.5 h-3.5 text-[var(--text__muted)]" />
+                <Calendar className="w-3.5 h-3.5 text-[var(--primitive__green)]" />
                 <span>Ngày học</span>
               </div>
               <span className="font-semibold text-[var(--text__title)]">
@@ -127,128 +158,203 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
 
             <div className="flex items-center justify-between text-[var(--text__body)]">
               <div className="flex items-center space-x-2">
-                <Clock className="w-3.5 h-3.5 text-[var(--text__muted)]" />
-                <span>Thời gian</span>
+                <Clock className="w-3.5 h-3.5 text-[var(--primitive__green)]" />
+                <span>Khung giờ</span>
               </div>
-              <span className="font-semibold text-[var(--text__title)]">{booking.timeSlot} (2 giờ)</span>
+              <span className="font-semibold text-[var(--text__title)]">
+                {booking.timeSlot} ({booking.sessionDuration || '2 giờ'})
+              </span>
             </div>
 
             <div className="flex items-center justify-between text-[var(--text__body)]">
               <div className="flex items-center space-x-2">
-                <Video className="w-3.5 h-3.5 text-[var(--text__muted)]" />
-                <span>Địa điểm</span>
+                {booking.sessionMode === 'offline' ? (
+                  <HomeIcon className="w-3.5 h-3.5 text-[var(--primitive__green)]" />
+                ) : (
+                  <Video className="w-3.5 h-3.5 text-[var(--primitive__green)]" />
+                )}
+                <span>Hình thức</span>
               </div>
-              <span className="font-semibold text-[var(--text__title)]">Học online (Google Meet)</span>
+              <span className="font-semibold text-[var(--text__title)]">
+                {booking.sessionMode === 'offline' ? 'Học kèm tại nhà (Q.3)' : 'Học online (Google Meet)'}
+              </span>
             </div>
-          </div>
-        </div>
 
-        {/* Lặp lại lịch học */}
-        <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold text-[var(--text__heading)]">Lặp lại lịch học</h4>
-            <span className="text-[11px] font-bold" style={{ color: 'var(--primitive__green)' }}>
-              {booking.cycleWeeks} tuần ({booking.totalSessions} buổi)
-            </span>
-          </div>
-          <div className="text-xs text-[var(--text__body)] space-y-1">
-            <p>Từ {booking.startDate} - {booking.endDate}</p>
-            <p>Thứ {booking.selectedDays.map(d => d.replace('T', '')).join(', ')} • {booking.timeSlot}</p>
-          </div>
-        </div>
-
-        {/* Tổng tiền dự kiến */}
-        <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[var(--text__heading)]">Tổng tiền dự kiến cả khóa</span>
-            <span className="text-sm font-extrabold" style={{ color: 'var(--primitive__green)' }}>
-              {formatCurrency(booking.totalAmount)}
-            </span>
-          </div>
-          <p className="text-[10px] text-[var(--text__muted)] text-right">
-            ({formatCurrency(booking.hourlyRate)}/buổi • {booking.totalSessions} buổi)
-          </p>
-        </div>
-
-        {/* Chọn kiểu thanh toán (Trước khi chọn ngân hàng/phương thức) */}
-        <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="text-xs font-bold text-[var(--text__heading)]">Kiểu thanh toán</h4>
-              <p className="text-[10px] text-[var(--text__muted)]">Chọn kiểu đóng học phí trước khi chọn ngân hàng</p>
+            <div className="flex items-center justify-between text-[var(--text__body)] pt-1 border-t border-[var(--systembg__fgbase)]">
+              <span className="text-[11px] text-[var(--text__muted)]">Chu kỳ khóa học</span>
+              <span className="font-bold text-[var(--primitive__green)] text-[11px]">
+                {booking.cycleWeeks} tuần ({booking.totalSessions} buổi)
+              </span>
             </div>
+
+            <p className="text-[10px] text-[var(--text__muted)] text-right">
+              Từ {booking.startDate} đến {booking.endDate}
+            </p>
+          </div>
+        </div>
+
+        {/* Kiểu & Phương thức thanh toán (từ Màn 7) */}
+        <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-2.5">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold text-[var(--text__heading)]">Thanh toán</h4>
+            <button
+              type="button"
+              onClick={() => onNavigate('7_weekly_payment_options')}
+              className="text-[11px] font-semibold text-[var(--primitive__green)] hover:underline cursor-pointer flex items-center gap-0.5"
+            >
+              <span>Thay đổi</span>
+              <ChevronRight className="w-3 h-3" />
+            </button>
           </div>
 
-          <div className="space-y-2">
-            {paymentPlanOptions.map((opt) => {
-              const isSelected = booking.paymentPlan === opt.id;
-              return (
-                <div
-                  key={opt.id}
-                  onClick={() => handleSelectPlan(opt.id)}
-                  className="p-3 rounded-xl border transition-all cursor-pointer relative flex items-center justify-between"
-                  style={{
-                    backgroundColor: isSelected ? 'var(--semantic__successlight)' : 'var(--systembg__fgalt)',
-                    borderColor: isSelected ? 'var(--border__success)' : 'var(--border__solid)',
-                  }}
-                >
-                  <div className="space-y-0.5 flex-1 pr-2">
-                    <div className="flex items-center space-x-1.5">
-                      <span className="text-xs font-bold text-[var(--text__title)]">{opt.title}</span>
-                      {opt.badge && (
-                        <span
-                          className="text-[9px] font-bold px-1.5 py-0.5 text-white rounded-full"
-                          style={{ backgroundColor: 'var(--primitive__green)' }}
-                        >
-                          {opt.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[10px] text-[var(--text__body)]">{opt.desc}</p>
-                    <span className="text-xs font-bold block" style={{ color: 'var(--semantic__successdark)' }}>
-                      {opt.priceText}
-                    </span>
-                  </div>
-
-                  {/* Radio check icon */}
-                  <div
-                    className="w-4 h-4 rounded-full border flex items-center justify-center shrink-0"
-                    style={{
-                      borderColor: isSelected ? 'var(--primitive__green)' : 'var(--border__solid)',
-                      backgroundColor: isSelected ? 'var(--primitive__green)' : 'transparent',
-                    }}
-                  >
-                    {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Prompt to next step: Selecting bank / payment method */}
-          <button
-            type="button"
-            onClick={() => setIsPolicyModalOpen(true)}
-            className="w-full pt-1 flex items-center justify-between text-[11px] font-semibold text-[var(--text__muted)] hover:text-[var(--primitive__green)] cursor-pointer"
+          <div
+            className="p-3 rounded-xl border flex items-center justify-between"
+            style={{
+              backgroundColor: 'var(--semantic__successlight)',
+              borderColor: 'var(--border__success)',
+            }}
           >
-            <span>Xem chi tiết điều khoản & chính sách hoàn tiền</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+            <div className="space-y-0.5">
+              <div className="flex items-center space-x-1.5">
+                <span className="text-xs font-bold text-[var(--text__title)]">{planInfo.title}</span>
+                {planInfo.badge && (
+                  <span
+                    className="text-[9px] font-bold px-1.5 py-0.2 rounded-full text-white"
+                    style={{ backgroundColor: 'var(--primitive__green)' }}
+                  >
+                    {planInfo.badge}
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] text-[var(--text__body)]">{planInfo.desc}</p>
+            </div>
+
+            <div className="text-right">
+              <span className="text-xs font-extrabold" style={{ color: 'var(--semantic__successdark)' }}>
+                {formatCurrency(payAmount)}
+              </span>
+            </div>
+          </div>
+
+          {/* Phương thức thanh toán đã chọn */}
+          <div className="p-2.5 rounded-xl bg-[var(--systembg__fgalt)] border border-[var(--border__solid)] flex items-center justify-between text-xs">
+            <div className="flex items-center space-x-2">
+              {booking.paymentProvider === 'Ví MoMo' ? (
+                <div className="w-6 h-6 rounded-md bg-[#a50064] text-white flex items-center justify-center font-bold text-[10px] shadow-xs">
+                  M
+                </div>
+              ) : booking.paymentProvider === 'Ngân hàng' ? (
+                <div
+                  className="w-6 h-6 rounded-md flex items-center justify-center text-white text-[10px] shadow-xs"
+                  style={{ backgroundColor: 'var(--primitive__green)' }}
+                >
+                  <Building2 className="w-3.5 h-3.5" />
+                </div>
+              ) : (
+                <div className="w-6 h-6 rounded-md bg-[#185a9d] text-white flex items-center justify-center text-[10px] shadow-xs">
+                  <QrCode className="w-3.5 h-3.5" />
+                </div>
+              )}
+              <span className="text-[11px] font-semibold text-[var(--text__title)]">
+                {booking.paymentProvider === 'Ngân hàng'
+                  ? `Chuyển khoản ${booking.selectedBank || 'Vietcombank'}`
+                  : booking.paymentProvider}
+              </span>
+            </div>
+            <span className="text-[10px] text-[var(--primitive__green)] font-bold">Đã chọn</span>
+          </div>
+        </div>
+
+        {/* Chi tiết chi phí */}
+        <div className="bg-[var(--systembg__modal)] rounded-2xl p-3.5 border border-[var(--border__solid)] shadow-xs space-y-2">
+          <h4 className="text-xs font-bold text-[var(--text__heading)]">Chi tiết chi phí</h4>
+
+          <div className="space-y-1.5 text-xs text-[var(--text__body)]">
+            <div className="flex justify-between">
+              <span>Đơn giá học phí</span>
+              <span className="font-semibold text-[var(--text__title)]">
+                {formatCurrency(booking.hourlyRate)} / buổi
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Tổng số buổi khóa học</span>
+              <span className="font-semibold text-[var(--text__title)]">
+                {booking.totalSessions} buổi ({booking.cycleWeeks} tuần)
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Tổng giá trị khóa học</span>
+              <span className="font-semibold text-[var(--text__title)]">
+                {formatCurrency(booking.totalAmount)}
+              </span>
+            </div>
+
+            {booking.paymentPlan === 'full' && (
+              <div className="flex justify-between text-[var(--primitive__orange)] font-semibold">
+                <span>Ưu đãi đóng trọn gói (-5%)</span>
+                <span>-{formatCurrency(booking.totalAmount * 0.05)}</span>
+              </div>
+            )}
+
+            <div className="pt-2 border-t border-[var(--systembg__fgbase)] flex items-center justify-between">
+              <div className="space-y-0.5">
+                <span className="text-xs font-bold text-[var(--text__heading)]">
+                  {planInfo.paymentLabel}:
+                </span>
+                <p className="text-[9px] text-[var(--text__muted)]">Số tiền cần thanh toán để kích hoạt lịch</p>
+              </div>
+              <span className="text-base font-extrabold" style={{ color: 'var(--primitive__green)' }}>
+                {formatCurrency(payAmount)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Cam kết hoàn tiền & xem chính sách */}
+        <div
+          onClick={() => setIsPolicyModalOpen(true)}
+          className="p-3 rounded-xl border flex items-center justify-between cursor-pointer"
+          style={{
+            backgroundColor: 'var(--systembg__modal)',
+            borderColor: 'var(--border__solid)',
+          }}
+        >
+          <div className="flex items-center space-x-2">
+            <ShieldCheck className="w-4 h-4 text-[var(--primitive__green)]" />
+            <span className="text-[11px] font-semibold text-[var(--text__title)]">
+              Chính sách bảo vệ phụ huynh & hoàn tiền 100%
+            </span>
+          </div>
+          <ChevronRight className="w-4 h-4 text-[var(--text__muted)]" />
         </div>
       </div>
 
       {/* Sticky Bottom CTA */}
-      <div className="p-4 bg-[var(--systembg__modal)] border-t border-[var(--systembg__fgbase)] shrink-0">
+      <div className="p-4 bg-[var(--systembg__modal)] border-t border-[var(--systembg__fgbase)] shrink-0 space-y-2">
         <button
-          onClick={() => onNavigate('8_first_week_payment')}
-          className="w-full py-3 active:scale-98 text-white rounded-xl text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1"
+          type="button"
+          onClick={handleConfirmAndPay}
+          disabled={isProcessing}
+          className="w-full py-3.5 active:scale-98 text-white rounded-xl text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
           style={{ backgroundColor: 'var(--primitive__green)' }}
         >
-          <span>{getPayLabel()}</span>
-          <ChevronRight className="w-4 h-4 ml-0.5" />
+          {isProcessing ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
+              <span>Đang xử lý thanh toán...</span>
+            </>
+          ) : (
+            <>
+              <span>Xác nhận & Thanh toán ({formatCurrency(payAmount)})</span>
+              <ChevronRight className="w-4 h-4 ml-0.5" />
+            </>
+          )}
         </button>
       </div>
 
+      {/* Terms & Refund Modal */}
       {isPolicyModalOpen && (
         <div
           className="absolute inset-0 z-50 flex items-center justify-center bg-black/45 p-5 animate-fadeIn"
@@ -258,10 +364,10 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
             role="dialog"
             aria-modal="true"
             aria-labelledby="refund-policy-title"
-            className="w-full max-w-sm rounded-2xl border border-[var(--border__solid)] bg-[var(--systembg__modal)] p-4 shadow-xl"
+            className="w-full max-w-sm rounded-2xl border border-[var(--border__solid)] bg-[var(--systembg__modal)] p-4 shadow-xl space-y-3"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center justify-between">
               <h3 id="refund-policy-title" className="text-sm font-bold text-[var(--text__heading)]">
                 Điều khoản & chính sách hoàn tiền
               </h3>
@@ -274,15 +380,32 @@ export const ConfirmBookingScreen: React.FC<ConfirmBookingScreenProps> = ({
                 <X className="h-4 w-4" />
               </button>
             </div>
+
             <div className="flex items-start gap-2.5 rounded-xl border p-3" style={{ backgroundColor: 'var(--semantic__successlight)', borderColor: 'var(--border__success)' }}>
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" style={{ color: 'var(--primitive__green)' }} />
               <div>
-                <h4 className="text-xs font-bold" style={{ color: 'var(--semantic__successdark)' }}>Chính sách hoàn tiền 100%</h4>
+                <h4 className="text-xs font-bold" style={{ color: 'var(--semantic__successdark)' }}>
+                  Chính sách hoàn tiền 100%
+                </h4>
                 <p className="mt-1 text-[11px] leading-relaxed" style={{ color: 'var(--semantic__successdark)' }}>
-                  Phụ huynh được hoàn trả toàn bộ học phí của các buổi chưa học nếu gia sư không đáp ứng kỳ vọng hoặc có việc cần báo trước 24 giờ.
+                  Phụ huynh được hoàn trả toàn bộ học phí của các buổi chưa học nếu gia sư không đáp ứng kỳ vọng hoặc có việc đột xuất cần báo trước 24 giờ.
                 </p>
               </div>
             </div>
+
+            <ul className="text-[11px] text-[var(--text__body)] space-y-1.5 list-disc pl-4">
+              <li>Lịch học được giữ chỗ cố định với gia sư ngay sau khi hoàn tất thanh toán đợt 1.</li>
+              <li>Phụ huynh có quyền đổi gia sư hoặc tạm hoãn lịch học bất kỳ lúc nào qua ứng dụng.</li>
+              <li>Mọi giao dịch thanh toán đều được mã hóa bảo mật chuẩn ngân hàng.</li>
+            </ul>
+
+            <button
+              onClick={() => setIsPolicyModalOpen(false)}
+              className="w-full py-2.5 rounded-xl text-white text-xs font-bold cursor-pointer"
+              style={{ backgroundColor: 'var(--primitive__green)' }}
+            >
+              Tôi đã hiểu
+            </button>
           </section>
         </div>
       )}

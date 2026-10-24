@@ -83,7 +83,7 @@ export const FirstWeekPaymentScreen: React.FC<FirstWeekPaymentScreenProps> = ({
       {/* Top Bar */}
       <div className="px-4 pt-2 flex items-center justify-between shrink-0 bg-[var(--systembg__modal)] pb-2 border-b border-[var(--systembg__fgbase)]">
         <button
-          onClick={() => onNavigate('7_weekly_payment_options')}
+          onClick={() => onNavigate('8_confirm_booking')}
           className="w-8 h-8 rounded-full bg-[var(--systembg__fgalt)] flex items-center justify-center text-[var(--text__title)] hover:bg-[var(--systembg__fgbase)] cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />

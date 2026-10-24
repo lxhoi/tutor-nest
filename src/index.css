@@ -478,9 +478,17 @@
   font-size: 2.727cqw;
   white-space: nowrap;
 }
-.tn-search-chips button.is-active {
+.tn-search-chips button.is-active,
+.tn-search-facet.is-active {
   background: var(--primitive__green);
   color: white;
+}
+.tn-search-facet.is-active svg {
+  color: white;
+}
+button.tn-search-facet {
+  cursor: pointer;
+  border: none;
 }
 
 .tn-search-facets {
@@ -502,8 +510,80 @@
 }
 .tn-search-facet > span { pointer-events: none; }
 .tn-search-facet svg { width: 3.636cqw; height: 3.636cqw; pointer-events: none; }
-.tn-search-compare-chip { height: 7.273cqw; padding-inline: 2.273cqw; background: var(--semantic__successlight); }
-.tn-search-compare-chip b { font-weight: 400; }
+
+.tn-search-facet-divider {
+  width: 1px;
+  height: 4.545cqw;
+  margin: 0 .455cqw;
+  background: var(--border__solid);
+  flex: none;
+  align-self: center;
+}
+
+.tn-search-compare-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  height: 6.364cqw;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 1.136cqw;
+  padding: 0 2.955cqw;
+  border-radius: 1000px;
+  border: 1px solid var(--primitive__green);
+  background: var(--semantic__successlight);
+  color: var(--semantic__successdark);
+  font-size: 2.727cqw;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 166, 126, 0.12);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tn-search-compare-btn:hover {
+  background: #cce7dd;
+  border-color: var(--primitive__green);
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 6px rgba(0, 166, 126, 0.2);
+}
+
+.tn-search-compare-btn:active {
+  transform: scale(0.95);
+}
+
+.tn-search-compare-btn svg {
+  width: 3.409cqw;
+  height: 3.409cqw;
+  color: var(--primitive__green);
+  transition: color 0.18s ease;
+}
+
+.tn-search-compare-btn.is-active {
+  background: var(--primitive__green);
+  border-color: var(--primitive__green);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 166, 126, 0.35);
+}
+
+.tn-search-compare-btn.is-active svg {
+  color: white;
+}
+
+.tn-search-compare-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.636cqw;
+  height: 3.636cqw;
+  padding: 0 .909cqw;
+  border-radius: 1000px;
+  background: white;
+  color: var(--primitive__green);
+  font-size: 2.273cqw;
+  font-weight: 700;
+  line-height: 1;
+}
 
 .tn-search-filter-popover {
   position: absolute;
@@ -551,13 +631,18 @@
   border: 1px solid var(--border__solid);
   border-radius: 2.727cqw;
   background: white;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.tn-search-card:active {
+  transform: scale(0.99);
 }
 .tn-search-card-main { display: flex; min-height: 39.545cqw; align-items: flex-start; gap: 2.727cqw; }
 .tn-search-avatar { width: 17.273cqw; height: 17.273cqw; flex: none; border-radius: 50%; object-fit: cover; }
 .tn-search-details { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: .909cqw; }
 .tn-search-name-line { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: 1.364cqw; }
 .tn-search-name-line h2 { overflow: hidden; margin: 0; color: var(--text__title); font-size: 4.091cqw; font-weight: 500; line-height: 5.455cqw; text-overflow: ellipsis; white-space: nowrap; }
-.tn-search-name-line h2 button { overflow: hidden; color: inherit; font: inherit; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.tn-search-name-line h2 button { overflow: hidden; color: inherit; font: inherit; text-align: left; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 .tn-search-verified { display: inline-flex; align-items: center; gap: .455cqw; padding: .455cqw 1.364cqw; border-radius: 1000px; background: var(--semantic__successlight); color: var(--text__body); font-size: 1.818cqw; line-height: 2.727cqw; white-space: nowrap; }
 .tn-search-verified svg { width: 2.727cqw; height: 2.727cqw; color: var(--primitive__green); }
 .tn-search-rating,.tn-search-subject,.tn-search-location,.tn-search-tags { display: flex; align-items: center; gap: .909cqw; margin: 0; color: var(--text__body); font-size: 2.727cqw; line-height: 3.636cqw; }
