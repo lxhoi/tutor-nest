@@ -18,6 +18,8 @@ export const TUTORS: Tutor[] = [
     certificates: ['Chứng chỉ giảng dạy (TOEIC)', 'Chứng nhận Giáo viên Giỏi TP.HCM'],
     tags: ['Chuyên sâu', 'Lớp 6 - 12', 'Quận 3, TP.HCM'],
     isFavorite: false,
+    availableSlots: ['Tối T3', 'Tối T5', 'Sáng T7'],
+    trustHighlights: ['Xác minh CCCD & Bằng ĐH Sư phạm', '92% học sinh cải thiện điểm số sau 4 tuần'],
   },
   {
     id: 'tran-thanh-liem',
@@ -36,6 +38,8 @@ export const TUTORS: Tutor[] = [
     certificates: ['Thạc sĩ Toán học', 'IELTS 7.5'],
     tags: ['Luyện thi', 'Lớp 9 - 12', 'Quận 3, TP.HCM'],
     isFavorite: false,
+    availableSlots: ['Tối T2', 'Tối T4', 'Chiều CN'],
+    trustHighlights: ['Thạc sĩ Toán học ĐH KHTN', 'Tỷ lệ đỗ trường chuyên trên 90%'],
   },
   {
     id: 'pham-minh-hoang',
@@ -54,6 +58,8 @@ export const TUTORS: Tutor[] = [
     certificates: ['Giải Nhì Toán cấp Tỉnh', 'Chứng chỉ Sư phạm'],
     tags: ['Lấy gốc', 'Lớp 6 - 9', 'Quận 3, TP.HCM'],
     isFavorite: false,
+    availableSlots: ['Tối T3', 'Tối T5', 'Tối T7'],
+    trustHighlights: ['Chuyên gia lấy lại căn bản môn Toán', 'Hơn 50 học sinh tiến bộ vượt bậc'],
   },
   {
     id: 'le-kim-anh',
@@ -72,6 +78,8 @@ export const TUTORS: Tutor[] = [
     certificates: ['Cử nhân Sư phạm Toán'],
     tags: ['Trắc nghiệm nhanh', 'Lớp 9 - 12', 'Quận 4, TP.HCM'],
     isFavorite: false,
+    availableSlots: ['Tối T4', 'Tối T6', 'Sáng CN'],
+    trustHighlights: ['Cử nhân Sư phạm Toán ĐH Sài Gòn', 'Kỹ thuật giải nhanh trắc nghiệm 30s'],
   },
 ];
 
@@ -218,7 +226,7 @@ export const MOCK_PAYMENT_SCHEDULE: WeeklyPaymentItem[] = [
   },
 ];
 
-export const FLOW_STEPS: { id: ScreenId; label: string; number: number; desc: string }[] = [
+export const FLOW_STEPS_V1: { id: ScreenId; label: string; number: number; desc: string }[] = [
   { id: '1_home', label: 'Trang chủ', number: 1, desc: 'Tìm gia sư, danh mục môn học & gia sư nổi bật' },
   { id: '2_search_filter', label: 'Tìm kiếm & lọc', number: 2, desc: 'Lọc theo lớp học, khu vực, mức giá & đánh giá' },
   { id: '3_search_results', label: 'Danh sách kết quả', number: 3, desc: '24 gia sư Toán lớp 9 phù hợp tiêu chí' },
@@ -232,6 +240,18 @@ export const FLOW_STEPS: { id: ScreenId; label: string; number: number; desc: st
   { id: '11_schedule_list', label: 'Lịch học (sau đặt)', number: 11, desc: 'Theo dõi tiến độ các buổi học đã học & sắp diễn ra' },
   { id: '14_future_payments', label: 'Lịch thanh toán', number: 12, desc: 'Quản lý các đợt thanh toán tuần tiếp theo & tự động trừ' },
 ];
+
+export const FLOW_STEPS_V2: { id: ScreenId; label: string; number: number; desc: string }[] = [
+  { id: 'v2_home', label: 'Trang chủ thông minh', number: 1, desc: 'Discovery feed tinh gọn, lọc nhanh khung giờ rảnh & gia sư tiêu biểu' },
+  { id: 'v2_search', label: 'Tìm kiếm & Lọc hợp nhất', number: 2, desc: 'Hợp nhất tìm kiếm + lọc + kết quả, thẻ gia sư chuẩn WCAG & so sánh nhanh' },
+  { id: 'v2_tutor_profile', label: 'Hồ sơ gia sư tin cậy', number: 3, desc: 'Huy hiệu kiểm duyệt bằng cấp, bảo hiểm học tập & ma trận lịch rảnh' },
+  { id: 'v2_schedule_time', label: 'Thiết lập lịch & Khung giờ', number: 4, desc: 'Đồng bộ ngày bắt đầu, các thứ trong tuần & giờ học trên 1 màn hình' },
+  { id: 'v2_checkout', label: 'Thanh toán lũy tiến', number: 5, desc: 'Gia hạn linh hoạt hàng tuần, sheet thanh toán QR/MoMo 1-chạm minh bạch' },
+  { id: 'v2_confirmed', label: 'Kích hoạt lịch học', number: 6, desc: 'Xác nhận hoàn tất, nút đồng bộ Calendar & hướng dẫn buổi đầu tiên' },
+  { id: 'v2_schedule_manage', label: 'Quản lý lịch học', number: 7, desc: 'Theo dõi tiến độ, đổi lịch trước 24h & quản lý đợt thanh toán tiếp theo' },
+];
+
+export const FLOW_STEPS = FLOW_STEPS_V1;
 
 export const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('vi-VN').format(amount) + 'đ';

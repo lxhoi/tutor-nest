@@ -21,7 +21,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         style={{ color: activeTab === 'home' ? 'var(--primitive__green)' : 'var(--text__muted)' }}
       >
         <Home className={`w-5 h-5 ${activeTab === 'home' ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
-        <span className={`text-[10px] mt-0.5 ${activeTab === 'home' ? 'font-bold' : 'font-medium'}`}>Home</span>
+        <span className={`text-[10px] mt-0.5 ${activeTab === 'home' ? 'font-bold' : 'font-medium'}`}>Trang chủ</span>
       </button>
 
       <button

@@ -1,3 +1,5 @@
+export type AppVersion = 'v1' | 'v2';
+
 export type ScreenId =
   | '1_home'
   | '2_search_filter'
@@ -13,7 +15,16 @@ export type ScreenId =
   | '10_confirmation_notice'
   | '11_schedule_list'
   | '12_compare_tutors'
-  | '14_future_payments';
+  | '14_future_payments'
+  // Version 2 Screen IDs
+  | 'v2_home'
+  | 'v2_search'
+  | 'v2_tutor_profile'
+  | 'v2_schedule_time'
+  | 'v2_checkout'
+  | 'v2_confirmed'
+  | 'v2_schedule_manage'
+  | 'v2_compare';
 
 export interface Tutor {
   id: string;
@@ -32,6 +43,8 @@ export interface Tutor {
   certificates?: string[];
   tags?: string[];
   isFavorite?: boolean;
+  availableSlots?: string[]; // e.g. ['Tối T3', 'Tối T5', 'Sáng T7']
+  trustHighlights?: string[]; // e.g. ['Đã xác thực CCCD & Bằng ĐH Sư phạm', '90% học sinh đậu trường chuyên']
 }
 
 export type PaymentPlan = 'weekly' | 'full' | 'per_session';
@@ -53,7 +66,8 @@ export interface BookingState {
   timeOfDay?: 'morning' | 'afternoon' | 'evening';
   sessionDuration?: string;
   sessionMode?: 'online' | 'offline';
-  learningNote?: string;
+  bookingType?: 'trial' | 'recurring';
+  sessionDurationHours?: number; // 1, 1.5, 2
   totalSessions: number;
   hourlyRate: number;
   totalAmount: number;

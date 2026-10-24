@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ScreenId, BookingState, Tutor } from './types';
-import { INITIAL_BOOKING, FLOW_STEPS, TUTORS } from './data/mockData';
+import { ScreenId, BookingState, Tutor, AppVersion } from './types';
+import { INITIAL_BOOKING, FLOW_STEPS_V1, FLOW_STEPS_V2, TUTORS } from './data/mockData';
 import { IPhone16ProMaxFrame } from './components/IPhone16ProMaxFrame';
 import { FlowOverviewBoard } from './components/FlowOverviewBoard';
 import { OriginalReferenceModal } from './components/OriginalReferenceModal';
 import { DesignSystemModal } from './components/DesignSystemModal';
+
+// Version 1 Screens
 import { HomeScreen } from './components/screens/HomeScreen';
 import { SearchFilterScreen } from './components/screens/SearchFilterScreen';
 import { SearchResultsScreen } from './components/screens/SearchResultsScreen';
@@ -19,6 +21,16 @@ import { ConfirmationNoticeScreen } from './components/screens/ConfirmationNotic
 import { ScheduleListScreen } from './components/screens/ScheduleListScreen';
 import { FuturePaymentsScreen } from './components/screens/FuturePaymentsScreen';
 import { CompareTutorsScreen } from './components/screens/CompareTutorsScreen';
+
+// Version 2 Screens (Optimized & Minimalist)
+import { V2HomeScreen } from './components/screens/v2/V2HomeScreen';
+import { V2SearchScreen } from './components/screens/v2/V2SearchScreen';
+import { V2TutorProfileScreen } from './components/screens/v2/V2TutorProfileScreen';
+import { V2ScheduleTimeScreen } from './components/screens/v2/V2ScheduleTimeScreen';
+import { V2CheckoutScreen } from './components/screens/v2/V2CheckoutScreen';
+import { V2ConfirmationScreen } from './components/screens/v2/V2ConfirmationScreen';
+import { V2ScheduleManageScreen } from './components/screens/v2/V2ScheduleManageScreen';
+import { V2CompareScreen } from './components/screens/v2/V2CompareScreen';
 import {
   Smartphone,
   LayoutGrid,
@@ -36,8 +48,9 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenId>('1_home');
-  const [history, setHistory] = useState<ScreenId[]>(['1_home']);
+  const [appVersion, setAppVersion] = useState<AppVersion>('v2');
+  const [currentScreen, setCurrentScreen] = useState<ScreenId>('v2_home');
+  const [history, setHistory] = useState<ScreenId[]>(['v2_home']);
   const [viewMode, setViewMode] = useState<'iphone' | 'board'>('iphone');
   const [booking, setBooking] = useState<BookingState>(INITIAL_BOOKING);
   const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
@@ -64,17 +77,20 @@ export default function App() {
   }, []);
 
   // Auto-play walkthrough effect
+  const activeFlowSteps = appVersion === 'v1' ? FLOW_STEPS_V1 : FLOW_STEPS_V2;
+
+  // Auto-play walkthrough effect
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isAutoPlaying) {
-      const currentIndex = FLOW_STEPS.findIndex((s) => s.id === currentScreen);
+      const currentIndex = activeFlowSteps.findIndex((s) => s.id === currentScreen);
       if (currentIndex < 0) {
         setIsAutoPlaying(false);
         return;
       }
       timer = setTimeout(() => {
-        if (currentIndex < FLOW_STEPS.length - 1) {
-          const nextStep = FLOW_STEPS[currentIndex + 1].id;
+        if (currentIndex < activeFlowSteps.length - 1) {
+          const nextStep = activeFlowSteps[currentIndex + 1].id;
           navigateTo(nextStep);
         } else {
           setIsAutoPlaying(false);
@@ -82,7 +98,7 @@ export default function App() {
       }, 3500);
     }
     return () => clearTimeout(timer);
-  }, [isAutoPlaying, currentScreen]);
+  }, [isAutoPlaying, currentScreen, activeFlowSteps]);
 
   const navigateTo = (screen: ScreenId) => {
     setHistory((prev) => [...prev, screen]);
@@ -106,37 +122,122 @@ export default function App() {
     updateBooking({ status: 'confirmed' });
   };
 
-  const resetFlow = () => {
-    setBooking(INITIAL_BOOKING);
-    setComparisonTutors([]);
-    setCurrentScreen('1_home');
-    setHistory(['1_home']);
+  const handleSwitchVersion = (version: AppVersion) => {
+    setAppVersion(version);
+    if (version === 'v1') {
+      setCurrentScreen('1_home');
+      setHistory(['1_home']);
+    } else {
+      setCurrentScreen('v2_home');
+      setHistory(['v2_home']);
+    }
     setIsAutoPlaying(false);
   };
 
-  const currentStepIndex = FLOW_STEPS.findIndex((s) => s.id === currentScreen);
-  const isCompareScreen = currentScreen === '12_compare_tutors';
+  const resetFlow = () => {
+    setBooking(INITIAL_BOOKING);
+    setComparisonTutors([]);
+    const defaultScreen = appVersion === 'v1' ? '1_home' : 'v2_home';
+    setCurrentScreen(defaultScreen);
+    setHistory([defaultScreen]);
+    setIsAutoPlaying(false);
+  };
+
+  const currentStepIndex = activeFlowSteps.findIndex((s) => s.id === currentScreen);
+  const isCompareScreen = currentScreen === '12_compare_tutors' || currentScreen === 'v2_compare';
 
   const goToPreviousStep = () => {
     if (isCompareScreen) {
-      navigateTo('2_search_filter');
+      navigateTo(appVersion === 'v1' ? '2_search_filter' : 'v2_search');
       return;
     }
     if (currentStepIndex > 0) {
-      navigateTo(FLOW_STEPS[currentStepIndex - 1].id);
+      navigateTo(activeFlowSteps[currentStepIndex - 1].id);
     }
   };
 
   const goToNextStep = () => {
     if (isCompareScreen) return;
-    if (currentStepIndex < FLOW_STEPS.length - 1) {
-      navigateTo(FLOW_STEPS[currentStepIndex + 1].id);
+    if (currentStepIndex < activeFlowSteps.length - 1) {
+      navigateTo(activeFlowSteps[currentStepIndex + 1].id);
     }
   };
 
   // Render active screen inside iPhone display
   const renderScreenContent = () => {
     switch (currentScreen) {
+      // ===== Version 2 Screens (Optimized) =====
+      case 'v2_home':
+        return (
+          <V2HomeScreen
+            booking={booking}
+            onNavigate={navigateTo}
+            onSelectTutor={handleSelectTutor}
+          />
+        );
+      case 'v2_search':
+        return (
+          <V2SearchScreen
+            onNavigate={navigateTo}
+            onSelectTutor={handleSelectTutor}
+            selectedGrade={booking.grade}
+            onChangeGrade={(g) => updateBooking({ grade: g })}
+            selectedLocation={booking.location}
+            onChangeLocation={(l) => updateBooking({ location: l })}
+            onCompare={(tutors) => {
+              setComparisonTutors(tutors);
+              navigateTo('v2_compare');
+            }}
+          />
+        );
+      case 'v2_compare':
+        return (
+          <V2CompareScreen
+            tutors={comparisonTutors}
+            onNavigate={navigateTo}
+            onSelectTutor={handleSelectTutor}
+          />
+        );
+      case 'v2_tutor_profile':
+        return (
+          <V2TutorProfileScreen
+            tutor={booking.tutor}
+            onNavigate={navigateTo}
+          />
+        );
+      case 'v2_schedule_time':
+        return (
+          <V2ScheduleTimeScreen
+            booking={booking}
+            updateBooking={updateBooking}
+            onNavigate={navigateTo}
+          />
+        );
+      case 'v2_checkout':
+        return (
+          <V2CheckoutScreen
+            booking={booking}
+            updateBooking={updateBooking}
+            onNavigate={navigateTo}
+            onPaymentSuccess={handlePaymentSuccess}
+          />
+        );
+      case 'v2_confirmed':
+        return (
+          <V2ConfirmationScreen
+            booking={booking}
+            onNavigate={navigateTo}
+          />
+        );
+      case 'v2_schedule_manage':
+        return (
+          <V2ScheduleManageScreen
+            booking={booking}
+            onNavigate={navigateTo}
+          />
+        );
+
+      // ===== Version 1 Screens (Original Figma Flow) =====
       case '1_home':
         return (
           <HomeScreen
@@ -256,8 +357,14 @@ export default function App() {
           />
         );
       default:
-        return (
+        return appVersion === 'v1' ? (
           <HomeScreen
+            booking={booking}
+            onNavigate={navigateTo}
+            onSelectTutor={handleSelectTutor}
+          />
+        ) : (
+          <V2HomeScreen
             booking={booking}
             onNavigate={navigateTo}
             onSelectTutor={handleSelectTutor}
@@ -269,18 +376,45 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans">
       {/* Top Prototype Navigation Bar */}
-      <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/90 backdrop-blur-md px-4 flex items-center justify-between shrink-0 z-40">
-        {/* Brand & Title */}
-        <div className="flex items-center space-x-3">
-          <img src="/tutornest-logo.svg" alt="TutorNest" className="h-[18px] w-auto" />
-          <span className="hidden sm:inline-block text-neutral-600">|</span>
-          <span className="hidden sm:inline-block text-xs font-medium text-neutral-300">
-            iPhone 16 Pro Max Flow Prototype
-          </span>
+      <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
+        {/* Brand & Version Switcher */}
+        <div className="flex items-center space-x-2 md:space-x-3">
+          <img src="/tutornest-logo.svg" alt="TutorNest" className="h-[18px] w-auto shrink-0" />
+          <span className="hidden sm:inline-block text-neutral-700">|</span>
+
+          {/* Version Switcher Segmented Control */}
+          <div className="flex items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner">
+            <button
+              onClick={() => handleSwitchVersion('v1')}
+              className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
+                appVersion === 'v1'
+                  ? 'bg-neutral-800 text-amber-400 border border-amber-500/50 shadow-xs'
+                  : 'text-neutral-400 hover:text-neutral-200'
+              }`}
+              title="Version 1: Bản thiết kế gốc (12 màn hình, UX 4.8)"
+            >
+              <span>V1: Gốc</span>
+              <span className="text-[10px] px-1 py-0.2 rounded bg-neutral-950/80 text-amber-300 font-mono">4.8 UX</span>
+            </button>
+
+            <button
+              onClick={() => handleSwitchVersion('v2')}
+              className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
+                appVersion === 'v2'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-neutral-400 hover:text-neutral-200'
+              }`}
+              title="Version 2: Bản tinh gọn (Phễu 4 bước, WCAG AA, UX 9.2)"
+            >
+              <Sparkles className="w-3 h-3 text-amber-300" />
+              <span>V2: Tinh gọn</span>
+              <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-800 text-white font-mono font-bold">9.2 UX</span>
+            </button>
+          </div>
         </div>
 
         {/* Center: Step Selector & Navigation */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 md:space-x-2">
           <button
             onClick={goToPreviousStep}
             disabled={!isCompareScreen && currentStepIndex <= 0}
@@ -293,19 +427,24 @@ export default function App() {
           <select
             value={currentScreen}
             onChange={(e) => navigateTo(e.target.value as ScreenId)}
-            className="bg-neutral-800 border border-neutral-700 text-neutral-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer font-medium max-w-[210px] md:max-w-[280px] truncate"
+            className="bg-neutral-800 border border-neutral-700 text-neutral-200 text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer font-medium max-w-[170px] md:max-w-[280px] truncate"
           >
-            {FLOW_STEPS.map((step) => (
+            {activeFlowSteps.map((step) => (
               <option key={step.id} value={step.id}>
                 {step.number}. {step.label}
               </option>
             ))}
-            <option value="12_compare_tutors">12. So sánh 2 gia sư</option>
+            {appVersion === 'v1' && (
+              <option value="12_compare_tutors">12. So sánh 2 gia sư</option>
+            )}
+            {appVersion === 'v2' && (
+              <option value="v2_compare">So sánh 2 gia sư</option>
+            )}
           </select>
 
           <button
             onClick={goToNextStep}
-            disabled={isCompareScreen || currentStepIndex >= FLOW_STEPS.length - 1}
+            disabled={isCompareScreen || currentStepIndex >= activeFlowSteps.length - 1}
             className="w-7 h-7 rounded-lg bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 text-neutral-200 flex items-center justify-center cursor-pointer transition-colors"
             title="Bước tiếp theo"
           >
@@ -314,12 +453,12 @@ export default function App() {
         </div>
 
         {/* Right Action Controls */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 md:space-x-2">
           {/* View Mode Toggle */}
           <div className="flex items-center bg-neutral-800 p-0.5 rounded-lg border border-neutral-700">
             <button
               onClick={() => setViewMode('iphone')}
-              className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'iphone'
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-neutral-400 hover:text-neutral-200'
@@ -331,7 +470,7 @@ export default function App() {
 
             <button
               onClick={() => setViewMode('board')}
-              className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'board'
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-neutral-400 hover:text-neutral-200'
@@ -345,11 +484,11 @@ export default function App() {
           {/* Design System modal button */}
           <button
             onClick={() => setShowDesignSystemModal(true)}
-            className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs border border-neutral-700 cursor-pointer shadow-xs transition-colors"
+            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs border border-neutral-700 cursor-pointer shadow-xs transition-colors"
             title="Xem hệ thống biến Design System (Tokens)"
           >
             <Palette className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Design System</span>
+            <span className="hidden md:inline">Design System</span>
           </button>
 
           {/* Original reference modal button */}
@@ -383,6 +522,8 @@ export default function App() {
               setViewMode('iphone');
             }}
             booking={booking}
+            currentVersion={appVersion}
+            onSwitchVersion={handleSwitchVersion}
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center p-2 relative overflow-auto">
@@ -391,10 +532,10 @@ export default function App() {
               {/* Step indicator tag */}
               <div className="pointer-events-auto flex items-center space-x-2 bg-neutral-900/90 border border-neutral-800/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs shadow-lg">
                 <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px]">
-                  {isCompareScreen ? 12 : FLOW_STEPS[currentStepIndex]?.number || 1}
+                  {isCompareScreen ? (appVersion === 'v1' ? 12 : '★') : activeFlowSteps[currentStepIndex]?.number || 1}
                 </span>
                 <span className="font-semibold text-neutral-200">
-                  {isCompareScreen ? 'So sánh 2 gia sư' : FLOW_STEPS[currentStepIndex]?.label}
+                  {isCompareScreen ? 'So sánh 2 gia sư' : activeFlowSteps[currentStepIndex]?.label}
                 </span>
               </div>
 
