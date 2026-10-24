@@ -11,7 +11,6 @@ interface V2HomeScreenProps {
   booking: BookingState;
   onNavigate: (screen: ScreenId) => void;
   onSelectTutor: (tutor: Tutor) => void;
-  onSelectAvailabilityFilter?: (slot: string) => void;
 }
 
 const subjects = [
@@ -22,34 +21,12 @@ const subjects = [
   { label: 'Môn khác', icon: MoreHorizontal, color: 'text-neutral-700', bg: 'bg-neutral-100 border-neutral-200' },
 ];
 
-const timeSlotPills = [
-  'Tất cả',
-  'Tối T3, T5',
-  'Tối T2, T4',
-  'Cuối tuần',
-];
-
 export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
   booking,
   onNavigate,
   onSelectTutor,
-  onSelectAvailabilityFilter,
 }) => {
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('Tất cả');
-
-  const filteredTutors = TUTORS.filter((tutor) => {
-    if (selectedTimeSlot === 'Tất cả') return true;
-    if (selectedTimeSlot === 'Tối T3, T5') {
-      return tutor.availableSlots?.some(s => s.includes('T3') || s.includes('T5'));
-    }
-    if (selectedTimeSlot === 'Tối T2, T4') {
-      return tutor.availableSlots?.some(s => s.includes('T2') || s.includes('T4'));
-    }
-    if (selectedTimeSlot === 'Cuối tuần') {
-      return tutor.availableSlots?.some(s => s.includes('T7') || s.includes('CN'));
-    }
-    return true;
-  });
+  const featuredTutors = TUTORS;
 
   return (
     <div className="flex-1 flex flex-col justify-between bg-neutral-50 h-full overflow-hidden text-neutral-900 font-sans">
@@ -151,45 +128,12 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           </div>
         </div>
 
-        {/* Section 4: Đột Phá V2 - Lọc Nhanh Khung Giờ Rảnh (Availability First) */}
-        <div className="bg-white rounded-2xl p-3 border border-neutral-200/90 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-1.5 text-neutral-900">
-              <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-              <h3 className="text-xs font-bold">Lọc theo khung giờ rảnh của con</h3>
-            </div>
-            <span className="text-[10px] text-neutral-500 font-medium">Chọn giờ trước</span>
-          </div>
-
-          <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-0.5">
-            {timeSlotPills.map((slot) => {
-              const isActive = selectedTimeSlot === slot;
-              return (
-                <button
-                  key={slot}
-                  onClick={() => {
-                    setSelectedTimeSlot(slot);
-                    onSelectAvailabilityFilter?.(slot);
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[36px] flex items-center ${
-                    isActive
-                      ? 'bg-emerald-700 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200/70'
-                  }`}
-                >
-                  {slot}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Section 5: Danh Sách Gia Sư Tiêu Biểu Đã Xác Thực (Trust-First Scannable Cards) */}
+        {/* Section 4: Danh Sách Gia Sư Tiêu Biểu Đã Xác Thực (Trust-First Scannable Cards) */}
         <div className="space-y-2.5">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
-                Gia sư tiêu biểu {selectedTimeSlot !== 'Tất cả' ? `(${selectedTimeSlot})` : ''}
+                Gia sư tiêu biểu
               </h2>
               <p className="text-[11px] text-neutral-500">100% đã xác minh bằng cấp & lý lịch sư phạm</p>
             </div>
@@ -203,7 +147,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           </div>
 
           <div className="space-y-2.5">
-            {filteredTutors.map((tutor) => (
+            {featuredTutors.map((tutor) => (
               <article
                 key={tutor.id}
                 onClick={() => {
