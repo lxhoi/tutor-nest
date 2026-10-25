@@ -54,7 +54,7 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
 
           <div className="space-y-1">
             <div className="text-xs font-bold text-neutral-900">
-              Thứ {booking.selectedDays[0]?.replace('T', '') || '3'}, 15/10/2026 • {booking.timeSlot}
+              Thứ {booking.selectedDays[0]?.replace('T', '') || '3'}, {booking.startDate || '15/10/2026'} • {booking.timeSlot}
             </div>
             <div className="text-[11px] text-neutral-600">
               Môn: Toán hình lớp 9 • Gia sư: {booking.tutor.name}

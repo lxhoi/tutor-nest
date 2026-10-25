@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import {
   ArrowLeft, Calendar, Clock, Video, Home, CheckCircle2,
-  Sparkles, ArrowRight, ShieldCheck, Sun, Sunset, Moon, Check
+  Sparkles, ArrowRight, ShieldCheck, Sun, Sunset, Moon, Check,
+  X, CalendarDays, Info
 } from 'lucide-react';
 import { ScreenId, BookingState } from '../../../types';
 import { formatCurrency } from '../../../data/mockData';
@@ -47,6 +48,45 @@ const upcomingCalendarDays: CalendarDaySlot[] = [
   { date: '24/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '24', month: 'Th10', isAvailable: true, statusNote: 'Còn ca' },
 ];
 
+// Full 32-day calendar dataset covering October & November 2026
+const calendarDaysMonth: CalendarDaySlot[] = [
+  // Tháng 10/2026
+  { date: '14/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '14', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '15/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '15', month: '10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
+  { date: '16/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '16', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '17/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '17', month: '10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
+  { date: '18/10/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '18', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '19/10/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '19', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '20/10/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '20', month: '10', isAvailable: false, statusNote: 'Nghỉ' },
+  { date: '21/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '21', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '22/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '22', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '23/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '23', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '24/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '24', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '25/10/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '25', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '26/10/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '26', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '27/10/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '27', month: '10', isAvailable: false, statusNote: 'Nghỉ' },
+  { date: '28/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '28', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '29/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '29', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '30/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '30', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '31/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '31', month: '10', isAvailable: true, statusNote: 'Còn ca' },
+  // Tháng 11/2026
+  { date: '01/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '01', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '02/11/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '02', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '03/11/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '03', month: '11', isAvailable: false, statusNote: 'Nghỉ' },
+  { date: '04/11/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '04', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '05/11/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '05', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '06/11/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '06', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '07/11/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '07', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '08/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '08', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '09/11/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '09', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '10/11/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '10', month: '11', isAvailable: false, statusNote: 'Nghỉ' },
+  { date: '11/11/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '11', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '12/11/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '12', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '13/11/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '13', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+  { date: '14/11/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '14', month: '11', isAvailable: true, statusNote: 'Còn ca' },
+  { date: '15/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '15', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
+];
+
 export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
   booking,
   updateBooking,
@@ -54,11 +94,18 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
 }) => {
   const [bookingType, setBookingType] = useState<'trial' | 'recurring'>(booking.bookingType || 'trial');
   const [trialDate, setTrialDate] = useState('15/10/2026');
+  const [recurringStartDate, setRecurringStartDate] = useState(booking.startDate || '15/10/2026');
   const [selectedDays, setSelectedDays] = useState<string[]>(booking.selectedDays?.length ? booking.selectedDays : ['T3', 'T5']);
   const [durationHours, setDurationHours] = useState<number>(booking.sessionDurationHours || 1.5);
   const [cycleWeeks, setCycleWeeks] = useState(booking.cycleWeeks || 8);
   const [sessionMode, setSessionMode] = useState<'online' | 'offline'>(booking.sessionMode || 'online');
   const [selectedSlotId, setSelectedSlotId] = useState('evening-1');
+  
+  // Calendar modal states
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [calendarModalTarget, setCalendarModalTarget] = useState<'trial' | 'recurring'>('trial');
+  const [calendarMonthTab, setCalendarMonthTab] = useState<'10' | '11'>('10');
+  const [showAllTimelineSessions, setShowAllTimelineSessions] = useState(false);
 
   // Dynamic slot generation based on chosen duration
   const groupedSlots = useMemo(() => {
@@ -117,6 +164,70 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     return all.find(s => s.id === selectedSlotId)?.time || groupedSlots.evening[0].time;
   }, [groupedSlots, selectedSlotId]);
 
+  // Dynamic schedule timeline calculation for recurring mode
+  const timelineSessions = useMemo(() => {
+    const numToDayCode: Record<number, { short: string; full: string }> = {
+      1: { short: 'T2', full: 'Thứ 2' },
+      2: { short: 'T3', full: 'Thứ 3' },
+      3: { short: 'T4', full: 'Thứ 4' },
+      4: { short: 'T5', full: 'Thứ 5' },
+      5: { short: 'T6', full: 'Thứ 6' },
+      6: { short: 'T7', full: 'Thứ 7' },
+      7: { short: 'CN', full: 'Chủ nhật' },
+    };
+
+    const [startD, startM, startY] = recurringStartDate.split('/').map(Number);
+    const refAnchor = new Date(2026, 9, 14); // 14/10/2026 is Day 1 (T2)
+    const curDate = new Date(startY || 2026, (startM || 10) - 1, startD || 15);
+
+    const sessions: Array<{
+      sessionIndex: number;
+      weekIndex: number;
+      dayText: string;
+      shortDay: string;
+      dateText: string;
+      fullDate: string;
+      timeText: string;
+    }> = [];
+
+    let sessionCount = 0;
+    const maxSessions = Math.max(1, selectedDays.length * cycleWeeks);
+    let safetyDays = 0;
+
+    while (sessionCount < maxSessions && safetyDays < 180) {
+      const diffDays = Math.round((curDate.getTime() - refAnchor.getTime()) / (1000 * 3600 * 24));
+      const dayNum = ((diffDays % 7 + 7) % 7) + 1;
+      const dayInfo = numToDayCode[dayNum];
+
+      if (dayInfo && selectedDays.includes(dayInfo.short)) {
+        sessionCount++;
+        const dd = String(curDate.getDate()).padStart(2, '0');
+        const mm = String(curDate.getMonth() + 1).padStart(2, '0');
+        const yyyy = curDate.getFullYear();
+        const weekIndex = Math.ceil(sessionCount / Math.max(1, selectedDays.length));
+
+        sessions.push({
+          sessionIndex: sessionCount,
+          weekIndex,
+          dayText: dayInfo.full,
+          shortDay: dayInfo.short,
+          dateText: `${dd}/${mm}`,
+          fullDate: `${dd}/${mm}/${yyyy}`,
+          timeText: currentSlotString,
+        });
+      }
+
+      curDate.setDate(curDate.getDate() + 1);
+      safetyDays++;
+    }
+
+    return sessions;
+  }, [recurringStartDate, selectedDays, cycleWeeks, currentSlotString]);
+
+  const estimatedEndDate = timelineSessions.length > 0 
+    ? timelineSessions[timelineSessions.length - 1].fullDate 
+    : '10/12/2026';
+
   // Dynamic calculations
   const singleSessionAmount = Math.round(booking.hourlyRate * durationHours);
   const sessionsPerWeek = selectedDays.length;
@@ -149,7 +260,8 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
       weeklyAmount,
       totalAmount,
       sessionMode,
-      startDate: bookingType === 'trial' ? trialDate : '15/10/2026',
+      startDate: bookingType === 'trial' ? trialDate : recurringStartDate,
+      endDate: bookingType === 'trial' ? trialDate : estimatedEndDate,
     });
     onNavigate('v2_checkout');
   };
@@ -240,20 +352,22 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Ngày học thử:</span>
                   <span className="text-emerald-700 font-extrabold ml-1">
-                    {upcomingCalendarDays.find(d => d.date === trialDate)?.dayOfWeek}, {trialDate}
+                    {calendarDaysMonth.find(d => d.date === trialDate)?.dayOfWeek || 'Thứ 3'}, {trialDate}
                   </span>
                 </label>
-                {/* Mini Legend */}
-                <div className="flex items-center space-x-2 text-[9px] text-neutral-500 shrink-0">
-                  <span className="flex items-center space-x-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-                    <span>Còn ca</span>
-                  </span>
-                  <span className="flex items-center space-x-1">
-                    <span className="w-2 h-2 rounded-full bg-neutral-300 inline-block" />
-                    <span>Kín</span>
-                  </span>
-                </div>
+                
+                {/* Button to open 30-day calendar modal */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalendarModalTarget('trial');
+                    setShowCalendarModal(true);
+                  }}
+                  className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/90 px-2.5 py-1 rounded-xl flex items-center space-x-1 cursor-pointer transition-colors"
+                >
+                  <CalendarDays className="w-3.5 h-3.5" />
+                  <span>Lịch 30 ngày</span>
+                </button>
               </div>
 
               {/* Horizontal Date Strip (Dải lịch ngày liên tục chuẩn UX) */}
@@ -302,6 +416,20 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     </button>
                   );
                 })}
+
+                {/* Additional slot to open month calendar */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalendarModalTarget('trial');
+                    setShowCalendarModal(true);
+                  }}
+                  className="flex flex-col items-center justify-center p-2 rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 hover:bg-emerald-50 text-emerald-800 min-w-[68px] h-[70px] shrink-0 cursor-pointer text-center transition-colors"
+                >
+                  <Calendar className="w-4 h-4 mb-0.5 text-emerald-600" />
+                  <span className="text-[10px] font-bold leading-tight">Xem thêm</span>
+                  <span className="text-[8px] text-emerald-600 font-medium">30 ngày</span>
+                </button>
               </div>
 
               <div className="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200 text-[11px] text-emerald-900 flex items-center space-x-2">
@@ -314,6 +442,8 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
           {/* Nếu chọn Lịch học hàng tuần */}
           {bookingType === 'recurring' && (
             <div className="space-y-3 pt-1 animate-fadeIn">
+              
+              {/* Chọn thứ học trong tuần */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-neutral-700 flex items-center justify-between">
                   <span>Chọn các ngày học trong tuần:</span>
@@ -344,8 +474,32 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 </div>
               </div>
 
+              {/* Ngày bắt đầu học (Khai giảng buổi 1) */}
+              <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200/90 flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày bắt đầu học (Buổi 1):</div>
+                  <div className="text-xs font-extrabold text-neutral-900 flex items-center space-x-1.5 mt-0.5">
+                    <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>
+                      {calendarDaysMonth.find(d => d.date === recurringStartDate)?.dayOfWeek || 'Thứ 3'}, {recurringStartDate}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalendarModalTarget('recurring');
+                    setShowCalendarModal(true);
+                  }}
+                  className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-white hover:bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-xl cursor-pointer shadow-2xs transition-colors flex items-center space-x-1"
+                >
+                  <CalendarDays className="w-3.5 h-3.5" />
+                  <span>Đổi ngày bắt đầu</span>
+                </button>
+              </div>
+
               {/* Chu kỳ dự kiến (Lộ trình sư phạm) */}
-              <div className="space-y-1.5 pt-2 border-t border-neutral-100">
+              <div className="space-y-1.5 pt-1 border-t border-neutral-100">
                 <div className="flex items-center justify-between text-xs">
                   <div>
                     <span className="font-bold text-neutral-800">Lộ trình học tập:</span>
@@ -381,10 +535,73 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     </button>
                   ))}
                 </div>
-                <p className="text-[10px] text-neutral-500 italic">
-                  * Thanh toán theo từng tuần • Hủy hoặc đổi lịch bất cứ lúc nào.
-                </p>
               </div>
+
+              {/* Xem trước lịch trình thực tế (Schedule Timeline Preview) */}
+              <div className="p-3.5 bg-gradient-to-br from-emerald-50/70 to-neutral-50 rounded-2xl border border-emerald-200/90 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-1.5">
+                    <CalendarDays className="w-4 h-4 text-emerald-700" />
+                    <span className="text-xs font-bold text-neutral-900">Lịch trình học cụ thể ({totalSessions} buổi)</span>
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
+                    Xong: ~{estimatedEndDate}
+                  </span>
+                </div>
+
+                <p className="text-[11px] text-neutral-600 leading-snug">
+                  Cố định vào khung giờ <strong className="text-neutral-900">{currentSlotString}</strong> các ngày <strong className="text-neutral-900">Thứ {selectedDays.map(d => d.replace('T', '')).join(' & ')}</strong>.
+                </p>
+
+                {/* Danh sách ngày học thực tế */}
+                <div className="space-y-1.5 pt-0.5">
+                  {(showAllTimelineSessions ? timelineSessions : timelineSessions.slice(0, 3)).map((session) => (
+                    <div
+                      key={session.sessionIndex}
+                      className="flex items-center justify-between p-2 rounded-xl bg-white border border-neutral-200/80 text-xs shadow-2xs"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                          session.sessionIndex === 1
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-neutral-100 text-neutral-700'
+                        }`}>
+                          {session.sessionIndex}
+                        </span>
+                        <div>
+                          <span className="font-bold text-neutral-900">{session.dayText}, {session.fullDate}</span>
+                          <span className="text-[10px] text-neutral-500 ml-1.5">({session.timeText})</span>
+                        </div>
+                      </div>
+                      {session.sessionIndex === 1 ? (
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                          Khai giảng
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-neutral-500 font-medium">Tuần {session.weekIndex}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {timelineSessions.length > 3 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllTimelineSessions(prev => !prev)}
+                    className="w-full py-1.5 text-center text-[11px] font-bold text-emerald-700 hover:text-emerald-800 cursor-pointer bg-white/90 hover:bg-white rounded-xl border border-emerald-200/80 transition-all shadow-2xs"
+                  >
+                    {showAllTimelineSessions 
+                      ? 'Thu gọn lịch trình ▲' 
+                      : `Xem toàn bộ danh sách ${timelineSessions.length} buổi ▼`}
+                  </button>
+                )}
+
+                <div className="flex items-center space-x-1.5 text-[10px] text-neutral-500 pt-0.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Được xin nghỉ hoặc đổi buổi trước 24 giờ không tính phí.</span>
+                </div>
+              </div>
+
             </div>
           )}
         </div>
@@ -602,6 +819,269 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
+
+      {/* 30-Day Month Calendar Modal */}
+      {showCalendarModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4 animate-fadeIn">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-slideUp">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-neutral-200 flex items-center justify-between shrink-0">
+              <div>
+                <h3 className="text-xs font-bold text-neutral-900 flex items-center space-x-1.5">
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <span>{calendarModalTarget === 'trial' ? 'Chọn ngày học thử (30 ngày)' : 'Chọn ngày bắt đầu học'}</span>
+                </h3>
+                <p className="text-[10px] text-neutral-500 mt-0.5">
+                  {calendarModalTarget === 'trial'
+                    ? 'Lịch trống thực tế của gia sư trong 30 ngày tới'
+                    : `Khuyên chọn các ngày trùng: Thứ ${selectedDays.map(d => d.replace('T', '')).join(', ')}`}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCalendarModal(false)}
+                className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-600 cursor-pointer transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Month Switcher Tabs */}
+            <div className="px-4 pt-2.5 flex space-x-2 border-b border-neutral-100 shrink-0 bg-neutral-50/50">
+              <button
+                type="button"
+                onClick={() => setCalendarMonthTab('10')}
+                className={`pb-2 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  calendarMonthTab === '10'
+                    ? 'border-emerald-600 text-emerald-800'
+                    : 'border-transparent text-neutral-500 hover:text-neutral-800'
+                }`}
+              >
+                Tháng 10, 2026
+              </button>
+              <button
+                type="button"
+                onClick={() => setCalendarMonthTab('11')}
+                className={`pb-2 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  calendarMonthTab === '11'
+                    ? 'border-emerald-600 text-emerald-800'
+                    : 'border-transparent text-neutral-500 hover:text-neutral-800'
+                }`}
+              >
+                Tháng 11, 2026
+              </button>
+            </div>
+
+            {/* Calendar Grid Container */}
+            <div className="p-4 overflow-y-auto no-scrollbar space-y-3.5">
+              
+              {/* Weekday Labels */}
+              <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-neutral-400">
+                <span>T2</span>
+                <span>T3</span>
+                <span>T4</span>
+                <span>T5</span>
+                <span>T6</span>
+                <span>T7</span>
+                <span>CN</span>
+              </div>
+
+              {/* Calendar Grid for Month 10 */}
+              {calendarMonthTab === '10' && (
+                <div className="grid grid-cols-7 gap-1.5">
+                  {/* 2 Empty cells for T2, T3 before 1/10 */}
+                  <div className="h-10" />
+                  <div className="h-10" />
+
+                  {/* Days 1 to 13 (Past days) */}
+                  {Array.from({ length: 13 }, (_, i) => i + 1).map((d) => (
+                    <div
+                      key={`past-${d}`}
+                      className="h-10 rounded-xl bg-neutral-100/40 text-neutral-300 text-xs flex flex-col items-center justify-center cursor-not-allowed select-none"
+                    >
+                      <span>{d}</span>
+                      <span className="text-[7px]">Đã qua</span>
+                    </div>
+                  ))}
+
+                  {/* Days 14 to 31 (Active slots from calendarDaysMonth) */}
+                  {calendarDaysMonth.filter(d => d.month === '10').map((slot) => {
+                    const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
+                    const isSelected = targetDate === slot.date;
+                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(slot.shortDay);
+
+                    if (!slot.isAvailable) {
+                      return (
+                        <div
+                          key={slot.date}
+                          className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
+                          title={`${slot.dayOfWeek}: ${slot.statusNote}`}
+                        >
+                          <span>{slot.dayNumber}</span>
+                          <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <button
+                        key={slot.date}
+                        type="button"
+                        onClick={() => {
+                          if (calendarModalTarget === 'trial') {
+                            setTrialDate(slot.date);
+                          } else {
+                            setRecurringStartDate(slot.date);
+                          }
+                        }}
+                        className={`h-10 rounded-xl border flex flex-col items-center justify-center cursor-pointer transition-all relative ${
+                          isSelected
+                            ? 'bg-emerald-600 border-emerald-700 text-white font-extrabold shadow-sm ring-2 ring-emerald-500/40'
+                            : matchesRecurringDay
+                            ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950 font-bold hover:bg-emerald-100'
+                            : 'bg-white border-neutral-200 hover:bg-neutral-50 text-neutral-800 font-semibold'
+                        }`}
+                      >
+                        <span className="text-xs leading-none">{slot.dayNumber}</span>
+                        <span className={`text-[7px] mt-0.5 ${
+                          isSelected ? 'text-white' : matchesRecurringDay ? 'text-emerald-700 font-bold' : 'text-neutral-500'
+                        }`}>
+                          {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Calendar Grid for Month 11 */}
+              {calendarMonthTab === '11' && (
+                <div className="grid grid-cols-7 gap-1.5">
+                  {/* 4 Empty cells for T2, T3, T4, T5 before 1/11 */}
+                  <div className="h-10" />
+                  <div className="h-10" />
+                  <div className="h-10" />
+                  <div className="h-10" />
+
+                  {/* Days 1 to 15 (Active slots from calendarDaysMonth) */}
+                  {calendarDaysMonth.filter(d => d.month === '11').map((slot) => {
+                    const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
+                    const isSelected = targetDate === slot.date;
+                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(slot.shortDay);
+
+                    if (!slot.isAvailable) {
+                      return (
+                        <div
+                          key={slot.date}
+                          className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
+                          title={`${slot.dayOfWeek}: ${slot.statusNote}`}
+                        >
+                          <span>{slot.dayNumber}</span>
+                          <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <button
+                        key={slot.date}
+                        type="button"
+                        onClick={() => {
+                          if (calendarModalTarget === 'trial') {
+                            setTrialDate(slot.date);
+                          } else {
+                            setRecurringStartDate(slot.date);
+                          }
+                        }}
+                        className={`h-10 rounded-xl border flex flex-col items-center justify-center cursor-pointer transition-all relative ${
+                          isSelected
+                            ? 'bg-emerald-600 border-emerald-700 text-white font-extrabold shadow-sm ring-2 ring-emerald-500/40'
+                            : matchesRecurringDay
+                            ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950 font-bold hover:bg-emerald-100'
+                            : 'bg-white border-neutral-200 hover:bg-neutral-50 text-neutral-800 font-semibold'
+                        }`}
+                      >
+                        <span className="text-xs leading-none">{slot.dayNumber}</span>
+                        <span className={`text-[7px] mt-0.5 ${
+                          isSelected ? 'text-white' : matchesRecurringDay ? 'text-emerald-700 font-bold' : 'text-neutral-500'
+                        }`}>
+                          {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
+                        </span>
+                      </button>
+                    );
+                  })}
+
+                  {/* Days 16 to 30 (Beyond 30-day window) */}
+                  {Array.from({ length: 15 }, (_, i) => i + 16).map((d) => (
+                    <div
+                      key={`future-${d}`}
+                      className="h-10 rounded-xl bg-neutral-50/50 border border-dashed border-neutral-200/60 text-neutral-300 text-xs flex flex-col items-center justify-center cursor-not-allowed select-none"
+                      title="Gia sư mở lịch theo chu kỳ 30 ngày"
+                    >
+                      <span>{d}</span>
+                      <span className="text-[7px] text-neutral-400">Chưa mở</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Legend */}
+              <div className="flex items-center justify-between text-[10px] text-neutral-500 pt-1 border-t border-neutral-100 px-1">
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-md bg-white border border-neutral-300 inline-block" />
+                  <span>Còn trống</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-md bg-emerald-100 border border-emerald-300 inline-block" />
+                  <span>Khớp lịch</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-md bg-neutral-200 inline-block" />
+                  <span>Kín / Nghỉ</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-md bg-emerald-600 inline-block" />
+                  <span>Đang chọn</span>
+                </span>
+              </div>
+
+              {/* Pedagogical Advisory Box (Addressing Question 1: booking months ahead) */}
+              <div className="p-3 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start space-x-2.5 text-left">
+                <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="text-[11px] text-amber-950 leading-relaxed space-y-1">
+                  <div className="font-bold">Bạn muốn đặt lịch học trước 2 - 3 tháng?</div>
+                  <p className="text-amber-900 text-[10px]">
+                    Gia sư chỉ mở lịch chính xác trong phạm vi <strong>30 ngày tới</strong> để đảm bảo không bị trùng thời khóa biểu trường học hoặc lịch thi đột xuất.
+                  </p>
+                  <p className="text-amber-800 font-medium text-[10px]">
+                    💡 <strong>Cách xử lý:</strong> Hãy chọn ngày bắt đầu gần nhất trong 30 ngày. Sau khi xác nhận, bạn có thể nhắn tin trao đổi trực tiếp với gia sư để đặt cọc giữ chỗ và chốt lịch dài hạn cho các tháng sau!
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Modal Sticky Bottom Action Bar */}
+            <div className="p-3.5 border-t border-neutral-200 bg-neutral-50 shrink-0 flex items-center justify-between">
+              <div>
+                <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày đã chọn:</div>
+                <div className="text-xs font-extrabold text-emerald-800">
+                  {calendarDaysMonth.find(d => d.date === (calendarModalTarget === 'trial' ? trialDate : recurringStartDate))?.dayOfWeek || 'Thứ 3'}, {calendarModalTarget === 'trial' ? trialDate : recurringStartDate}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowCalendarModal(false)}
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer transition-all"
+              >
+                Xác nhận ngày này
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -103,15 +103,15 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
               <div className="text-[11px] text-neutral-700 font-bold mt-1">
                 {isTrial
                   ? `Buổi học thử: ${booking.startDate} • ${booking.timeSlot}`
-                  : `Thứ ${booking.selectedDays.map(d => d.replace('T', '')).join(', ')} • ${booking.timeSlot}`}
+                  : `Bắt đầu từ ${booking.startDate || '15/10/2026'} • Thứ ${booking.selectedDays.map(d => d.replace('T', '')).join(', ')} • ${booking.timeSlot}`}
               </div>
             </div>
           </div>
 
           <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-600">
-            <span>{isTrial ? 'Quy mô gói học:' : 'Tổng thời lượng:'}</span>
+            <span>{isTrial ? 'Quy mô gói học:' : 'Tổng thời lượng & dự kiến:'}</span>
             <strong className="text-neutral-900 font-bold">
-              {isTrial ? '1 buổi học thử duy nhất' : `${booking.cycleWeeks} tuần (${booking.totalSessions} buổi)`}
+              {isTrial ? '1 buổi học thử duy nhất' : `${booking.cycleWeeks} tuần (${booking.totalSessions} buổi • Đến ${booking.endDate || '10/12/2026'})`}
             </strong>
           </div>
         </div>
