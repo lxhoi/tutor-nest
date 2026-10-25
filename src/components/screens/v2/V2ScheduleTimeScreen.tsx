@@ -112,47 +112,47 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     if (durationHours === 1) {
       return {
         morning: [
-          { id: 'morning-1', time: '08:30 - 09:30', free: true, note: 'Khung giờ sáng mát mẻ' },
-          { id: 'morning-2', time: '10:00 - 11:00', free: false, note: 'Gia sư bận lịch dạy trường' },
+          { id: 'morning-1', time: '08:30 - 09:30', free: true },
+          { id: 'morning-2', time: '10:00 - 11:00', free: false },
         ],
         afternoon: [
-          { id: 'afternoon-1', time: '14:30 - 15:30', free: true, note: 'Đầu giờ chiều' },
-          { id: 'afternoon-2', time: '16:30 - 17:30', free: true, note: 'Sau giờ tan học' },
+          { id: 'afternoon-1', time: '14:30 - 15:30', free: true },
+          { id: 'afternoon-2', time: '16:30 - 17:30', free: true },
         ],
         evening: [
-          { id: 'evening-1', time: '18:00 - 19:00', free: true, recommended: true, note: 'Khuyên dùng · Giờ tập trung cao' },
-          { id: 'evening-2', time: '19:30 - 20:30', free: true, note: 'Sau bữa tối' },
+          { id: 'evening-1', time: '18:00 - 19:00', free: true, recommended: true },
+          { id: 'evening-2', time: '19:30 - 20:30', free: true },
         ],
       };
     } else if (durationHours === 2) {
       return {
         morning: [
-          { id: 'morning-1', time: '08:30 - 10:30', free: true, note: 'Học sâu buổi sáng' },
-          { id: 'morning-2', time: '10:00 - 12:00', free: false, note: 'Đã kín lịch' },
+          { id: 'morning-1', time: '08:30 - 10:30', free: true },
+          { id: 'morning-2', time: '10:00 - 12:00', free: false },
         ],
         afternoon: [
-          { id: 'afternoon-1', time: '14:00 - 16:00', free: true, note: 'Ôn tập đầu giờ chiều' },
-          { id: 'afternoon-2', time: '16:00 - 18:00', free: true, note: 'Khung giờ chiều muộn' },
+          { id: 'afternoon-1', time: '14:00 - 16:00', free: true },
+          { id: 'afternoon-2', time: '16:00 - 18:00', free: true },
         ],
         evening: [
-          { id: 'evening-1', time: '18:00 - 20:00', free: true, recommended: true, note: 'Khuyên dùng · Luyện đề thi 120p' },
-          { id: 'evening-2', time: '19:30 - 21:30', free: true, note: 'Tối muộn' },
+          { id: 'evening-1', time: '18:00 - 20:00', free: true, recommended: true },
+          { id: 'evening-2', time: '19:30 - 21:30', free: true },
         ],
       };
     } else {
       // 1.5 hours (default 90 mins)
       return {
         morning: [
-          { id: 'morning-1', time: '08:30 - 10:00', free: true, note: 'Chuẩn 90 phút sư phạm' },
-          { id: 'morning-2', time: '10:00 - 11:30', free: false, note: 'Đã kín lịch' },
+          { id: 'morning-1', time: '08:30 - 10:00', free: true },
+          { id: 'morning-2', time: '10:00 - 11:30', free: false },
         ],
         afternoon: [
-          { id: 'afternoon-1', time: '14:30 - 16:00', free: true, note: 'Tiết học chiều' },
-          { id: 'afternoon-2', time: '16:30 - 18:00', free: true, note: 'Sau giờ tan trường' },
+          { id: 'afternoon-1', time: '14:30 - 16:00', free: true },
+          { id: 'afternoon-2', time: '16:30 - 18:00', free: true },
         ],
         evening: [
-          { id: 'evening-1', time: '18:00 - 19:30', free: true, recommended: true, note: 'Khuyên dùng · Hiệu quả tiếp thu tốt nhất' },
-          { id: 'evening-2', time: '19:30 - 21:00', free: true, note: 'Sau bữa cơm tối' },
+          { id: 'evening-1', time: '18:00 - 19:30', free: true, recommended: true },
+          { id: 'evening-2', time: '19:30 - 21:00', free: true },
         ],
       };
     }
@@ -328,7 +328,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               }`}
             >
               <span>Học thử 1 buổi</span>
-              <span className="text-[10px] text-emerald-600 font-normal">0 rủi ro • Hoàn 100% tiền</span>
+              <span className="text-[10px] text-emerald-600 font-medium">Hoàn 100% nếu không hài lòng</span>
             </button>
 
             <button
@@ -346,7 +346,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
 
           {/* Nếu chọn Học thử 1 buổi */}
           {bookingType === 'trial' && (
-            <div className="space-y-2.5 pt-1 animate-fadeIn">
+            <div className="space-y-2 pt-1 animate-fadeIn">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-neutral-800 flex items-center space-x-1.5">
                   <Calendar className="w-3.5 h-3.5 text-emerald-600" />
@@ -366,7 +366,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/90 px-2.5 py-1 rounded-xl flex items-center space-x-1 cursor-pointer transition-colors"
                 >
                   <CalendarDays className="w-3.5 h-3.5" />
-                  <span>Lịch 30 ngày</span>
+                  <span>Lịch tháng</span>
                 </button>
               </div>
 
@@ -378,7 +378,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     return (
                       <div
                         key={item.date}
-                        className="flex flex-col items-center justify-between p-2 rounded-2xl border border-neutral-200/60 bg-neutral-100/60 text-neutral-400 min-w-[58px] h-[70px] shrink-0 opacity-60 cursor-not-allowed select-none"
+                        className="flex flex-col items-center justify-between p-2 rounded-2xl border border-neutral-200/60 bg-neutral-100/60 text-neutral-400 min-w-[58px] h-[68px] shrink-0 opacity-60 cursor-not-allowed select-none"
                         title={`${item.dayOfWeek} (${item.date}): ${item.statusNote}`}
                       >
                         <span className="text-[10px] font-medium">{item.shortDay}</span>
@@ -391,7 +391,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     <button
                       key={item.date}
                       onClick={() => setTrialDate(item.date)}
-                      className={`flex flex-col items-center justify-between p-2 rounded-2xl border transition-all cursor-pointer min-w-[62px] h-[70px] shrink-0 relative ${
+                      className={`flex flex-col items-center justify-between p-2 rounded-2xl border transition-all cursor-pointer min-w-[62px] h-[68px] shrink-0 relative ${
                         isSelected
                           ? 'border-emerald-600 bg-emerald-50/90 text-emerald-950 font-bold shadow-xs ring-2 ring-emerald-500/30'
                           : 'border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800'
@@ -416,25 +416,6 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     </button>
                   );
                 })}
-
-                {/* Additional slot to open month calendar */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCalendarModalTarget('trial');
-                    setShowCalendarModal(true);
-                  }}
-                  className="flex flex-col items-center justify-center p-2 rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 hover:bg-emerald-50 text-emerald-800 min-w-[68px] h-[70px] shrink-0 cursor-pointer text-center transition-colors"
-                >
-                  <Calendar className="w-4 h-4 mb-0.5 text-emerald-600" />
-                  <span className="text-[10px] font-bold leading-tight">Xem thêm</span>
-                  <span className="text-[8px] text-emerald-600 font-medium">30 ngày</span>
-                </button>
-              </div>
-
-              <div className="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200 text-[11px] text-emerald-900 flex items-center space-x-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>Bảo đảm hoàn tiền 100% sau buổi thử nếu không hài lòng.</span>
               </div>
             </div>
           )}
@@ -446,7 +427,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {/* Chọn thứ học trong tuần */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-neutral-700 flex items-center justify-between">
-                  <span>Chọn các ngày học trong tuần:</span>
+                  <span>Các ngày học trong tuần:</span>
                   <span className="text-[11px] text-emerald-700 font-bold">{selectedDays.length} buổi / tuần</span>
                 </label>
                 <div className="grid grid-cols-7 gap-1">
@@ -456,7 +437,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       <button
                         key={day.id}
                         onClick={() => toggleDay(day.id)}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl text-center border transition-all cursor-pointer min-h-[48px] ${
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl text-center border transition-all cursor-pointer min-h-[46px] ${
                           isSelected
                             ? 'bg-emerald-600 border-emerald-700 text-white font-bold shadow-2xs'
                             : day.free
@@ -475,7 +456,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               </div>
 
               {/* Ngày bắt đầu học (Khai giảng buổi 1) */}
-              <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200/90 flex items-center justify-between">
+              <div className="p-2.5 bg-neutral-50 rounded-2xl border border-neutral-200/90 flex items-center justify-between">
                 <div>
                   <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày bắt đầu học (Buổi 1):</div>
                   <div className="text-xs font-extrabold text-neutral-900 flex items-center space-x-1.5 mt-0.5">
@@ -494,67 +475,59 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-white hover:bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-xl cursor-pointer shadow-2xs transition-colors flex items-center space-x-1"
                 >
                   <CalendarDays className="w-3.5 h-3.5" />
-                  <span>Đổi ngày bắt đầu</span>
+                  <span>Đổi ngày</span>
                 </button>
               </div>
 
-              {/* Chu kỳ dự kiến (Lộ trình sư phạm) */}
+              {/* Lộ trình học tập */}
               <div className="space-y-1.5 pt-1 border-t border-neutral-100">
                 <div className="flex items-center justify-between text-xs">
-                  <div>
-                    <span className="font-bold text-neutral-800">Lộ trình học tập:</span>
-                    <p className="text-[10px] text-neutral-500">Thanh toán linh hoạt theo từng tuần</p>
-                  </div>
+                  <span className="font-bold text-neutral-800">Lộ trình học tập:</span>
+                  <span className="text-[10px] text-neutral-500">Đóng học phí từng tuần</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { weeks: 4, label: '4 tuần', sub: 'Củng cố nền tảng', tag: 'Ôn nhanh' },
-                    { weeks: 8, label: '8 tuần', sub: 'Mục tiêu Giữa kỳ', tag: 'Khuyên dùng' },
-                    { weeks: 12, label: '12 tuần', sub: 'Luyện thi Chuyển cấp', tag: 'Toàn diện' },
+                    { weeks: 4, label: '4 tuần', tag: 'Ôn nhanh' },
+                    { weeks: 8, label: '8 tuần', tag: 'Chuẩn ★' },
+                    { weeks: 12, label: '12 tuần', tag: 'Chuyên sâu' },
                   ].map((item) => (
                     <button
                       key={item.weeks}
                       onClick={() => setCycleWeeks(item.weeks)}
-                      className={`p-2 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-between ${
+                      className={`p-2 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-between items-center ${
                         cycleWeeks === item.weeks
                           ? 'bg-emerald-700 text-white border-emerald-800 font-bold shadow-2xs'
                           : 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 font-medium'
                       }`}
                     >
-                      <div>
-                        <div className="text-xs font-extrabold">{item.label}</div>
-                        <div className={`text-[10px] ${cycleWeeks === item.weeks ? 'text-emerald-100' : 'text-neutral-500'}`}>
-                          {item.weeks * selectedDays.length} buổi
-                        </div>
+                      <div className="text-xs font-extrabold">{item.label}</div>
+                      <div className={`text-[10px] ${cycleWeeks === item.weeks ? 'text-emerald-100' : 'text-neutral-500'}`}>
+                        {item.weeks * selectedDays.length} buổi
                       </div>
-                      <div className={`text-[9px] mt-1 pt-1 border-t truncate ${
-                        cycleWeeks === item.weeks ? 'border-emerald-600/60 text-emerald-100' : 'border-neutral-200 text-emerald-700 font-medium'
+                      <span className={`text-[9px] mt-1 px-1.5 py-0.2 rounded-full font-bold ${
+                        cycleWeeks === item.weeks ? 'bg-emerald-600 text-emerald-100' : 'bg-neutral-200/70 text-neutral-600'
                       }`}>
-                        {item.sub}
-                      </div>
+                        {item.tag}
+                      </span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Xem trước lịch trình thực tế (Schedule Timeline Preview) */}
-              <div className="p-3.5 bg-gradient-to-br from-emerald-50/70 to-neutral-50 rounded-2xl border border-emerald-200/90 space-y-2.5">
+              <div className="p-3 bg-gradient-to-br from-emerald-50/70 to-neutral-50 rounded-2xl border border-emerald-200/90 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1.5">
                     <CalendarDays className="w-4 h-4 text-emerald-700" />
-                    <span className="text-xs font-bold text-neutral-900">Lịch trình học cụ thể ({totalSessions} buổi)</span>
+                    <span className="text-xs font-bold text-neutral-900">Lịch trình học dự kiến ({totalSessions} buổi)</span>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
                     Xong: ~{estimatedEndDate}
                   </span>
                 </div>
 
-                <p className="text-[11px] text-neutral-600 leading-snug">
-                  Cố định vào khung giờ <strong className="text-neutral-900">{currentSlotString}</strong> các ngày <strong className="text-neutral-900">Thứ {selectedDays.map(d => d.replace('T', '')).join(' & ')}</strong>.
-                </p>
-
-                {/* Danh sách ngày học thực tế */}
-                <div className="space-y-1.5 pt-0.5">
+                {/* Danh sách ngày học thực tế - gọn gàng không lặp giờ */}
+                <div className="space-y-1.5">
                   {(showAllTimelineSessions ? timelineSessions : timelineSessions.slice(0, 3)).map((session) => (
                     <div
                       key={session.sessionIndex}
@@ -568,17 +541,14 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         }`}>
                           {session.sessionIndex}
                         </span>
-                        <div>
-                          <span className="font-bold text-neutral-900">{session.dayText}, {session.fullDate}</span>
-                          <span className="text-[10px] text-neutral-500 ml-1.5">({session.timeText})</span>
-                        </div>
+                        <span className="font-bold text-neutral-900">{session.dayText}, {session.dateText}</span>
                       </div>
                       {session.sessionIndex === 1 ? (
                         <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
                           Khai giảng
                         </span>
                       ) : (
-                        <span className="text-[10px] text-neutral-500 font-medium">Tuần {session.weekIndex}</span>
+                        <span className="text-[10px] text-neutral-400 font-medium">Tuần {session.weekIndex}</span>
                       )}
                     </div>
                   ))}
@@ -592,14 +562,9 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   >
                     {showAllTimelineSessions 
                       ? 'Thu gọn lịch trình ▲' 
-                      : `Xem toàn bộ danh sách ${timelineSessions.length} buổi ▼`}
+                      : `Xem toàn bộ ${timelineSessions.length} buổi ▼`}
                   </button>
                 )}
-
-                <div className="flex items-center space-x-1.5 text-[10px] text-neutral-500 pt-0.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Được xin nghỉ hoặc đổi buổi trước 24 giờ không tính phí.</span>
-                </div>
               </div>
 
             </div>
@@ -673,16 +638,18 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                    className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <div className="text-xs font-extrabold">{slot.time}</div>
-                    <div className="text-[10px] text-neutral-500 truncate mt-0.5">{slot.note}</div>
+                    <span className="text-xs font-bold">{slot.time}</span>
+                    {!slot.free && (
+                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                    )}
                   </button>
                 );
               })}
@@ -703,16 +670,18 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                    className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <div className="text-xs font-extrabold">{slot.time}</div>
-                    <div className="text-[10px] text-neutral-500 truncate mt-0.5">{slot.note}</div>
+                    <span className="text-xs font-bold">{slot.time}</span>
+                    {!slot.free && (
+                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                    )}
                   </button>
                 );
               })}
@@ -727,7 +696,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 <span>Buổi Tối</span>
               </div>
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded">
-                ★ 85% học sinh chọn
+                ★ Phổ biến nhất
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -738,16 +707,25 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                    className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <div className="text-xs font-extrabold">{slot.time}</div>
-                    <div className="text-[10px] text-neutral-500 truncate mt-0.5">{slot.note}</div>
+                    <span className="text-xs font-bold">{slot.time}</span>
+                    {slot.recommended && (
+                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                        isSelected ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        Gợi ý
+                      </span>
+                    )}
+                    {!slot.free && (
+                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                    )}
                   </button>
                 );
               })}
@@ -1045,18 +1023,12 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 </span>
               </div>
 
-              {/* Pedagogical Advisory Box (Addressing Question 1: booking months ahead) */}
-              <div className="p-3 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start space-x-2.5 text-left">
-                <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-                <div className="text-[11px] text-amber-950 leading-relaxed space-y-1">
-                  <div className="font-bold">Bạn muốn đặt lịch học trước 2 - 3 tháng?</div>
-                  <p className="text-amber-900 text-[10px]">
-                    Gia sư chỉ mở lịch chính xác trong phạm vi <strong>30 ngày tới</strong> để đảm bảo không bị trùng thời khóa biểu trường học hoặc lịch thi đột xuất.
-                  </p>
-                  <p className="text-amber-800 font-medium text-[10px]">
-                    💡 <strong>Cách xử lý:</strong> Hãy chọn ngày bắt đầu gần nhất trong 30 ngày. Sau khi xác nhận, bạn có thể nhắn tin trao đổi trực tiếp với gia sư để đặt cọc giữ chỗ và chốt lịch dài hạn cho các tháng sau!
-                  </p>
-                </div>
+              {/* Pedagogical Advisory Box */}
+              <div className="p-2.5 bg-neutral-100 rounded-2xl flex items-center space-x-2.5 text-left">
+                <Info className="w-4 h-4 text-neutral-500 shrink-0" />
+                <p className="text-[10px] text-neutral-600 leading-snug">
+                  Gia sư mở lịch chuẩn xác trong <strong>30 ngày tới</strong>. Để đặt dài hạn hơn, bạn có thể nhắn tin trực tiếp với gia sư sau khi hoàn tất.
+                </p>
               </div>
 
             </div>
