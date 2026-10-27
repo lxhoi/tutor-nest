@@ -1,4 +1,4 @@
-export type AppVersion = 'v1' | 'v2';
+export type AppVersion = 'v1' | 'v2' | 'v3';
 
 export type ScreenId =
   | '1_home'

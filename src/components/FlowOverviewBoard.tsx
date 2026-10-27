@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScreenId, BookingState, AppVersion } from '../types';
 import { FLOW_STEPS_V1, FLOW_STEPS_V2 } from '../data/mockData';
+import { Button } from './ui/button';
 import { ChevronRight, Eye, CheckCircle2, AlertTriangle, ArrowRight, Sparkles, TrendingUp } from 'lucide-react';
 
 interface FlowOverviewBoardProps {
@@ -35,11 +36,13 @@ export const FlowOverviewBoard: React.FC<FlowOverviewBoardProps> = ({
             </div>
 
             <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-              {currentVersion === 'v1' ? 'Version 1: Bản thiết kế gốc (Figma Flow)' : 'Version 2: Phiên bản Tinh gọn & Chuyển đổi cao'}
+              {currentVersion === 'v1' ? 'Version 1: Bản thiết kế gốc (Figma Flow)' : currentVersion === 'v3' ? 'Version 3: Palette Primary, Secondary & Tertiary' : 'Version 2: Phiên bản Tinh gọn & Chuyển đổi cao'}
             </h1>
             <p className="text-sm text-neutral-400 mt-1">
               {currentVersion === 'v1'
                 ? '12 màn hình tuyến tính rời rạc · Điểm kiểm định UX: 4.8 / 10 (Quá tải nhận thức, Click-depth sâu)'
+                : currentVersion === 'v3'
+                ? 'Luồng V2 với palette riêng: Primary #716fe9 · Secondary #da83a5 · Tertiary #75adb8'
                 : 'Phễu 4 bước hợp nhất · Đạt chuẩn WCAG 2.1 AA · Điểm kiểm định UX: 9.2 / 10 (Tối giản & Tin cậy)'}
             </p>
           </div>
@@ -70,6 +73,19 @@ export const FlowOverviewBoard: React.FC<FlowOverviewBoardProps> = ({
               <span>V2: Tinh gọn</span>
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-800 border border-emerald-500">9.2 UX</span>
             </button>
+
+            {currentVersion === 'v3' ? (
+              <Button variant="default" size="sm" onClick={() => onSwitchVersion('v3')} className="px-4 py-2 rounded-xl text-xs font-bold shadow-md">
+                V3: Palette
+              </Button>
+            ) : (
+              <button
+                onClick={() => onSwitchVersion('v3')}
+                className="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer text-neutral-400 hover:text-white"
+              >
+                V3: Palette
+              </button>
+            )}
           </div>
         </div>
 
@@ -136,7 +152,7 @@ export const FlowOverviewBoard: React.FC<FlowOverviewBoardProps> = ({
                       className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
                         isActive
                           ? 'bg-emerald-500 text-neutral-950 shadow-md'
-                          : currentVersion === 'v2'
+                          : currentVersion !== 'v1'
                           ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
                           : 'bg-neutral-800 text-neutral-300 border border-neutral-700'
                       }`}

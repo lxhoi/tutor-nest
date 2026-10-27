@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '../../ui/button';
 import {
   Search, Bell, Star, MapPin, ChevronRight, Calculator, Globe2,
   Sparkles, BookOpen, MoreHorizontal, CheckCircle2, Clock, Calendar,
@@ -14,11 +15,11 @@ interface V2HomeScreenProps {
 }
 
 const subjects = [
-  { label: 'Toán', icon: Calculator, color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200' },
-  { label: 'Tiếng Anh', icon: Globe2, color: 'text-indigo-700', bg: 'bg-indigo-50 border-indigo-200' },
-  { label: 'Hóa học', icon: Sparkles, color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' },
-  { label: 'Ngữ Văn', icon: BookOpen, color: 'text-rose-700', bg: 'bg-rose-50 border-rose-200' },
-  { label: 'Môn khác', icon: MoreHorizontal, color: 'text-neutral-700', bg: 'bg-neutral-100 border-neutral-200' },
+  { label: 'Toán', icon: Calculator, category: 'math', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200' },
+  { label: 'Tiếng Anh', icon: Globe2, category: 'english', color: 'text-indigo-700', bg: 'bg-indigo-50 border-indigo-200' },
+  { label: 'Hóa học', icon: Sparkles, category: 'chemistry', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' },
+  { label: 'Ngữ Văn', icon: BookOpen, category: 'literature', color: 'text-rose-700', bg: 'bg-rose-50 border-rose-200' },
+  { label: 'Môn khác', icon: MoreHorizontal, category: 'other', color: 'text-neutral-700', bg: 'bg-neutral-100 border-neutral-200' },
 ];
 
 export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
@@ -47,14 +48,14 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
               <span className="text-xs font-bold text-neutral-800">Chị Lan</span>
             </div>
 
-            <button
+            <Button variant="legacy"
               onClick={() => onNavigate('v2_schedule_manage')}
               className="relative p-2 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:bg-neutral-100 shadow-2xs min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Thông báo"
             >
               <Bell className="w-4 h-4" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white" />
-            </button>
+            </Button>
           </div>
         </header>
 
@@ -77,7 +78,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
         </div>
 
         {/* Section 2: Nhắc lịch học sắp tới (Active Parent Context) */}
-        <div className="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-3.5 text-white shadow-sm flex items-center justify-between">
+        <div className="v3-semantic-info-banner bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-3.5 text-white shadow-sm flex items-center justify-between">
           <div className="space-y-0.5">
             <div className="flex items-center space-x-1.5 text-emerald-200 text-[10px] font-bold uppercase tracking-wider">
               <Clock className="w-3 h-3" />
@@ -86,43 +87,43 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
             <div className="text-xs font-bold text-white">Toán 9 • Tối nay 18:00 - 20:00</div>
             <div className="text-[11px] text-emerald-100/90">Thầy Nguyễn Minh Anh (Buổi 3/16)</div>
           </div>
-          <button
+          <Button variant="legacy"
             onClick={() => onNavigate('v2_schedule_manage')}
             className="px-3.5 py-2 bg-white text-emerald-900 rounded-xl text-xs font-bold hover:bg-emerald-50 cursor-pointer shadow-xs min-h-[44px] flex items-center justify-center shrink-0 transition-transform active:scale-95"
           >
             Vào lớp
-          </button>
+          </Button>
         </div>
 
         {/* Section 3: Lưới Môn Học Cốt Lõi (5 icon chuẩn mực) */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">Môn học phổ biến</h2>
-            <button
+            <Button variant="legacy"
               onClick={() => onNavigate('v2_search')}
               className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 flex items-center space-x-0.5 cursor-pointer"
             >
               <span>Xem tất cả</span>
               <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+            </Button>
           </div>
 
           <div className="grid grid-cols-5 gap-2">
             {subjects.map((s) => {
               const Icon = s.icon;
               return (
-                <button
+                <Button variant="legacy"
                   key={s.label}
                   onClick={() => onNavigate('v2_search')}
                   className="flex flex-col items-center justify-center p-2 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs hover:shadow-xs hover:border-emerald-400 transition-all cursor-pointer min-h-[64px]"
                 >
-                  <div className={`w-9 h-9 rounded-xl ${s.bg} ${s.color} border flex items-center justify-center mb-1`}>
+                  <div data-v3-category={s.category} className={`w-9 h-9 rounded-xl ${s.bg} ${s.color} border flex items-center justify-center mb-1`}>
                     <Icon className="w-4 h-4 stroke-[2.2]" />
                   </div>
                   <span className="text-[11px] font-bold text-neutral-800 truncate w-full text-center">
                     {s.label}
                   </span>
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -137,13 +138,13 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
               </h2>
               <p className="text-[11px] text-neutral-500">100% đã xác minh bằng cấp & lý lịch sư phạm</p>
             </div>
-            <button
+            <Button variant="legacy"
               onClick={() => onNavigate('v2_search')}
               className="text-xs font-semibold text-emerald-700 flex items-center space-x-0.5 cursor-pointer"
             >
               <span>Xem thêm</span>
               <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+            </Button>
           </div>
 
           <div className="space-y-2.5">
@@ -187,7 +188,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
 
                     {/* Availability Slot Badge */}
                     <div className="flex items-center space-x-2 mt-1.5">
-                      <div className="inline-flex items-center space-x-1 bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200/80 text-[10px] font-semibold">
+                      <div className="v3-semantic-availability inline-flex items-center space-x-1 bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200/80 text-[10px] font-semibold">
                         <Clock className="w-2.5 h-2.5 text-emerald-600" />
                         <span>Lịch rảnh: {tutor.availableSlots?.[0] || 'Tối T3, T5'}</span>
                       </div>
@@ -219,7 +220,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
 
         {/* Section 6: Cam kết an tâm (Trust Signals - Giải quyết rào cản tài chính) */}
         <div className="bg-neutral-100/80 border border-neutral-200/80 rounded-2xl p-3 flex items-center space-x-3 text-neutral-700">
-          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+          <div className="v3-semantic-success-soft w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-4 h-4" />
           </div>
           <div className="text-[11px] leading-snug">
@@ -232,7 +233,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
 
       {/* Bottom Navigation Bar V2: 100% Chuẩn Tiếng Việt, Touch target 44px */}
       <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-emerald-700 font-bold min-h-[44px] min-w-[44px]"
         >
@@ -240,31 +241,31 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
             <Calculator className="w-4 h-4 text-emerald-700" />
           </div>
           <span className="text-[10px] mt-0.5">Trang chủ</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_search')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Search className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Tìm kiếm</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_manage')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Calendar className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Lịch học</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_manage')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Tài khoản</span>
-        </button>
+        </Button>
       </nav>
     </div>
   );

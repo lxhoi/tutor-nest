@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Button } from '../../ui/button';
 import {
   ArrowLeft, Calendar, Clock, Video, Home, CheckCircle2,
   Sparkles, ArrowRight, ShieldCheck, Sun, Sunset, Moon, Check,
@@ -271,13 +272,13 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
       
       {/* Top Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_tutor_profile')}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer"
           aria-label="Quay lại"
         >
           <ArrowLeft className="w-5 h-5" />
-        </button>
+        </Button>
 
         <div className="text-center">
           <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Bước 1 / 2</div>
@@ -319,7 +320,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
 
           {/* Segmented Switcher */}
           <div className="grid grid-cols-2 gap-2 p-1 bg-neutral-100 rounded-2xl border border-neutral-200/70">
-            <button
+            <Button variant="legacy"
               onClick={() => setBookingType('trial')}
               className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center space-y-0.5 ${
                 bookingType === 'trial'
@@ -329,9 +330,9 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
             >
               <span>Học thử 1 buổi</span>
               <span className="text-[10px] text-emerald-600 font-medium">Hoàn 100% nếu không hài lòng</span>
-            </button>
+            </Button>
 
-            <button
+            <Button variant="legacy"
               onClick={() => setBookingType('recurring')}
               className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center space-y-0.5 ${
                 bookingType === 'recurring'
@@ -341,7 +342,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
             >
               <span>Lịch theo tuần</span>
               <span className="text-[10px] text-neutral-500 font-normal">Gia hạn từng tuần linh hoạt</span>
-            </button>
+            </Button>
           </div>
 
           {/* Nếu chọn Học thử 1 buổi */}
@@ -357,7 +358,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 </label>
                 
                 {/* Button to open 30-day calendar modal */}
-                <button
+                <Button variant="legacy"
                   type="button"
                   onClick={() => {
                     setCalendarModalTarget('trial');
@@ -367,7 +368,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 >
                   <CalendarDays className="w-3.5 h-3.5" />
                   <span>Lịch tháng</span>
-                </button>
+                </Button>
               </div>
 
               {/* Horizontal Date Strip (Dải lịch ngày liên tục chuẩn UX) */}
@@ -388,7 +389,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     );
                   }
                   return (
-                    <button
+                    <Button variant="legacy"
                       key={item.date}
                       onClick={() => setTrialDate(item.date)}
                       className={`flex flex-col items-center justify-between p-2 rounded-2xl border transition-all cursor-pointer min-w-[62px] h-[68px] shrink-0 relative ${
@@ -413,7 +414,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       }`}>
                         {item.statusNote}
                       </span>
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
@@ -434,7 +435,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   {weekdays.map((day) => {
                     const isSelected = selectedDays.includes(day.id);
                     return (
-                      <button
+                      <Button variant="legacy"
                         key={day.id}
                         onClick={() => toggleDay(day.id)}
                         className={`flex flex-col items-center justify-center p-2 rounded-xl text-center border transition-all cursor-pointer min-h-[46px] ${
@@ -449,7 +450,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         <span className="text-[9px] mt-0.5 font-normal">
                           {isSelected ? '✓' : day.recommended ? 'Gợi ý' : day.free ? 'Trống' : 'Bận'}
                         </span>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -466,7 +467,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     </span>
                   </div>
                 </div>
-                <button
+                <Button variant="legacy"
                   type="button"
                   onClick={() => {
                     setCalendarModalTarget('recurring');
@@ -476,7 +477,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 >
                   <CalendarDays className="w-3.5 h-3.5" />
                   <span>Đổi ngày</span>
-                </button>
+                </Button>
               </div>
 
               {/* Lộ trình học tập */}
@@ -491,7 +492,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     { weeks: 8, label: '8 tuần', tag: 'Chuẩn ★' },
                     { weeks: 12, label: '12 tuần', tag: 'Chuyên sâu' },
                   ].map((item) => (
-                    <button
+                    <Button variant="legacy"
                       key={item.weeks}
                       onClick={() => setCycleWeeks(item.weeks)}
                       className={`p-2 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-between items-center ${
@@ -509,7 +510,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       }`}>
                         {item.tag}
                       </span>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -555,7 +556,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 </div>
 
                 {timelineSessions.length > 3 && (
-                  <button
+                  <Button variant="legacy"
                     type="button"
                     onClick={() => setShowAllTimelineSessions(prev => !prev)}
                     className="w-full py-1.5 text-center text-[11px] font-bold text-emerald-700 hover:text-emerald-800 cursor-pointer bg-white/90 hover:bg-white rounded-xl border border-emerald-200/80 transition-all shadow-2xs"
@@ -563,7 +564,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     {showAllTimelineSessions 
                       ? 'Thu gọn lịch trình ▲' 
                       : `Xem toàn bộ ${timelineSessions.length} buổi ▼`}
-                  </button>
+                  </Button>
                 )}
               </div>
 
@@ -589,7 +590,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               { hours: 1.5, label: '1.5 giờ', sub: '90 phút', tag: 'Chuẩn ★' },
               { hours: 2, label: '2 giờ', sub: '120 phút', tag: 'Luyện đề' },
             ].map((item) => (
-              <button
+              <Button variant="legacy"
                 key={item.hours}
                 onClick={() => setDurationHours(item.hours)}
                 className={`p-2 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-between items-center ${
@@ -609,7 +610,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 }`}>
                   {item.tag}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -634,7 +635,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {groupedSlots.morning.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
-                  <button
+                  <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
@@ -650,7 +651,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     {!slot.free && (
                       <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
                     )}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -666,7 +667,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {groupedSlots.afternoon.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
-                  <button
+                  <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
@@ -682,7 +683,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     {!slot.free && (
                       <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
                     )}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -703,7 +704,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {groupedSlots.evening.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
-                  <button
+                  <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
                     onClick={() => setSelectedSlotId(slot.id)}
@@ -726,7 +727,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     {!slot.free && (
                       <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
                     )}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -739,7 +740,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
             4. Hình thức giảng dạy
           </label>
           <div className="grid grid-cols-2 gap-2">
-            <button
+            <Button variant="legacy"
               onClick={() => setSessionMode('online')}
               className={`p-2.5 rounded-xl border flex items-center space-x-2 cursor-pointer transition-all ${
                 sessionMode === 'online'
@@ -752,9 +753,9 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 <div>Dạy Online 1-1</div>
                 <div className="text-[9px] text-neutral-500">Google Meet HD</div>
               </div>
-            </button>
+            </Button>
 
-            <button
+            <Button variant="legacy"
               onClick={() => setSessionMode('offline')}
               className={`p-2.5 rounded-xl border flex items-center space-x-2 cursor-pointer transition-all ${
                 sessionMode === 'offline'
@@ -767,7 +768,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 <div>Dạy tại nhà</div>
                 <div className="text-[9px] text-neutral-500">Quận 3, TP.HCM</div>
               </div>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -789,13 +790,13 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
           </div>
         </div>
 
-        <button
+        <Button variant="legacy"
           onClick={handleProceed}
           className="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white rounded-2xl text-xs font-bold flex items-center space-x-2 shadow-md cursor-pointer transition-all min-h-[46px]"
         >
           <span>{bookingType === 'trial' ? 'Đặt lịch học thử' : 'Tiếp tục thanh toán'}</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
 
       {/* 30-Day Month Calendar Modal */}
@@ -815,18 +816,18 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     : `Khuyên chọn các ngày trùng: Thứ ${selectedDays.map(d => d.replace('T', '')).join(', ')}`}
                 </p>
               </div>
-              <button
+              <Button variant="legacy"
                 type="button"
                 onClick={() => setShowCalendarModal(false)}
                 className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-600 cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
 
             {/* Month Switcher Tabs */}
             <div className="px-4 pt-2.5 flex space-x-2 border-b border-neutral-100 shrink-0 bg-neutral-50/50">
-              <button
+              <Button variant="legacy"
                 type="button"
                 onClick={() => setCalendarMonthTab('10')}
                 className={`pb-2 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
@@ -836,8 +837,8 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 }`}
               >
                 Tháng 10, 2026
-              </button>
-              <button
+              </Button>
+              <Button variant="legacy"
                 type="button"
                 onClick={() => setCalendarMonthTab('11')}
                 className={`pb-2 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
@@ -847,7 +848,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 }`}
               >
                 Tháng 11, 2026
-              </button>
+              </Button>
             </div>
 
             {/* Calendar Grid Container */}
@@ -902,7 +903,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     }
 
                     return (
-                      <button
+                      <Button variant="legacy"
                         key={slot.date}
                         type="button"
                         onClick={() => {
@@ -926,7 +927,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         }`}>
                           {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
                         </span>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -961,7 +962,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     }
 
                     return (
-                      <button
+                      <Button variant="legacy"
                         key={slot.date}
                         type="button"
                         onClick={() => {
@@ -985,7 +986,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         }`}>
                           {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
                         </span>
-                      </button>
+                      </Button>
                     );
                   })}
 
@@ -1042,13 +1043,13 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 </div>
               </div>
 
-              <button
+              <Button variant="legacy"
                 type="button"
                 onClick={() => setShowCalendarModal(false)}
                 className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer transition-all"
               >
                 Xác nhận ngày này
-              </button>
+              </Button>
             </div>
 
           </div>

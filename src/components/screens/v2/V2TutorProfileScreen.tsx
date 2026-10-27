@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '../../ui/button';
 import {
   ArrowLeft, Star, Heart, CheckCircle2, ShieldCheck, Clock, MapPin,
   GraduationCap, Award, Calendar, ChevronRight, Share2, ArrowRight
@@ -32,24 +33,24 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
       
       {/* Top Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_search')}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer transition-colors"
           aria-label="Quay lại"
         >
           <ArrowLeft className="w-5 h-5" />
-        </button>
+        </Button>
 
         <span className="text-xs font-bold text-neutral-900">Hồ sơ gia sư đã kiểm định</span>
 
         <div className="flex items-center space-x-1">
-          <button
+          <Button variant="legacy"
             onClick={() => setIsFavorite(!isFavorite)}
             className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer"
             aria-label="Yêu thích"
           >
             <Heart className={`w-4 h-4 ${isFavorite ? 'fill-rose-500 text-rose-500' : ''}`} />
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -89,7 +90,7 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
               <GraduationCap className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{tutor.university?.replace('Đại học', 'ĐH')}</span>
             </div>
-            <div className="flex items-center space-x-1.5 p-2 rounded-xl bg-indigo-50/80 text-indigo-900 border border-indigo-200/60 font-semibold">
+            <div className="v3-semantic-success-soft flex items-center space-x-1.5 p-2 rounded-xl bg-indigo-50/80 text-indigo-900 border border-indigo-200/60 font-semibold">
               <ShieldCheck className="w-4 h-4 text-indigo-700 shrink-0" />
               <span>Đã xác thực CCCD & Bằng</span>
             </div>
@@ -97,7 +98,7 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
         </div>
 
         {/* Section: Cam kết bảo lãnh (Trust Guarantee - Giảm rào cản tâm lý) */}
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 flex items-center space-x-2.5 text-emerald-950">
+        <div className="v3-semantic-success-soft bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 flex items-center space-x-2.5 text-emerald-950">
           <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
           <div className="text-[11px] leading-tight text-emerald-900">
             <strong className="font-bold">Bảo lãnh học thử:</strong> Hoàn 100% học phí hoặc đổi gia sư trong 24h.
@@ -113,7 +114,7 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
                 Lịch rảnh trong tuần
               </h2>
             </div>
-            <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                <span className="v3-brand-tertiary text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
               Mới cập nhật
             </span>
           </div>
@@ -128,9 +129,9 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
                 key={slot.day}
                 className={`flex flex-col items-center justify-center p-2 rounded-xl text-center border transition-all ${
                   slot.evening
-                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-2xs'
+                    ? 'v3-semantic-availability bg-emerald-50 border-emerald-300 text-emerald-900 shadow-2xs'
                     : slot.morning
-                    ? 'bg-indigo-50 border-indigo-200 text-indigo-900'
+                    ? 'v3-semantic-availability bg-indigo-50 border-indigo-200 text-indigo-900'
                     : 'bg-neutral-50 border-neutral-200/70 text-neutral-400'
                 }`}
               >
@@ -186,13 +187,13 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
           </div>
         </div>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_time')}
           className="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white rounded-2xl text-xs font-bold flex items-center space-x-2 shadow-md cursor-pointer transition-all min-h-[46px]"
         >
           <span>Đặt lịch ngay</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
 
     </div>

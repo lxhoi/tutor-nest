@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../../ui/button';
 import { ArrowLeft, Star, CheckCircle2, Clock, GraduationCap, ArrowRight } from 'lucide-react';
 import { ScreenId, Tutor } from '../../../types';
 import { formatCurrency } from '../../../data/mockData';
@@ -18,12 +19,12 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-3">
         <p className="text-xs text-neutral-500">Cần ít nhất 2 gia sư để so sánh</p>
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_search')}
           className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold"
         >
           Quay lại tìm kiếm
-        </button>
+        </Button>
       </div>
     );
   }
@@ -35,13 +36,13 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
       
       {/* Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_search')}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer"
           aria-label="Quay lại"
         >
           <ArrowLeft className="w-5 h-5" />
-        </button>
+        </Button>
 
         <h1 className="text-xs font-bold text-neutral-900">So sánh chi tiết 2 gia sư</h1>
 
@@ -73,7 +74,7 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
                 </div>
               </div>
 
-              <button
+              <Button variant="legacy"
                 onClick={() => {
                   onSelectTutor(tutor);
                   onNavigate('v2_schedule_time');
@@ -81,7 +82,7 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
                 className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-bold cursor-pointer shadow-2xs min-h-[36px]"
               >
                 Chọn gia sư này
-              </button>
+              </Button>
             </div>
           ))}
         </div>

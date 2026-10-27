@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { X, Check, Copy, Palette, Layout, Disc, Layers } from 'lucide-react';
+import { AppVersion } from '../types';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
+import { Badge } from './ui/badge';
 
 interface DesignSystemModalProps {
   isOpen: boolean;
   onClose: () => void;
+  version: AppVersion;
 }
 
-export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, onClose }) => {
+export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, onClose, version }) => {
   const [activeTab, setActiveTab] = useState<'colors' | 'typography' | 'spacing' | 'radius'>('colors');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
@@ -18,11 +23,19 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
     setTimeout(() => setCopiedToken(null), 1800);
   };
 
-  const brandTokens = [
+  const brandTokens = version === 'v3' ? [
+    { name: '--primitive__violet600', hex: '#716fe9', usage: 'Raw palette value · Violet 600' },
+    { name: '--primitive__rose500', hex: '#da83a5', usage: 'Raw palette value · Rose 500' },
+    { name: '--primitive__teal500', hex: '#75adb8', usage: 'Raw palette value · Teal 500' },
+  ] : [
     { name: '--primitive__green', hex: '#3ab17a', usage: 'Primary brand color, buttons, active highlights' },
     { name: '--primitive__orange', hex: '#fe8463', usage: 'Secondary brand color, accents' },
-    { name: '--semantic__successdark', hex: '#2f806c', usage: 'Success dark, verified status' },
-    { name: '--semantic__successlight', hex: '#ddece6', usage: 'Success subtle background' },
+  ];
+
+  const brandRoleTokens = [
+    { name: '--brand__primary', primitive: '--primitive__violet600', hex: '#716fe9', onColor: '#0a0a0a', usage: 'CTA chính, link, trạng thái active/selected' },
+    { name: '--brand__secondary', primitive: '--primitive__rose500', hex: '#da83a5', onColor: '#28131d', usage: 'Điểm nhấn và điều khiển phụ' },
+    { name: '--brand__tertiary', primitive: '--primitive__teal500', hex: '#75adb8', onColor: '#10272b', usage: 'Badge, highlight và minh họa' },
   ];
 
   const textTokens = [
@@ -33,14 +46,27 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
     { name: '--text__disabled', hex: '#d1d1d1', sample: 'Trạng thái vô hiệu hóa' },
   ];
 
-  const semanticTokens = [
+  const semanticTokens = version === 'v3' ? [
+    { title: 'Success', dark: { name: '--semantic__successdark', hex: '#26715f' }, light: { name: '--semantic__successlight', hex: '#e1f1eb' } },
+    { title: 'Alert / Danger', dark: { name: '--semantic__alertdark', hex: '#b83b4b' }, light: { name: '--semantic__alertlight', hex: '#fbe7e9' } },
+    { title: 'Warning', dark: { name: '--semantic__warningdark', hex: '#a85b18' }, light: { name: '--semantic__warninglight', hex: '#fff0dc' } },
+    { title: 'Info', dark: { name: '--semantic__infodark', hex: '#35668a' }, light: { name: '--semantic__infolight', hex: '#e5f0f7' } },
+  ] : [
     { title: 'Success', dark: { name: '--semantic__successdark', hex: '#2f806c' }, light: { name: '--semantic__successlight', hex: '#ddece6' } },
     { title: 'Alert / Danger', dark: { name: '--semantic__alertdark', hex: '#c94b4b' }, light: { name: '--semantic__alertlight', hex: '#f8e3e1' } },
     { title: 'Warning', dark: { name: '--semantic__warningdark', hex: '#d88732' }, light: { name: '--semantic__warninglight', hex: '#f9ead8' } },
     { title: 'Info', dark: { name: '--semantic__infodark', hex: '#5276b8' }, light: { name: '--semantic__infolight', hex: '#e3e8f3' } },
   ];
 
-  const categoryTokens = [
+  const categoryTokens = version === 'v3' ? [
+    { subject: 'Toán học (Math)', dark: '#302e7c', light: '#e8e7fa', darkName: '--category__mathdark', lightName: '--category__mathlight' },
+    { subject: 'Tiếng Anh (English)', dark: '#6e4685', light: '#f0e7f6', darkName: '--category__englishdark', lightName: '--category__englishlight' },
+    { subject: 'Hóa học (Chemistry)', dark: '#9b5128', light: '#fae9dd', darkName: '--category__chemistrydark', lightName: '--category__chemistrylight' },
+    { subject: 'Văn học (Literature)', dark: '#9d3565', light: '#f8e6ef', darkName: '--category__literaturedark', lightName: '--category__literaturelight' },
+    { subject: 'Lịch sử / Địa lý (Social)', dark: '#73321b', light: '#fceed8', darkName: '--category__socialdark', lightName: '--category__sociallight' },
+    { subject: 'Sinh học / Kỹ năng (Bio)', dark: '#455325', light: '#edf1df', darkName: '--category__biodark', lightName: '--category__biolight' },
+    { subject: 'Môn mở rộng (Ext)', dark: '#35666f', light: '#e3f0f2', darkName: '--category__extensiondark', lightName: '--category__extensionlight' },
+  ] : [
     { subject: 'Toán học (Math)', dark: '#2f806c', light: '#ddece6', darkName: '--semantic__successdark', lightName: '--semantic__successlight' },
     { subject: 'Tiếng Anh (English)', dark: '#302e7c', light: '#e1e7fd', darkName: '--category__purpledark', lightName: '--category__purplelight' },
     { subject: 'Hóa học (Chemistry)', dark: '#b15829', light: '#fde2d0', darkName: '--category__orangedark', lightName: '--category__orangelight' },
@@ -111,19 +137,35 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
             <div>
               <h2 className="text-base font-bold text-white tracking-tight flex items-center space-x-2">
                 <span>TutorNest Design System Tokens</span>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-400 font-mono px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  Varibles_68fc3023.txt Applied
-                </span>
+                {version === 'v3' ? (
+                  <Badge variant="tertiary" className="border-transparent font-mono text-[10px] px-2 py-0.5 rounded-full">
+                    Version 3 · shadcn/ui
+                  </Badge>
+                ) : (
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-400 font-mono px-2 py-0.5 rounded-full border border-emerald-500/30">
+                    Varibles_68fc3023.txt Applied
+                  </span>
+                )}
               </h2>
-              <p className="text-xs text-neutral-400">Tokens chuẩn hóa màu sắc, khoảng cách, bo góc và trọng lượng nét</p>
+              <p className="text-xs text-neutral-400">
+                {version === 'v3'
+                  ? 'V3 tách primitive palette, brand roles, semantic states và màu category.'
+                  : 'Tokens chuẩn hóa màu sắc, khoảng cách, bo góc và trọng lượng nét'}
+              </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 flex items-center justify-center cursor-pointer transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {version === 'v3' ? (
+            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Đóng hệ thống token" className="h-8 w-8 rounded-lg text-neutral-300 hover:bg-neutral-700 hover:text-white">
+              <X className="w-4 h-4" />
+            </Button>
+          ) : (
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 flex items-center justify-center cursor-pointer transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Tab switcher */}
@@ -172,7 +214,7 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
             <div className="space-y-6">
               {/* Brand Primitives */}
               <section className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Brand Primitives</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">{version === 'v3' ? 'Primitive Palette · Raw Values' : 'Brand Primitives'}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {brandTokens.map((token) => (
                     <div
@@ -198,6 +240,25 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
                   ))}
                 </div>
               </section>
+
+              {version === 'v3' && (
+                <section className="space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Brand Roles · Alias to Primitive</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {brandRoleTokens.map((token) => (
+                      <Card key={token.name} className="flex items-center p-3 rounded-xl bg-neutral-800/60 border border-neutral-700/60 text-neutral-200 shadow-none">
+                        <div className="w-10 h-10 rounded-lg shadow-inner mr-3 shrink-0 border border-white/20" style={{ backgroundColor: token.hex }} />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-mono text-xs text-emerald-400 truncate">{token.name}</div>
+                          <div className="text-[10px] text-neutral-400 truncate">{token.primitive}</div>
+                          <div className="text-[10px] text-neutral-400 truncate">on-color: {token.onColor}</div>
+                          <p className="text-[11px] text-neutral-300 truncate">{token.usage}</p>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Semantic States */}
               <section className="space-y-3">
@@ -381,13 +442,23 @@ export const DesignSystemModal: React.FC<DesignSystemModalProps> = ({ isOpen, on
 
         {/* Footer */}
         <div className="px-5 py-3 border-t border-neutral-800 bg-[#161b26] flex items-center justify-between text-xs text-neutral-400">
-          <span>All 50+ variables from Varibles_68fc3023.txt actively styled into components</span>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors cursor-pointer"
-          >
-            Đã hiểu
-          </button>
+          <span>
+            {version === 'v3'
+              ? 'Primary, Secondary, Tertiary · semantic states · category palette'
+              : 'All 50+ variables from Varibles_68fc3023.txt actively styled into components'}
+          </span>
+          {version === 'v3' ? (
+            <Button variant="default" size="sm" onClick={onClose} className="rounded-lg font-bold">
+              Đã hiểu
+            </Button>
+          ) : (
+            <button
+              onClick={onClose}
+              className="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors cursor-pointer"
+            >
+              Đã hiểu
+            </button>
+          )}
         </div>
       </div>
     </div>

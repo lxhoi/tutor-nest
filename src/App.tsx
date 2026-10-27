@@ -5,6 +5,7 @@ import { IPhone16ProMaxFrame } from './components/IPhone16ProMaxFrame';
 import { FlowOverviewBoard } from './components/FlowOverviewBoard';
 import { OriginalReferenceModal } from './components/OriginalReferenceModal';
 import { DesignSystemModal } from './components/DesignSystemModal';
+import { Button } from './components/ui/button';
 
 // Version 1 Screens
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -374,7 +375,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans">
+    <div className={`flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans ${appVersion === 'v3' ? 'app-version-v3' : ''}`}>
       {/* Top Prototype Navigation Bar */}
       <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
         {/* Brand & Version Switcher */}
@@ -410,6 +411,26 @@ export default function App() {
               <span>V2: Tinh gọn</span>
               <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-800 text-white font-mono font-bold">9.2 UX</span>
             </button>
+
+            {appVersion === 'v3' ? (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => handleSwitchVersion('v3')}
+                className="px-2 py-1 rounded-lg text-xs font-bold shadow-xs"
+                title="Version 3: Bảng màu Primary, Secondary, Tertiary"
+              >
+                V3: Palette
+              </Button>
+            ) : (
+              <button
+                onClick={() => handleSwitchVersion('v3')}
+                className="px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer text-neutral-400 hover:text-neutral-200"
+                title="Version 3: Bảng màu Primary, Secondary, Tertiary"
+              >
+                <span>V3: Palette</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -437,7 +458,7 @@ export default function App() {
             {appVersion === 'v1' && (
               <option value="12_compare_tutors">12. So sánh 2 gia sư</option>
             )}
-            {appVersion === 'v2' && (
+            {appVersion !== 'v1' && (
               <option value="v2_compare">So sánh 2 gia sư</option>
             )}
           </select>
@@ -641,6 +662,7 @@ export default function App() {
       <DesignSystemModal
         isOpen={showDesignSystemModal}
         onClose={() => setShowDesignSystemModal(false)}
+        version={appVersion}
       />
     </div>
   );

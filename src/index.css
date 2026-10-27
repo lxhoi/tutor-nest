@@ -1,5 +1,192 @@
 @import "tailwindcss";
 
+.app-version-v3 {
+  --radius: 0.75rem;
+  /* V3 primitives: raw palette values without usage meaning. */
+  --primitive__violet600: #716fe9;
+  --primitive__rose500: #da83a5;
+  --primitive__teal500: #75adb8;
+
+  /* Brand roles: aliases that can change independently of raw values. */
+  --brand__primary: var(--primitive__violet600);
+  --brand__secondary: var(--primitive__rose500);
+  --brand__tertiary: var(--primitive__teal500);
+  --brand__onprimary: #0a0a0a;
+  --brand__onsecondary: #28131d;
+  --brand__ontertiary: #10272b;
+  --brand__primary-hover: color-mix(in srgb, var(--brand__primary) 84%, black);
+  --brand__primary-pressed: color-mix(in srgb, var(--brand__primary) 70%, black);
+  --brand__primary-disabled: color-mix(in srgb, var(--brand__primary) 35%, #a8a8a8);
+  --brand__primary-focus: color-mix(in srgb, var(--brand__primary) 28%, transparent);
+  --brand__secondary-hover: color-mix(in srgb, var(--brand__secondary) 84%, black);
+  --brand__secondary-pressed: color-mix(in srgb, var(--brand__secondary) 70%, black);
+  --brand__secondary-disabled: color-mix(in srgb, var(--brand__secondary) 35%, #a8a8a8);
+  --brand__secondary-focus: color-mix(in srgb, var(--brand__secondary) 28%, transparent);
+  --brand__tertiary-hover: color-mix(in srgb, var(--brand__tertiary) 84%, black);
+  --brand__tertiary-pressed: color-mix(in srgb, var(--brand__tertiary) 70%, black);
+  --brand__tertiary-disabled: color-mix(in srgb, var(--brand__tertiary) 35%, #a8a8a8);
+  --brand__tertiary-focus: color-mix(in srgb, var(--brand__tertiary) 28%, transparent);
+
+  /* Legacy V2 component aliases, scoped to V3. */
+  --primitive__green: var(--brand__primary);
+  --primitive__orange: var(--brand__secondary);
+  --text__brandprimary: var(--brand__primary);
+  --subtlebg__brandprimary: var(--brand__primary);
+  --text__brandsecondary: var(--brand__secondary);
+  --subtlebg__brandsecondary: var(--brand__secondary);
+
+  /* Semantic feedback retains its status meaning and hue. */
+  --semantic__successdark: #26715f;
+  --semantic__successlight: #e1f1eb;
+  --semantic__successsurface: #f1f8f5;
+  --semantic__successon-solid: #fff;
+  --semantic__alertdark: #b83b4b;
+  --semantic__alertlight: #fbe7e9;
+  --semantic__alertsurface: #fff5f6;
+  --semantic__alerton-solid: #fff;
+  --semantic__warningdark: #a85b18;
+  --semantic__warninglight: #fff0dc;
+  --semantic__warningsurface: #fff8ed;
+  --semantic__warningon-solid: #fff;
+  --semantic__infodark: #35668a;
+  --semantic__infolight: #e5f0f7;
+  --semantic__infosurface: #f3f8fb;
+  --semantic__infoon-solid: #fff;
+  --semantic__neutralsurface: #f5f5f5;
+  --semantic__neutralborder: #d6d6d6;
+  --semantic__neutraltext: #525252;
+  --semantic__neutraldisabled: #a8a8a8;
+  --text__success: var(--semantic__successdark);
+  --text__alert: var(--semantic__alertdark);
+  --text__warning: var(--semantic__warningdark);
+  --text__info: var(--semantic__infodark);
+  --subtlebg__alphasuccess: var(--semantic__successlight);
+  --subtlebg__alphaalert: var(--semantic__alertlight);
+  --subtlebg__alphawarning: var(--semantic__warninglight);
+  --subtlebg__alphainfo: var(--semantic__infolight);
+  --border__success: var(--semantic__successdark);
+  --border__alert: var(--semantic__alertdark);
+  --border__warning: var(--semantic__warningdark);
+  --border__info: var(--semantic__infodark);
+
+  /* Category palette is independent of semantic feedback. */
+  --category__mathdark: #302e7c;
+  --category__mathlight: #e8e7fa;
+  --category__englishdark: #6e4685;
+  --category__englishlight: #f0e7f6;
+  --category__chemistrydark: #9b5128;
+  --category__chemistrylight: #fae9dd;
+  --category__literaturedark: #9d3565;
+  --category__literaturelight: #f8e6ef;
+  --category__socialdark: #73321b;
+  --category__sociallight: #fceed8;
+  --category__biodark: #455325;
+  --category__biolight: #edf1df;
+  --category__extensiondark: #35666f;
+  --category__extensionlight: #e3f0f2;
+  --category__otherdark: #455325;
+  --category__otherlight: #edf1df;
+
+  /* V2 emerald utilities are legacy brand hooks; map their scale to Primary. */
+  --color-emerald-50: color-mix(in srgb, var(--brand__primary) 5%, white);
+  --color-emerald-100: color-mix(in srgb, var(--brand__primary) 10%, white);
+  --color-emerald-200: color-mix(in srgb, var(--brand__primary) 22%, white);
+  --color-emerald-300: color-mix(in srgb, var(--brand__primary) 38%, white);
+  --color-emerald-400: color-mix(in srgb, var(--brand__primary) 58%, white);
+  --color-emerald-500: color-mix(in srgb, var(--brand__primary) 78%, white);
+  --color-emerald-600: var(--brand__primary);
+  --color-emerald-700: color-mix(in srgb, var(--brand__primary) 78%, black);
+  --color-emerald-800: color-mix(in srgb, var(--brand__primary) 60%, black);
+  --color-emerald-900: color-mix(in srgb, var(--brand__primary) 42%, black);
+  --color-emerald-950: color-mix(in srgb, var(--brand__primary) 25%, black);
+  --color-teal-50: color-mix(in srgb, var(--brand__tertiary) 8%, white);
+  --color-teal-100: color-mix(in srgb, var(--brand__tertiary) 17%, white);
+  --color-teal-200: color-mix(in srgb, var(--brand__tertiary) 30%, white);
+  --color-teal-500: var(--brand__tertiary);
+  --color-teal-900: color-mix(in srgb, var(--brand__tertiary) 52%, black);
+  --color-indigo-50: color-mix(in srgb, var(--brand__secondary) 9%, white);
+  --color-indigo-200: color-mix(in srgb, var(--brand__secondary) 28%, white);
+  --color-indigo-700: color-mix(in srgb, var(--brand__secondary) 78%, black);
+  --color-indigo-900: color-mix(in srgb, var(--brand__secondary) 48%, black);
+}
+
+.app-version-v3 [data-slot="button"]:focus-visible,
+.app-version-v3 [data-slot="input"]:focus-visible {
+  outline: 2px solid var(--brand__primary);
+  outline-offset: 2px;
+}
+.app-version-v3 [data-slot="button"]:disabled { cursor: not-allowed; }
+.app-version-v3 [data-slot="badge"][data-variant="tertiary"] { color: var(--brand__ontertiary); }
+
+/* The supplied primary works with dark on-color text for small-label contrast. */
+.app-version-v3 .bg-emerald-600.text-white { color: var(--brand__onprimary) !important; }
+.app-version-v3 [style*="var(--primitive__green)"].text-white,
+.app-version-v3 [style*="var(--brand__primary)"].text-white {
+  color: var(--brand__onprimary) !important;
+}
+
+/* Verified icons with filled checks retain semantic success colors. */
+.app-version-v3 svg.fill-emerald-50 {
+  color: var(--semantic__successdark) !important;
+  fill: var(--semantic__successlight) !important;
+}
+.app-version-v3 .v3-semantic-success {
+  background-color: var(--semantic__successdark) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 8px var(--semantic__successlight);
+}
+.app-version-v3 .v3-semantic-success-solid {
+  background-color: var(--semantic__successdark) !important;
+  color: var(--semantic__successon-solid) !important;
+}
+.app-version-v3 .v3-semantic-success-text { color: var(--semantic__successdark) !important; }
+.app-version-v3 .v3-semantic-success-soft {
+  background-color: var(--semantic__successlight) !important;
+  border-color: var(--semantic__successdark) !important;
+  color: var(--semantic__successdark) !important;
+}
+.app-version-v3 .v3-semantic-success-soft > svg,
+.app-version-v3 .v3-semantic-availability > svg {
+  color: var(--semantic__successdark) !important;
+}
+.app-version-v3 .v3-semantic-availability {
+  background-color: var(--semantic__successlight) !important;
+  border-color: color-mix(in srgb, var(--semantic__successdark) 30%, white) !important;
+  color: var(--semantic__successdark) !important;
+}
+.app-version-v3 .v3-brand-tertiary {
+  background-color: color-mix(in srgb, var(--brand__tertiary) 16%, white) !important;
+  border-color: color-mix(in srgb, var(--brand__tertiary) 40%, white) !important;
+  color: color-mix(in srgb, var(--brand__tertiary) 70%, black) !important;
+}
+.app-version-v3 .v3-semantic-info-soft {
+  background-color: var(--semantic__infosurface) !important;
+  border-color: var(--semantic__infodark) !important;
+  color: var(--semantic__infodark) !important;
+}
+.app-version-v3 .v3-semantic-info-banner {
+  background: var(--semantic__infosurface) !important;
+  border: 1px solid var(--semantic__infodark);
+  color: var(--semantic__infodark) !important;
+}
+.app-version-v3 .v3-semantic-info-banner .text-white,
+.app-version-v3 .v3-semantic-info-banner .text-emerald-200,
+.app-version-v3 .v3-semantic-info-banner .text-emerald-100\/90 {
+  color: var(--semantic__infodark) !important;
+}
+
+.app-version-v3 img[src="/tutornest-logo.svg"] { filter: hue-rotate(95deg) saturate(.85); }
+
+/* Labeled, stable category colors used on the Home subject shortcuts. */
+.app-version-v3 [data-v3-category="math"] { background: var(--category__mathlight); color: var(--category__mathdark); border-color: color-mix(in srgb, var(--category__mathdark) 24%, white); }
+.app-version-v3 [data-v3-category="english"] { background: var(--category__englishlight); color: var(--category__englishdark); border-color: color-mix(in srgb, var(--category__englishdark) 24%, white); }
+.app-version-v3 [data-v3-category="chemistry"] { background: var(--category__chemistrylight); color: var(--category__chemistrydark); border-color: color-mix(in srgb, var(--category__chemistrydark) 24%, white); }
+.app-version-v3 [data-v3-category="literature"] { background: var(--category__literaturelight); color: var(--category__literaturedark); border-color: color-mix(in srgb, var(--category__literaturedark) 24%, white); }
+.app-version-v3 [data-v3-category="social"] { background: var(--category__sociallight); color: var(--category__socialdark); border-color: color-mix(in srgb, var(--category__socialdark) 24%, white); }
+.app-version-v3 [data-v3-category="bio"] { background: var(--category__biolight); color: var(--category__biodark); border-color: color-mix(in srgb, var(--category__biodark) 24%, white); }
+.app-version-v3 [data-v3-category="extension"] { background: var(--category__extensionlight); color: var(--category__extensiondark); border-color: color-mix(in srgb, var(--category__extensiondark) 24%, white); }
+.app-version-v3 [data-v3-category="other"] { background: var(--category__otherlight); color: var(--category__otherdark); border-color: color-mix(in srgb, var(--category__otherdark) 24%, white); }
+
 @layer base {
   :root,
   .color,

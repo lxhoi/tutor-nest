@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
 import {
   ArrowLeft, Search, SlidersHorizontal, Star, MapPin, CheckCircle2,
   Clock, X, Check, ArrowRight, RotateCcw, Scale, ChevronDown
@@ -92,18 +94,18 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
       <header className="bg-white border-b border-neutral-200 px-4 pt-3 pb-2.5 shrink-0 space-y-2.5 shadow-2xs z-20">
         <div className="flex items-center space-x-2">
           {/* Back button */}
-          <button
+          <Button variant="legacy"
             onClick={() => onNavigate('v2_home')}
             className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer transition-colors shrink-0"
             aria-label="Quay lại trang chủ"
           >
             <ArrowLeft className="w-5 h-5" />
-          </button>
+          </Button>
 
           {/* Search Input Box */}
           <div className="flex-1 bg-neutral-100 border border-neutral-200/80 rounded-2xl px-3 py-1.5 flex items-center space-x-2 min-h-[44px]">
             <Search className="w-4 h-4 text-emerald-600 shrink-0" />
-            <input
+            <Input variant="legacy"
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -111,18 +113,18 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
               className="bg-transparent border-none outline-hidden text-xs text-neutral-900 font-semibold w-full placeholder:text-neutral-500 placeholder:font-normal"
             />
             {query && (
-              <button
+              <Button variant="legacy"
                 onClick={() => setQuery('')}
                 className="p-1 text-neutral-500 hover:text-neutral-700 cursor-pointer"
                 aria-label="Xóa tìm kiếm"
               >
                 <X className="w-3.5 h-3.5" />
-              </button>
+              </Button>
             )}
           </div>
 
           {/* Filter Button */}
-          <button
+          <Button variant="legacy"
             onClick={() => setShowFilterSheet(true)}
             className={`w-10 h-10 rounded-2xl border flex items-center justify-center cursor-pointer transition-all relative shrink-0 ${
               activeFiltersCount > 0
@@ -137,13 +139,13 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                 {activeFiltersCount}
               </span>
             )}
-          </button>
+          </Button>
         </div>
 
         {/* Grouped Taxonomy Filter Pills */}
         <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-0.5">
           {/* 1. Môn học */}
-          <button
+          <Button variant="legacy"
             onClick={() => setShowFilterSheet(true)}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[34px] flex items-center space-x-1 border ${
               activeSubject !== 'Tất cả'
@@ -153,19 +155,19 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
           >
             <span>{activeSubject !== 'Tất cả' ? activeSubject : 'Môn học'}</span>
             <ChevronDown className="w-3 h-3 opacity-60" />
-          </button>
+          </Button>
 
           {/* 2. Cấp lớp */}
-          <button
+          <Button variant="legacy"
             onClick={() => setShowFilterSheet(true)}
             className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[34px] flex items-center space-x-1 border bg-emerald-50 border-emerald-500 text-emerald-800"
           >
             <span>{selectedGrade || 'Lớp 9'}</span>
             <ChevronDown className="w-3 h-3 opacity-60" />
-          </button>
+          </Button>
 
           {/* 3. Khung giờ */}
-          <button
+          <Button variant="legacy"
             onClick={() => setShowFilterSheet(true)}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[34px] flex items-center space-x-1 border ${
               selectedSlot !== 'Tất cả'
@@ -175,10 +177,10 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
           >
             <span>{selectedSlot === 'T3' ? 'Tối T3, T5' : selectedSlot !== 'Tất cả' ? selectedSlot : 'Khung giờ'}</span>
             <ChevronDown className="w-3 h-3 opacity-60" />
-          </button>
+          </Button>
 
           {/* 4. Mức giá */}
-          <button
+          <Button variant="legacy"
             onClick={() => setShowFilterSheet(true)}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[34px] flex items-center space-x-1 border ${
               priceRange !== 'Tất cả'
@@ -188,11 +190,11 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
           >
             <span>{priceRange !== 'Tất cả' ? priceRange.replace('Dưới ', '< ').replace('Trên ', '> ') : 'Học phí'}</span>
             <ChevronDown className="w-3 h-3 opacity-60" />
-          </button>
+          </Button>
 
           {/* Clear Filters Button if any active */}
           {activeFiltersCount > 0 && (
-            <button
+            <Button variant="legacy"
               onClick={() => {
                 setActiveSubject('Tất cả');
                 setPriceRange('Tất cả');
@@ -202,7 +204,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
             >
               <X className="w-3 h-3" />
               <span>Xóa lọc</span>
-            </button>
+            </Button>
           )}
         </div>
       </header>
@@ -245,7 +247,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                         alt={tutor.name}
                         className="w-14 h-14 rounded-2xl object-cover ring-1 ring-neutral-200"
                       />
-                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-2 ring-white">
+                      <span className="v3-semantic-success-solid absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-2 ring-white">
                         <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </span>
                     </div>
@@ -272,7 +274,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
 
                       {/* Availability & Location tags */}
                       <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                        <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-[10px] font-semibold">
+                        <span className="v3-semantic-availability inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-[10px] font-semibold">
                           <Clock className="w-2.5 h-2.5 text-emerald-600" />
                           <span>Lịch rảnh: {tutor.availableSlots?.[0] || 'Tối T3, T5'}</span>
                         </span>
@@ -302,7 +304,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
 
                     <div className="flex items-center space-x-2">
                       {/* Compare toggle button - 44px min touch target */}
-                      <button
+                      <Button variant="legacy"
                         onClick={(e) => toggleCompare(tutor.id, e)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 cursor-pointer min-h-[40px] transition-all ${
                           isComparing
@@ -313,10 +315,10 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                       >
                         <Scale className="w-3.5 h-3.5" />
                         <span>{isComparing ? 'Đã chọn' : '+ So sánh'}</span>
-                      </button>
+                      </Button>
 
                       {/* Detail CTA */}
-                      <button
+                      <Button variant="legacy"
                         onClick={() => {
                           onSelectTutor(tutor);
                           onNavigate('v2_tutor_profile');
@@ -325,7 +327,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                       >
                         <span>Đặt lịch</span>
                         <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </article>
@@ -344,7 +346,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                 Không có kết quả nào khớp với bộ lọc hiện tại. Bạn vui lòng thử lại với từ khóa khác.
               </p>
             </div>
-            <button
+            <Button variant="legacy"
               onClick={() => {
                 setQuery('');
                 setActiveSubject('Tất cả');
@@ -355,7 +357,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Đặt lại bộ lọc</span>
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -374,19 +376,19 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            <button
+            <Button variant="legacy"
               onClick={() => setSelectedForCompare([])}
               className="text-xs text-neutral-400 hover:text-white px-2 py-1 cursor-pointer"
             >
               Hủy
-            </button>
-            <button
+            </Button>
+            <Button variant="legacy"
               onClick={handleLaunchCompare}
               className="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-bold rounded-xl cursor-pointer shadow-xs min-h-[40px] flex items-center space-x-1"
             >
               <span>Xem so sánh</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -397,12 +399,12 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
           <div className="bg-white rounded-t-3xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
               <h3 className="text-sm font-bold text-neutral-900">Bộ lọc nâng cao</h3>
-              <button
+              <Button variant="legacy"
                 onClick={() => setShowFilterSheet(false)}
                 className="w-8 h-8 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
 
             {/* Môn học */}
@@ -410,7 +412,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
               <label className="text-xs font-bold text-neutral-700">Môn học</label>
               <div className="flex flex-wrap gap-2">
                 {['Tất cả', 'Toán', 'Tiếng Anh', 'Hóa học', 'Ngữ Văn'].map(s => (
-                  <button
+                  <Button variant="legacy"
                     key={s}
                     onClick={() => setActiveSubject(s)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer ${
@@ -418,7 +420,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                     }`}
                   >
                     {s}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -428,7 +430,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
               <label className="text-xs font-bold text-neutral-700">Khung giờ gia sư có thể dạy</label>
               <div className="flex flex-wrap gap-2">
                 {['Tất cả', 'Tối T3, T5', 'Tối T2, T4', 'Cuối tuần'].map(slot => (
-                  <button
+                  <Button variant="legacy"
                     key={slot}
                     onClick={() => setSelectedSlot(slot === 'Tất cả' ? 'Tất cả' : (slot.includes('T3') ? 'T3' : 'T2'))}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer ${
@@ -438,7 +440,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                     }`}
                   >
                     {slot}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -448,7 +450,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
               <label className="text-xs font-bold text-neutral-700">Mức giá / giờ</label>
               <div className="flex flex-wrap gap-2">
                 {['Tất cả', 'Dưới 500k', '500k - 700k', 'Trên 700k'].map(p => (
-                  <button
+                  <Button variant="legacy"
                     key={p}
                     onClick={() => setPriceRange(p)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer ${
@@ -456,14 +458,14 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                     }`}
                   >
                     {p}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
 
             {/* Action buttons */}
             <div className="pt-2 flex items-center space-x-2">
-              <button
+              <Button variant="legacy"
                 onClick={() => {
                   setActiveSubject('Tất cả');
                   setPriceRange('Tất cả');
@@ -472,13 +474,13 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                 className="flex-1 py-3 bg-neutral-100 text-neutral-700 rounded-xl text-xs font-bold hover:bg-neutral-200 cursor-pointer min-h-[44px]"
               >
                 Đặt lại
-              </button>
-              <button
+              </Button>
+              <Button variant="legacy"
                 onClick={() => setShowFilterSheet(false)}
                 className="flex-1 py-3 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 cursor-pointer shadow-xs min-h-[44px]"
               >
                 Áp dụng bộ lọc
-              </button>
+              </Button>
             </div>
           </div>
         </div>

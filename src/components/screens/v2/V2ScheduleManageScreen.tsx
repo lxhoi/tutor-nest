@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '../../ui/button';
 import {
   ArrowLeft, Calendar, Clock, CheckCircle2, AlertCircle, Video,
   RotateCcw, CreditCard, ChevronRight, Calculator, Search, UserCheck
@@ -28,13 +29,13 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
       
       {/* Top Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer"
           aria-label="Quay lại trang chủ"
         >
           <ArrowLeft className="w-5 h-5" />
-        </button>
+        </Button>
 
         <h1 className="text-xs font-bold text-neutral-900">Quản lý lịch học của con</h1>
 
@@ -43,7 +44,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
 
       {/* Tabs */}
       <div className="bg-white border-b border-neutral-200 px-4 py-2 flex items-center space-x-2 shrink-0">
-        <button
+        <Button variant="legacy"
           onClick={() => setActiveTab('sessions')}
           className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
             activeTab === 'sessions'
@@ -52,9 +53,9 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           }`}
         >
           Danh sách buổi học ({MOCK_SCHEDULE_SESSIONS.length})
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => setActiveTab('payments')}
           className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
             activeTab === 'payments'
@@ -63,12 +64,12 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           }`}
         >
           Lịch thanh toán tuần
-        </button>
+        </Button>
       </div>
 
       {/* Reschedule Toast Notice */}
       {rescheduleNotice && (
-        <div className="mx-4 mt-2 p-3 bg-emerald-800 text-white text-xs rounded-xl shadow-md flex items-start space-x-2 animate-fadeIn">
+        <div className="v3-semantic-success-soft mx-4 mt-2 p-3 bg-emerald-800 text-white text-xs rounded-xl shadow-md flex items-start space-x-2 animate-fadeIn">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
           <span>{rescheduleNotice}</span>
         </div>
@@ -132,7 +133,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                       </span>
                     </div>
 
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                    <span className={`${isUpcoming ? 'v3-semantic-info-soft' : ''} text-[10px] font-bold px-2 py-0.5 rounded-md ${
                       isPast
                         ? 'bg-neutral-100 text-neutral-600'
                         : isUpcoming
@@ -148,13 +149,13 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
 
                     <div className="flex items-center space-x-2">
                       {isUpcoming && (
-                        <button
+                        <Button variant="legacy"
                           onClick={() => handleReschedule(`${sess.dayText} ${sess.dateText}`)}
                           className="text-[11px] font-semibold text-neutral-600 hover:text-neutral-900 flex items-center space-x-1 cursor-pointer"
                         >
                           <RotateCcw className="w-3 h-3" />
                           <span>Đổi lịch</span>
-                        </button>
+                        </Button>
                       )}
 
                       {isUpcoming && (
@@ -202,7 +203,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                   </div>
 
                   <div>
-                    <span className={`text-[11px] font-bold px-2.5 py-1 rounded-xl ${
+                    <span className={`text-[11px] font-bold px-2.5 py-1 rounded-xl ${isPaid ? 'v3-semantic-success-soft' : ''} ${
                       isPaid
                         ? 'bg-emerald-100 text-emerald-800'
                         : isPending
@@ -222,23 +223,23 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
 
       {/* Bottom Nav Bar */}
       <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Calculator className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Trang chủ</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_search')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Search className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Tìm kiếm</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => setActiveTab('sessions')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-emerald-700 font-bold min-h-[44px] min-w-[44px]"
         >
@@ -246,15 +247,15 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
             <Calendar className="w-4 h-4 text-emerald-700" />
           </div>
           <span className="text-[10px] mt-0.5">Lịch học</span>
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Tài khoản</span>
-        </button>
+        </Button>
       </nav>
 
     </div>

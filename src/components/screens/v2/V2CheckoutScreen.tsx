@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '../../ui/button';
 import {
   ArrowLeft, ShieldCheck, CheckCircle2, QrCode, CreditCard, Wallet,
   Copy, Check, ArrowRight, X, Lock, ExternalLink
@@ -63,13 +64,13 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
       
       {/* Top Header */}
       <header className="bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_time')}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 cursor-pointer"
           aria-label="Quay lại"
         >
           <ArrowLeft className="w-5 h-5" />
-        </button>
+        </Button>
 
         <div className="text-center">
           <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Bước 2 / 2</div>
@@ -133,7 +134,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
               <div className="space-y-1 flex-1">
                 <div className="flex items-center space-x-1.5">
                   <span className="text-xs font-bold text-emerald-950">Học thử 1 buổi</span>
-                  <span className="text-[9px] font-bold bg-emerald-600 text-white px-1.5 py-0.2 rounded">Bảo lãnh 100%</span>
+                  <span className="v3-semantic-success-solid text-[9px] font-bold bg-emerald-600 text-white px-1.5 py-0.2 rounded">Bảo lãnh 100%</span>
                 </div>
                 <p className="text-[11px] text-emerald-900 leading-snug">
                   Thanh toán 1 buổi • Hoàn tiền 100% nếu không hài lòng.
@@ -149,7 +150,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
             /* Recurring Plans */
             <div className="space-y-2 pt-1">
               {/* Gói theo tuần (Mặc định) */}
-              <button
+              <Button variant="legacy"
                 onClick={() => {
                   setSelectedPlan('weekly');
                   updateBooking({ paymentPlan: 'weekly' });
@@ -174,10 +175,10 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                   <div className="text-xs font-extrabold text-emerald-700">{formatCurrency(weeklyAmount)}</div>
                   <div className="text-[10px] text-neutral-500">/ {sessionsPerWeek} buổi</div>
                 </div>
-              </button>
+              </Button>
 
               {/* Gói trọn gói */}
-              <button
+              <Button variant="legacy"
                 onClick={() => {
                   setSelectedPlan('full');
                   updateBooking({ paymentPlan: 'full' });
@@ -202,7 +203,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                   <div className="text-xs font-extrabold text-neutral-900">{formatCurrency(fullAmount)}</div>
                   <div className="text-[10px] text-neutral-400 line-through">{formatCurrency(weeklyAmount * (booking.cycleWeeks || 8))}</div>
                 </div>
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -222,7 +223,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
               const Icon = p.icon;
               const isSelected = selectedProvider === p.id;
               return (
-                <button
+                <Button variant="legacy"
                   key={p.id}
                   onClick={() => {
                     setSelectedProvider(p.id);
@@ -248,7 +249,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                   }`}>
                     {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
                   </div>
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -272,13 +273,13 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
           </div>
         </div>
 
-        <button
+        <Button variant="legacy"
           onClick={handleConfirmAndPay}
           className="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white rounded-2xl text-xs font-bold flex items-center space-x-2 shadow-md cursor-pointer transition-all min-h-[46px]"
         >
           <span>Thanh toán {formatCurrency(currentPayAmount)}</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
 
       {/* On-demand Payment Modal / Bottom Sheet */}
@@ -294,12 +295,12 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                 </h3>
                 <p className="text-[11px] text-neutral-500">Số tiền: <strong className="text-emerald-700">{formatCurrency(currentPayAmount)}</strong></p>
               </div>
-              <button
+              <Button variant="legacy"
                 onClick={() => setShowPaymentModal(false)}
                 className="w-8 h-8 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
 
             {/* Provider specific content */}
@@ -330,12 +331,12 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                     <span className="text-neutral-500">Số tài khoản:</span>
                     <div className="flex items-center space-x-1.5">
                       <strong className="text-emerald-700 text-sm font-mono">0901 234 567</strong>
-                      <button
+                      <Button variant="legacy"
                         onClick={() => handleCopy('0901234567', 'stk')}
                         className="p-1 rounded bg-neutral-200 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
                       >
                         {copiedField === 'stk' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
@@ -346,12 +347,12 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                     <span className="text-neutral-500">Nội dung CK:</span>
                     <div className="flex items-center space-x-1.5">
                       <strong className="text-neutral-900 font-mono">TN MINHANH 09</strong>
-                      <button
+                      <Button variant="legacy"
                         onClick={() => handleCopy('TN MINHANH 09', 'nd')}
                         className="p-1 rounded bg-neutral-200 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
                       >
                         {copiedField === 'nd' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -372,7 +373,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
 
             {/* Modal Confirm Button */}
             <div className="pt-2">
-              <button
+              <Button variant="legacy"
                 onClick={handleCompleteTransaction}
                 disabled={isProcessing}
                 className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-2xl text-xs font-bold flex items-center justify-center space-x-2 shadow-md cursor-pointer min-h-[46px]"
@@ -385,7 +386,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                     <span>Tôi đã chuyển khoản thành công</span>
                   </>
                 )}
-              </button>
+              </Button>
             </div>
 
           </div>

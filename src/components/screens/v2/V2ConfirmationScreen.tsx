@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '../../ui/button';
 import {
   Check, Calendar, Clock, Video, CheckCircle2, ChevronRight,
   ExternalLink, Home, ArrowRight, Share2
@@ -25,7 +26,7 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
         
         {/* Animated Celebration Icon */}
         <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg ring-8 ring-emerald-100 animate-bounce">
+          <div className="v3-semantic-success w-20 h-20 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg ring-8 ring-emerald-100 animate-bounce">
             <Check className="w-10 h-10 stroke-[3]" />
           </div>
           <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 text-neutral-900 font-black text-xs flex items-center justify-center ring-2 ring-white">
@@ -66,12 +67,12 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
               <Video className="w-4 h-4 text-emerald-600" />
               <span className="text-[11px] font-mono text-neutral-600">meet.google.com/abc-xyz</span>
             </div>
-            <span className="text-[10px] font-bold text-emerald-700">Link học sẵn sàng</span>
+            <span className="v3-semantic-success-text text-[10px] font-bold text-emerald-700">Link học sẵn sàng</span>
           </div>
         </div>
 
         {/* Calendar Add Button */}
-        <button
+        <Button variant="legacy"
           onClick={() => setCalendarAdded(true)}
           className={`w-full py-2.5 rounded-xl border text-xs font-bold flex items-center justify-center space-x-1.5 transition-all cursor-pointer min-h-[42px] ${
             calendarAdded
@@ -81,26 +82,26 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
         >
           <Calendar className="w-4 h-4 text-emerald-600" />
           <span>{calendarAdded ? '✓ Đã đồng bộ vào Lịch điện thoại' : '+ Đồng bộ vào Google / Apple Calendar'}</span>
-        </button>
+        </Button>
 
       </div>
 
       {/* Bottom Navigation Buttons */}
       <div className="space-y-2.5 pt-4 max-w-sm mx-auto w-full">
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_manage')}
           className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-xs font-bold shadow-md cursor-pointer flex items-center justify-center space-x-1.5 min-h-[46px]"
         >
           <span>Xem chi tiết lịch học 8 tuần</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </Button>
 
-        <button
+        <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-2xl text-xs font-semibold cursor-pointer min-h-[42px]"
         >
           Về trang chủ
-        </button>
+        </Button>
       </div>
 
     </div>
