@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import {
   ArrowLeft, Calendar, Clock, AlertCircle, Video,
-  RotateCcw, CreditCard, ChevronRight, Calculator, Search, UserCheck, MessageCircle
+  RotateCcw, CreditCard, ChevronRight, House, Search, UserCheck, MessageCircle
 } from 'lucide-react';
 import { ScreenId, BookingState } from '../../../types';
 import { MOCK_SCHEDULE_SESSIONS, MOCK_PAYMENT_SCHEDULE, formatCurrency } from '../../../data/mockData';
@@ -31,7 +31,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           <ArrowLeft className="w-5 h-5" />
         </Button>
 
-        <h1 className="text-xs font-bold text-neutral-900">Quản lý lịch học của con</h1>
+        <h1 className="text-xs font-bold text-neutral-900">Quản lý lịch học</h1>
 
         <div className="w-10" />
       </header>
@@ -57,7 +57,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
               : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
           }`}
         >
-          Lịch thanh toán tuần
+          Lịch thanh toán
         </Button>
       </div>
 
@@ -213,18 +213,10 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
       {/* Bottom Nav Bar */}
       <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
         <Button variant="legacy"
-          onClick={() => onNavigate('v2_messages')}
+          onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
-          <MessageCircle className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tin nhắn</span>
-        </Button>
-
-        <Button variant="legacy"
-          onClick={() => onNavigate('v2_account')}
-          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
-        >
-          <Calculator className="w-4 h-4" />
+          <House className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Trang chủ</span>
         </Button>
 
@@ -247,11 +239,19 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
         </Button>
 
         <Button variant="legacy"
-          onClick={() => onNavigate('v2_home')}
+          onClick={() => onNavigate('v2_messages')}
+          className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span className="text-[10px] mt-0.5">Tin nhắn</span>
+        </Button>
+
+        <Button variant="legacy"
+          onClick={() => onNavigate('v2_account')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tài khoản</span>
+          <span className="text-[10px] mt-0.5">Tôi</span>
         </Button>
       </nav>
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import {
   Search, Bell, Star, MapPin, ChevronRight, Calculator, Globe2,
-  Sparkles, BookOpen, MoreHorizontal, CheckCircle2, Clock, Calendar,
+  Sparkles, BookOpen, MoreHorizontal, CheckCircle2, Clock, Calendar, House,
   ShieldCheck, ArrowRight, UserCheck, MessageCircle
 } from 'lucide-react';
 import { BookingState, ScreenId, Tutor } from '../../../types';
@@ -77,15 +77,16 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           </span>
         </div>
 
-        {/* Section 2: Nhắc lịch học sắp tới (Active Parent Context) */}
+        {/* Home A is discovery-first. The booked Home B adds the upcoming session card. */}
+        {booking.status !== 'draft' && (
         <div className="v3-semantic-info-banner bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-3.5 text-white shadow-sm flex items-center justify-between">
           <div className="space-y-0.5">
             <div className="flex items-center space-x-1.5 text-emerald-200 text-[10px] font-bold uppercase tracking-wider">
               <Clock className="w-3 h-3" />
               <span>Sắp diễn ra</span>
             </div>
-            <div className="text-xs font-bold text-white">Toán 9 • Tối nay 18:00 - 20:00</div>
-            <div className="text-[11px] text-emerald-100/90">Thầy Nguyễn Minh Anh (Buổi 3/16)</div>
+            <div className="text-xs font-bold text-white">{booking.subject} {booking.grade.replace('Lớp ', '')} • {booking.startDate} · {booking.timeSlot}</div>
+            <div className="text-[11px] text-emerald-100/90">{booking.tutor.name} ({booking.bookingType === 'trial' ? 'Buổi học thử' : `Buổi số 1/${booking.totalSessions}`})</div>
           </div>
           <Button variant="legacy"
             onClick={() => onNavigate('v2_schedule_manage')}
@@ -94,6 +95,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
             Vào lớp
           </Button>
         </div>
+        )}
 
         {/* Section 3: Lưới Môn Học Cốt Lõi (5 icon chuẩn mực) */}
         <div className="space-y-2">
@@ -237,7 +239,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-emerald-700 font-bold min-h-[44px] min-w-[44px]"
         >
           <div className="p-1 rounded-full bg-emerald-50">
-            <Calculator className="w-4 h-4 text-emerald-700" />
+            <House className="w-4 h-4 text-emerald-700" />
           </div>
           <span className="text-[10px] mt-0.5">Trang chủ</span>
         </Button>
@@ -271,7 +273,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tài khoản</span>
+          <span className="text-[10px] mt-0.5">Tôi</span>
         </Button>
       </nav>
     </div>

@@ -83,9 +83,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
 
         <div className="text-center">
           <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Bước 2 / 2</div>
-          <h1 className="text-xs font-bold text-neutral-900">
-            {isTrial ? 'Xác nhận học thử 1 buổi' : 'Xác nhận & thanh toán linh hoạt'}
-          </h1>
+          <h1 className="text-xs font-bold text-neutral-900">Xác nhận & Thanh toán</h1>
         </div>
 
         <div className="w-10" />
@@ -95,7 +93,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 space-y-4">
         
         {/* Booking Summary Card */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
           <div className="flex items-start space-x-3">
             <img
               src={booking.tutor.avatarUrl}
@@ -127,7 +125,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
         </div>
 
         {/* Section: Chọn Gói Học Phí (Payment Plan) */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
               1. Hình thức thanh toán học phí
@@ -218,7 +216,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
         </div>
 
         {/* Section: Chọn Kênh Thanh Toán (Clean Providers) */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
           <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
             2. Chọn phương thức thanh toán
           </h2>

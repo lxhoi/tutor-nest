@@ -213,6 +213,8 @@ export default function App() {
         return (
           <V2TutorProfileScreen
             tutor={booking.tutor}
+            booking={booking}
+            updateBooking={updateBooking}
             onNavigate={navigateTo}
           />
         );
@@ -403,7 +405,7 @@ export default function App() {
   };
 
   return (
-    <div className={`flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans ${appVersion === 'v3' ? 'app-version-v3' : ''}`}>
+    <div className={`flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans ${appVersion === 'v3' ? 'app-version-v3' : appVersion === 'v2' ? 'app-version-v2' : ''}`}>
       {/* Top Prototype Navigation Bar */}
       <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
         {/* Brand & Version Switcher */}

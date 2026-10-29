@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* TutorNest mobile flow palette from the parent app Figma screens. */
+.app-version-v2 {
+  --color-emerald-50: #effaf8;
+  --color-emerald-100: #d9f2ee;
+  --color-emerald-200: #b7e5dd;
+  --color-emerald-300: #7ccfc2;
+  --color-emerald-400: #43b1a3;
+  --color-emerald-500: #198f84;
+  --color-emerald-600: #0d8178;
+  --color-emerald-700: #0a7069;
+  --color-emerald-800: #095b56;
+  --color-emerald-900: #084b48;
+  --color-emerald-950: #063331;
+}
+
 .app-version-v3 {
   --radius: 0.75rem;
   /* V3 primitives: raw palette values without usage meaning. */

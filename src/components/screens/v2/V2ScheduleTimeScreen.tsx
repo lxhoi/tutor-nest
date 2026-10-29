@@ -24,6 +24,14 @@ const weekdays = [
   { id: 'CN', label: 'Chủ nhật', free: false },
 ];
 
+const getCalendarWeekday = (dateString: string) => {
+  const [day, month, year] = dateString.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  const full = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'][date.getDay()];
+  const short = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'][date.getDay()];
+  return { full, short };
+};
+
 interface CalendarDaySlot {
   date: string;
   dayOfWeek: string;
@@ -94,7 +102,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
   onNavigate,
 }) => {
   const [bookingType, setBookingType] = useState<'trial' | 'recurring'>(booking.bookingType || 'trial');
-  const [trialDate, setTrialDate] = useState('15/10/2026');
+  const [trialDate, setTrialDate] = useState(booking.startDate || '15/10/2026');
   const [recurringStartDate, setRecurringStartDate] = useState(booking.startDate || '15/10/2026');
   const [selectedDays, setSelectedDays] = useState<string[]>(booking.selectedDays?.length ? booking.selectedDays : ['T3', 'T5']);
   const [durationHours, setDurationHours] = useState<number>(booking.sessionDurationHours || 1.5);
@@ -105,7 +113,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
   // Calendar modal states
   const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [calendarModalTarget, setCalendarModalTarget] = useState<'trial' | 'recurring'>('trial');
-  const [calendarMonthTab, setCalendarMonthTab] = useState<'10' | '11'>('10');
+  const [calendarMonthTab, setCalendarMonthTab] = useState<'10' | '11'>(booking.startDate?.split('/')[1] === '11' ? '11' : '10');
   const [showAllTimelineSessions, setShowAllTimelineSessions] = useState(false);
 
   // Dynamic slot generation based on chosen duration
@@ -308,7 +316,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
         </div>
 
         {/* Section 1: HÌNH THỨC ĐẶT LỊCH (Học thử 1 buổi vs Học định kỳ) */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
               1. Hình thức học
@@ -353,7 +361,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Ngày học thử:</span>
                   <span className="text-emerald-700 font-extrabold ml-1">
-                    {calendarDaysMonth.find(d => d.date === trialDate)?.dayOfWeek || 'Thứ 3'}, {trialDate}
+                    {getCalendarWeekday(trialDate).full}, {trialDate}
                   </span>
                 </label>
                 
@@ -380,9 +388,9 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       <div
                         key={item.date}
                         className="flex flex-col items-center justify-between p-2 rounded-2xl border border-neutral-200/60 bg-neutral-100/60 text-neutral-400 min-w-[58px] h-[68px] shrink-0 opacity-60 cursor-not-allowed select-none"
-                        title={`${item.dayOfWeek} (${item.date}): ${item.statusNote}`}
+                        title={`${getCalendarWeekday(item.date).full} (${item.date}): ${item.statusNote}`}
                       >
-                        <span className="text-[10px] font-medium">{item.shortDay}</span>
+                        <span className="text-[10px] font-medium">{getCalendarWeekday(item.date).short}</span>
                         <span className="text-sm font-semibold line-through decoration-neutral-400">{item.dayNumber}</span>
                         <span className="text-[8px] text-neutral-400 font-medium">{item.statusNote}</span>
                       </div>
@@ -404,7 +412,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         </span>
                       )}
                       <span className={`text-[10px] ${isSelected ? 'text-emerald-800 font-bold' : 'text-neutral-500'}`}>
-                        {item.shortDay}
+                        {getCalendarWeekday(item.date).short}
                       </span>
                       <span className="text-base font-extrabold leading-none">
                         {item.dayNumber}
@@ -463,7 +471,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   <div className="text-xs font-extrabold text-neutral-900 flex items-center space-x-1.5 mt-0.5">
                     <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                     <span>
-                      {calendarDaysMonth.find(d => d.date === recurringStartDate)?.dayOfWeek || 'Thứ 3'}, {recurringStartDate}
+                      {getCalendarWeekday(recurringStartDate).full}, {recurringStartDate}
                     </span>
                   </div>
                 </div>
@@ -573,7 +581,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
         </div>
 
         {/* Section 2: THỜI LƯỢNG 1 BUỔI HỌC (Chuẩn Sư phạm: 1h, 1.5h, 2h) */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-2.5">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider flex items-center space-x-1.5">
               <Clock className="w-4 h-4 text-emerald-600" />
@@ -616,7 +624,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
         </div>
 
         {/* Section 3: KHUNG GIỜ HỌC CHI TIẾT (Continuous Linear View - KHÔNG CHIA TAB) */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-neutral-900 uppercase tracking-wider flex items-center space-x-1.5">
               <Sparkles className="w-4 h-4 text-emerald-600" />
@@ -735,7 +743,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
         </div>
 
         {/* Section 4: HÌNH THỨC HỌC */}
-        <div className="bg-white rounded-3xl p-4 border border-neutral-200/90 shadow-2xs space-y-2">
+        <div className="bg-white rounded-2xl p-4 border border-neutral-200/90 shadow-2xs space-y-2">
           <label className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
             4. Hình thức giảng dạy
           </label>
@@ -887,14 +895,14 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   {calendarDaysMonth.filter(d => d.month === '10').map((slot) => {
                     const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
                     const isSelected = targetDate === slot.date;
-                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(slot.shortDay);
+                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(getCalendarWeekday(slot.date).short);
 
                     if (!slot.isAvailable) {
                       return (
                         <div
                           key={slot.date}
                           className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
-                          title={`${slot.dayOfWeek}: ${slot.statusNote}`}
+                          title={`${getCalendarWeekday(slot.date).full}: ${slot.statusNote}`}
                         >
                           <span>{slot.dayNumber}</span>
                           <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
@@ -946,14 +954,14 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   {calendarDaysMonth.filter(d => d.month === '11').map((slot) => {
                     const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
                     const isSelected = targetDate === slot.date;
-                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(slot.shortDay);
+                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(getCalendarWeekday(slot.date).short);
 
                     if (!slot.isAvailable) {
                       return (
                         <div
                           key={slot.date}
                           className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
-                          title={`${slot.dayOfWeek}: ${slot.statusNote}`}
+                          title={`${getCalendarWeekday(slot.date).full}: ${slot.statusNote}`}
                         >
                           <span>{slot.dayNumber}</span>
                           <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
@@ -1039,7 +1047,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <div>
                 <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày đã chọn:</div>
                 <div className="text-xs font-extrabold text-emerald-800">
-                  {calendarDaysMonth.find(d => d.date === (calendarModalTarget === 'trial' ? trialDate : recurringStartDate))?.dayOfWeek || 'Thứ 3'}, {calendarModalTarget === 'trial' ? trialDate : recurringStartDate}
+                  {getCalendarWeekday(calendarModalTarget === 'trial' ? trialDate : recurringStartDate).full}, {calendarModalTarget === 'trial' ? trialDate : recurringStartDate}
                 </div>
               </div>
 

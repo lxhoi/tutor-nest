@@ -67,8 +67,8 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
       if (prev.includes(id)) {
         return prev.filter(tId => tId !== id);
       }
-      if (prev.length >= 3) {
-        return [prev[1], prev[2], id];
+      if (prev.length >= 2) {
+        return [prev[1], id];
       }
       return [...prev, id];
     });
@@ -216,7 +216,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
         <div className="flex items-center justify-between text-xs text-neutral-600 px-0.5">
           <span>Tìm thấy <strong className="text-neutral-900 font-bold">{filteredTutors.length}</strong> gia sư phù hợp</span>
           <span className="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-            {selectedForCompare.length}/3 để so sánh
+            {selectedForCompare.length}/2 để so sánh
           </span>
         </div>
 
@@ -285,14 +285,6 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                         </span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Trust highlight snippet */}
-                  <div className="mt-2.5 px-2.5 py-1.5 rounded-xl bg-neutral-50 border border-neutral-200/60 text-[11px] text-neutral-600 flex items-center justify-between">
-                    <span className="truncate">
-                      🎯 <strong className="text-neutral-800">{tutor.trustHighlights?.[0] || 'Xác thực lý lịch sư phạm'}</strong>
-                    </span>
-                    <span className="text-[10px] text-emerald-700 font-bold shrink-0 ml-1">Kinh nghiệm {tutor.experienceYears} năm</span>
                   </div>
 
                   {/* Bottom Row: Price & Compare Toggle Button */}
