@@ -3,7 +3,7 @@ import { Button } from '../../ui/button';
 import {
   Search, Bell, Star, MapPin, ChevronRight, Calculator, Globe2,
   Sparkles, BookOpen, MoreHorizontal, CheckCircle2, Clock, Calendar,
-  ShieldCheck, ArrowRight, UserCheck
+  ShieldCheck, ArrowRight, UserCheck, MessageCircle
 } from 'lucide-react';
 import { BookingState, ScreenId, Tutor } from '../../../types';
 import { TUTORS, formatCurrency } from '../../../data/mockData';
@@ -41,15 +41,15 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-neutral-200 shadow-2xs">
+            <Button variant="legacy" onClick={() => onNavigate('v2_account')} className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-neutral-200 shadow-2xs">
               <div className="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shadow-xs">
                 L
               </div>
               <span className="text-xs font-bold text-neutral-800">Chị Lan</span>
-            </div>
+            </Button>
 
             <Button variant="legacy"
-              onClick={() => onNavigate('v2_schedule_manage')}
+              onClick={() => onNavigate('v2_notifications')}
               className="relative p-2 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:bg-neutral-100 shadow-2xs min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Thông báo"
             >
@@ -208,10 +208,9 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
                     <span className="text-[10px] text-neutral-500 font-medium"> / giờ</span>
                   </div>
 
-                  <span className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 flex items-center space-x-1">
-                    <span>Xem lịch rảnh</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </span>
+                  <Button variant="legacy" onClick={(event) => { event.stopPropagation(); onNavigate('v2_availability'); }} className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 flex items-center space-x-1">
+                    <span>Xem lịch rảnh</span><ArrowRight className="w-3 h-3" />
+                  </Button>
                 </div>
               </article>
             ))}
@@ -253,15 +252,23 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
 
         <Button variant="legacy"
           onClick={() => onNavigate('v2_schedule_manage')}
-          className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Calendar className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Lịch học</span>
         </Button>
 
         <Button variant="legacy"
-          onClick={() => onNavigate('v2_schedule_manage')}
-          className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+          onClick={() => onNavigate('v2_messages')}
+          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span className="text-[10px] mt-0.5">Tin nhắn</span>
+        </Button>
+
+        <Button variant="legacy"
+          onClick={() => onNavigate('v2_account')}
+          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Tài khoản</span>

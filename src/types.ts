@@ -24,7 +24,16 @@ export type ScreenId =
   | 'v2_checkout'
   | 'v2_confirmed'
   | 'v2_schedule_manage'
-  | 'v2_compare';
+  | 'v2_compare'
+  | 'v2_availability'
+  | 'v2_reviews'
+  | 'v2_notifications'
+  | 'v2_reschedule'
+  | 'v2_pause_renewal'
+  | 'v2_messages'
+  | 'v2_account'
+  | 'v2_payment_qr'
+  | 'v2_payment_transfer';
 
 export interface Tutor {
   id: string;
@@ -76,6 +85,7 @@ export interface BookingState {
   paymentProvider: PaymentProvider;
   selectedBank?: string;
   autoDebit: boolean;
+  autoDebitPaused?: boolean;
   status: 'draft' | 'confirmed' | 'active';
 }
 

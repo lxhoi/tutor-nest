@@ -33,6 +33,16 @@ import { V2ConfirmationScreen } from './components/screens/v2/V2ConfirmationScre
 import { V2ScheduleManageScreen } from './components/screens/v2/V2ScheduleManageScreen';
 import { V2CompareScreen } from './components/screens/v2/V2CompareScreen';
 import {
+  V2AccountScreen,
+  V2AvailabilityScreen,
+  V2MessagesScreen,
+  V2NotificationsScreen,
+  V2PauseRenewalScreen,
+  V2RescheduleScreen,
+  V2ReviewsScreen,
+} from './components/screens/v2/V2UtilityScreens';
+import { V2BankTransferPaymentScreen, V2VietQrPaymentScreen } from './components/screens/v2/V2PaymentScreens';
+import {
   Smartphone,
   LayoutGrid,
   ChevronLeft,
@@ -206,6 +216,20 @@ export default function App() {
             onNavigate={navigateTo}
           />
         );
+      case 'v2_availability':
+        return <V2AvailabilityScreen tutor={booking.tutor} onNavigate={navigateTo} />;
+      case 'v2_reviews':
+        return <V2ReviewsScreen tutor={booking.tutor} onNavigate={navigateTo} />;
+      case 'v2_notifications':
+        return <V2NotificationsScreen onNavigate={navigateTo} />;
+      case 'v2_reschedule':
+        return <V2RescheduleScreen booking={booking} updateBooking={updateBooking} onNavigate={navigateTo} />;
+      case 'v2_pause_renewal':
+        return <V2PauseRenewalScreen booking={booking} updateBooking={updateBooking} onNavigate={navigateTo} />;
+      case 'v2_messages':
+        return <V2MessagesScreen onNavigate={navigateTo} />;
+      case 'v2_account':
+        return <V2AccountScreen booking={booking} onNavigate={navigateTo} />;
       case 'v2_schedule_time':
         return (
           <V2ScheduleTimeScreen
@@ -223,6 +247,10 @@ export default function App() {
             onPaymentSuccess={handlePaymentSuccess}
           />
         );
+      case 'v2_payment_qr':
+        return <V2VietQrPaymentScreen booking={booking} onNavigate={navigateTo} onPaymentSuccess={handlePaymentSuccess} />;
+      case 'v2_payment_transfer':
+        return <V2BankTransferPaymentScreen booking={booking} onNavigate={navigateTo} onPaymentSuccess={handlePaymentSuccess} />;
       case 'v2_confirmed':
         return (
           <V2ConfirmationScreen
@@ -459,7 +487,20 @@ export default function App() {
               <option value="12_compare_tutors">12. So sánh 2 gia sư</option>
             )}
             {appVersion !== 'v1' && (
-              <option value="v2_compare">So sánh 2 gia sư</option>
+              <>
+                <option value="v2_compare">So sánh 2 gia sư</option>
+                <optgroup label="Màn phụ · Sitemap">
+                  <option value="v2_availability">Lịch rảnh gia sư</option>
+                  <option value="v2_reviews">Đánh giá phụ huynh</option>
+                  <option value="v2_notifications">Thông báo</option>
+                  <option value="v2_reschedule">Đổi lịch học</option>
+                  <option value="v2_pause_renewal">Tạm dừng gia hạn</option>
+                  <option value="v2_messages">Tin nhắn</option>
+                  <option value="v2_account">Tôi / Tài khoản</option>
+                  <option value="v2_payment_qr">Thanh toán VietQR</option>
+                  <option value="v2_payment_transfer">Chuyển khoản ngân hàng</option>
+                </optgroup>
+              </>
             )}
           </select>
 

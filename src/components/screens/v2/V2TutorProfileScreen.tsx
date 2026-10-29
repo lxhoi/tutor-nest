@@ -73,14 +73,14 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
               <div className="text-xs text-neutral-600 font-medium mt-0.5">
                 Gia sư chuyên {tutor.subject} • {tutor.gradeRange}
               </div>
-              <div className="flex items-center space-x-2 mt-1.5 text-xs text-neutral-600">
+              <button onClick={() => onNavigate('v2_reviews')} className="flex items-center space-x-2 mt-1.5 text-xs text-neutral-600 hover:text-amber-700">
                 <span className="flex items-center space-x-0.5 font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
                   <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                   <span>{tutor.rating}</span>
                 </span>
                 <span>• {tutor.reviewsCount} đánh giá</span>
                 <span>• {tutor.experienceYears} năm kinh nghiệm</span>
-              </div>
+              </button>
             </div>
           </div>
 
@@ -156,6 +156,7 @@ export const V2TutorProfileScreen: React.FC<V2TutorProfileScreenProps> = ({
               <span>Đã kín lịch</span>
             </span>
           </div>
+          <Button variant="legacy" onClick={() => onNavigate('v2_availability')} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 py-2.5 text-[11px] font-bold text-emerald-800">Xem toàn bộ lịch rảnh</Button>
         </div>
 
         {/* Section: Giới thiệu & Phương pháp giảng dạy */}

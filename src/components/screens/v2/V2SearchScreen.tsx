@@ -67,8 +67,8 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
       if (prev.includes(id)) {
         return prev.filter(tId => tId !== id);
       }
-      if (prev.length >= 2) {
-        return [prev[1], id];
+      if (prev.length >= 3) {
+        return [prev[1], prev[2], id];
       }
       return [...prev, id];
     });
@@ -78,7 +78,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
     const tutors = selectedForCompare
       .map(id => TUTORS.find(t => t.id === id))
       .filter((t): t is Tutor => Boolean(t));
-    if (tutors.length === 2) {
+    if (tutors.length >= 2) {
       onCompare(tutors);
     }
   };
@@ -216,7 +216,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
         <div className="flex items-center justify-between text-xs text-neutral-600 px-0.5">
           <span>Tìm thấy <strong className="text-neutral-900 font-bold">{filteredTutors.length}</strong> gia sư phù hợp</span>
           <span className="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-            {selectedForCompare.length}/2 để so sánh
+            {selectedForCompare.length}/3 để so sánh
           </span>
         </div>
 
@@ -362,15 +362,15 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
         )}
       </div>
 
-      {/* Floating Compare Action Bar (when 2 tutors selected) */}
-      {selectedForCompare.length === 2 && (
+      {/* Floating Compare Action Bar (when at least 2 tutors are selected) */}
+      {selectedForCompare.length >= 2 && (
         <div className="absolute bottom-4 left-4 right-4 bg-neutral-900 text-white rounded-2xl p-3 shadow-xl flex items-center justify-between z-30 animate-slideUp">
           <div className="flex items-center space-x-2">
             <div className="w-7 h-7 rounded-lg bg-emerald-500 text-neutral-950 font-black text-xs flex items-center justify-center">
-              2
+              {selectedForCompare.length}
             </div>
             <div className="text-xs">
-              <div className="font-bold">Đã chọn 2 gia sư</div>
+              <div className="font-bold">Đã chọn {selectedForCompare.length} gia sư</div>
               <div className="text-[10px] text-neutral-400">So sánh điểm mạnh & học phí</div>
             </div>
           </div>

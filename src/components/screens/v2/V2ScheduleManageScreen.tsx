@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import {
-  ArrowLeft, Calendar, Clock, CheckCircle2, AlertCircle, Video,
-  RotateCcw, CreditCard, ChevronRight, Calculator, Search, UserCheck
+  ArrowLeft, Calendar, Clock, AlertCircle, Video,
+  RotateCcw, CreditCard, ChevronRight, Calculator, Search, UserCheck, MessageCircle
 } from 'lucide-react';
 import { ScreenId, BookingState } from '../../../types';
 import { MOCK_SCHEDULE_SESSIONS, MOCK_PAYMENT_SCHEDULE, formatCurrency } from '../../../data/mockData';
@@ -17,12 +17,6 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
   onNavigate,
 }) => {
   const [activeTab, setActiveTab] = useState<'sessions' | 'payments'>('sessions');
-  const [rescheduleNotice, setRescheduleNotice] = useState<string | null>(null);
-
-  const handleReschedule = (sessionDate: string) => {
-    setRescheduleNotice(`Yêu cầu đổi lịch cho buổi ${sessionDate} đã được gửi tới Gia sư. Bạn sẽ nhận phản hồi qua thông báo.`);
-    setTimeout(() => setRescheduleNotice(null), 4000);
-  };
 
   return (
     <div className="flex-1 flex flex-col justify-between bg-neutral-50 h-full overflow-hidden text-neutral-900 font-sans">
@@ -66,14 +60,6 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           Lịch thanh toán tuần
         </Button>
       </div>
-
-      {/* Reschedule Toast Notice */}
-      {rescheduleNotice && (
-        <div className="v3-semantic-success-soft mx-4 mt-2 p-3 bg-emerald-800 text-white text-xs rounded-xl shadow-md flex items-start space-x-2 animate-fadeIn">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-          <span>{rescheduleNotice}</span>
-        </div>
-      )}
 
       {/* Main Tab Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 space-y-3">
@@ -150,7 +136,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                     <div className="flex items-center space-x-2">
                       {isUpcoming && (
                         <Button variant="legacy"
-                          onClick={() => handleReschedule(`${sess.dayText} ${sess.dateText}`)}
+                          onClick={() => onNavigate('v2_reschedule')}
                           className="text-[11px] font-semibold text-neutral-600 hover:text-neutral-900 flex items-center space-x-1 cursor-pointer"
                         >
                           <RotateCcw className="w-3 h-3" />
@@ -216,6 +202,9 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                 </div>
               );
             })}
+            <Button variant="legacy" onClick={() => onNavigate('v2_pause_renewal')} className="w-full rounded-xl border border-rose-200 bg-white py-3 text-xs font-bold text-rose-700 hover:bg-rose-50">
+              Tạm dừng gia hạn tự động
+            </Button>
           </div>
         )}
 
@@ -224,8 +213,16 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
       {/* Bottom Nav Bar */}
       <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
         <Button variant="legacy"
-          onClick={() => onNavigate('v2_home')}
-          className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+          onClick={() => onNavigate('v2_messages')}
+          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span className="text-[10px] mt-0.5">Tin nhắn</span>
+        </Button>
+
+        <Button variant="legacy"
+          onClick={() => onNavigate('v2_account')}
+          className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Calculator className="w-4 h-4" />
           <span className="text-[10px] mt-0.5">Trang chủ</span>

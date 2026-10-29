@@ -38,6 +38,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
     : selectedPlan === 'weekly'
     ? weeklyAmount
     : fullAmount;
+  const qrImageUrl = `https://api.vietqr.io/image/970422-0901234567-compact.png?amount=${currentPayAmount}&addInfo=${encodeURIComponent(isTrial ? 'TUTORNEST HOC THU' : 'TUTORNEST MINHANH')}`;
 
   const handleCopy = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -46,6 +47,14 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
   };
 
   const handleConfirmAndPay = () => {
+    if (selectedProvider === 'Mã QR') {
+      onNavigate('v2_payment_qr');
+      return;
+    }
+    if (selectedProvider === 'Ngân hàng') {
+      onNavigate('v2_payment_transfer');
+      return;
+    }
     setShowPaymentModal(true);
   };
 
@@ -269,7 +278,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
           <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Học phí đợt này</div>
           <div className="flex items-baseline space-x-1">
             <span className="text-base font-extrabold text-emerald-700">{formatCurrency(currentPayAmount)}</span>
-            <span className="text-[10px] text-neutral-500 font-medium">({selectedPlan === 'weekly' ? 'Tuần 1' : 'Trọn gói'})</span>
+            <span className="text-[10px] text-neutral-500 font-medium">({isTrial ? '1 buổi học thử' : selectedPlan === 'weekly' ? 'Tuần 1' : 'Trọn gói'})</span>
           </div>
         </div>
 
@@ -308,7 +317,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
               <div className="text-center space-y-3 py-2">
                 <div className="bg-white p-3 rounded-2xl border-2 border-dashed border-emerald-300 inline-block shadow-sm">
                   <img
-                    src="https://api.vietqr.io/image/970422-0901234567-compact.png?amount=1000000&addInfo=TUTORNEST%20MINHANH"
+                    src={qrImageUrl}
                     alt="VietQR Code"
                     className="w-44 h-44 object-contain mx-auto"
                   />
@@ -383,7 +392,7 @@ export const V2CheckoutScreen: React.FC<V2CheckoutScreenProps> = ({
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Tôi đã chuyển khoản thành công</span>
+                    <span>{isTrial ? 'Xác nhận đã thanh toán học thử' : 'Tôi đã chuyển khoản thành công'}</span>
                   </>
                 )}
               </Button>
