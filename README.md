@@ -28,4 +28,4 @@ The static build is in `dist/`. See [release scope and evidence](docs/CASE_STUDY
 
 [Figma design](https://www.figma.com/design/6P3XwYly9wYY2jHWQgclYY/TutorNest?node-id=23201-4624)
 
-The presentation’s **Evidence / Bằng chứng** button provides downloadable decision logs, verified desk-research sources, clearly labeled synthetic research exercises, an accessibility measurement worksheet, and a capped self-assessment. Research with parents remains pending; synthetic material is excluded from real outcomes.
+The presentation’s **Evidence / Bằng chứng** button provides downloadable decision logs, verified desk-research sources, clearly labeled synthetic exercises, accessibility materials, a capped self-assessment, and an author-supplied retest/audit report. The accompanying evidence addendum defines that report’s limited scope and the raw artifacts still needed to reconcile the tested build.

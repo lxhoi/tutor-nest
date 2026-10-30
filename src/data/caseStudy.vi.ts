@@ -456,27 +456,27 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "note": "Mở prototype để vào trải nghiệm V2. Liên kết Figma mở bảng thiết kế cuối. Các thao tác thanh toán là mô phỏng."
   },
   {
-    "title": "Giúp thông tin\ndễ hiểu hơn.",
+    "title": "Audit được báo cáo.\nPhạm vi được nêu rõ.",
     "chapter": "Hoàn thiện",
     "kicker": "20 / KHẢ NĂNG TIẾP CẬN",
-    "description": "Bản sửa cải thiện bàn phím, focus dialog, trạng thái lựa chọn và độ dễ đọc. Đây là cải tiến cụ thể, không phải tuyên bố đạt toàn bộ WCAG.",
+    "description": "Báo cáo do tác giả cung cấp ghi nhận audit giới hạn trên iOS, Android và desktop. Kết quả không được suy rộng thành chứng nhận toàn bộ sản phẩm.",
     "layout": "accessibility",
     "items": [
       {
-        "title": "Bàn phím & focus",
-        "text": "Tìm kiếm hỗ trợ Enter/Space. Dialog bộ lọc và lịch quản lý focus, Escape và vòng di chuyển bàn phím."
+        "title": "Đa môi trường",
+        "text": "Báo cáo nêu VoiceOver trên iPhone 14, TalkBack trên Galaxy S23 và keyboard trên MacBook Pro."
       },
       {
-        "title": "Trạng thái rõ ràng",
-        "text": "Nhãn chữ và trạng thái chọn bổ trợ lịch rảnh. Thanh toán mô phỏng tách chờ, thất bại và thành công."
+        "title": "Kết quả được báo cáo",
+        "text": "Contrast 4.54:1 và 8.6:1 cho hai mẫu; 200% zoom, focus và touch target được ghi là pass trong phạm vi audit."
       },
       {
-        "title": "Thông tin dễ đọc",
-        "text": "Tăng cỡ nhãn lịch, làm đậm nhãn tuần thiếu tương phản. Kiểm định đầy đủ với công nghệ hỗ trợ là bước tiếp theo."
+        "title": "Giới hạn claim",
+        "text": "Chưa có inventory mọi component/state hoặc independent audit. Không tuyên bố toàn bộ sản phẩm đạt WCAG AA."
       }
     ],
-    "evidence": "Sửa accessibility có mục tiêu · không khẳng định đạt toàn bộ chuẩn",
-    "note": "Đã ghi nhận các sửa đổi cụ thể. Chưa xác minh đầy đủ WCAG hoặc hỗ trợ trình đọc màn hình."
+    "evidence": "Báo cáo audit do tác giả cung cấp · phạm vi giới hạn",
+    "note": "Mở Bằng chứng để tải report gốc và addendum đối chiếu. Hoàn tất raw log/build mapping trước khi dùng claim mạnh hơn."
   },
   {
     "title": "Nền tảng cho\nnhững bước tiếp theo.",
@@ -500,10 +500,10 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     ]
   },
   {
-    "title": "Điều đã thay đổi.\nĐiều cần tìm hiểu thêm.",
+    "title": "Có kết quả retest.\nVẫn còn giới hạn.",
     "chapter": "Nhìn lại",
     "kicker": "21 / ĐIỀU RÚT RA",
-    "description": "Đầu ra hiện có prototype kết nối, bộ bằng chứng có thể xem và 17 kiểm tra hồi quy đạt. Kết quả từ người dùng vẫn chưa được đo.",
+    "description": "Báo cáo do tác giả cung cấp mô tả retest v1/v2 với 5 phụ huynh cho ba task trọng yếu; 17 kiểm tra hồi quy vẫn là bằng chứng kỹ thuật riêng.",
     "layout": "takeaways",
     "items": [
       {
@@ -515,34 +515,34 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
         "text": "17 kiểm tra bao phủ ngày, lịch rảnh, giá thống nhất, khôi phục slot, lưu nháp, tránh trùng lịch và định dạng file lịch."
       },
       {
-        "title": "Nghiên cứu còn cần làm",
-        "text": "Bộ nghiên cứu có tuyển mẫu, tác vụ trung lập, chỉ số, severity và retest. Không tự dựng dữ liệu người tham gia hoặc tác động."
+        "title": "Retest được báo cáo",
+        "text": "Quote, payment recovery và reschedule đạt 5/5 completion trên v2 trong round n=5 được báo cáo; raw artifacts cần được đối chiếu."
       }
     ],
-    "evidence": "Đã kiểm tra kỹ thuật · chưa thực hiện nghiên cứu với phụ huynh",
-    "note": "Mở Bằng chứng trên thanh công cụ để xem và tải tài liệu. Kết quả test kỹ thuật không chứng minh tỷ lệ hoàn thành tác vụ của phụ huynh."
+    "evidence": "Retest n=5 do tác giả cung cấp · 17 kiểm tra kỹ thuật đạt",
+    "note": "Kết quả chỉ áp dụng cho ba task và round được báo cáo; không suy rộng thành product impact hoặc nghiên cứu độc lập."
   },
   {
-    "title": "Kiểm chứng. Tinh chỉnh.\nRồi mở rộng.",
+    "title": "Đối chiếu. Mở rộng.\nRồi phát hành.",
     "chapter": "Nhìn lại",
     "kicker": "22 / CÁC BƯỚC TIẾP THEO",
-    "description": "Biến giả định thành bằng chứng và dùng kết quả để định hướng vòng thiết kế tiếp theo.",
+    "description": "Hoàn tất chuỗi bằng chứng trước khi mở rộng claim từ round retest và audit giới hạn.",
     "layout": "cards",
     "items": [
       {
-        "title": "Kiểm thử với phụ huynh",
-        "text": "Quan sát tác vụ, ghi nhận nhầm lẫn về chọn gia sư, lịch học và chi phí."
+        "title": "Đối chiếu retest",
+        "text": "Lưu consent ẩn danh, task log, raw SEQ, observation notes và version v1/v2 của năm phiên được báo cáo."
       },
       {
-        "title": "Kiểm định tiếp cận",
-        "text": "Kiểm tra tương phản, cỡ chữ, bàn phím, trình đọc màn hình và kích thước vùng chạm."
+        "title": "Mở rộng audit",
+        "text": "Đo mọi component/state, icon control và viewport; lặp lại với assistive technology và environment matrix rõ ràng."
       },
       {
-        "title": "Tinh chỉnh & mở rộng",
-        "text": "Sửa thông tin lịch, giá chưa nhất quán; sau đó kiểm chứng bố cục responsive và tình huống ngoại lệ."
+        "title": "Mở rộng phạm vi nghiên cứu",
+        "text": "Kiểm tra discovery, onboarding, nhiều con, retention và error recovery trước khi tuyên bố tác động sản phẩm."
       }
     ],
-    "note": "Ưu tiên kiểm chứng trước khi thêm tính năng. Ngày, giá và cam kết trong prototype là minh họa, cần kiểm tra tính nhất quán trước khi phát hành."
+    "note": "Ưu tiên artifact có thể kiểm tra hơn số điểm. Ngày, giá và payment trong prototype vẫn là minh họa, không phải dịch vụ vận hành."
   },
   {
     "title": "Học tập tốt hơn\nbắt đầu từ niềm tin.",

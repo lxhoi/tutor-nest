@@ -466,27 +466,27 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "note": "Use Open interactive prototype to enter the local V2 experience. The Figma link opens the final design board. Payment actions are simulated."
   },
   {
-    "title": "Make information\neasier to understand.",
+    "title": "Reported audit.\nDefined scope.",
     "chapter": "Refine",
     "kicker": "20 / ACCESSIBILITY CONSIDERATIONS",
-    "description": "The revision improves keyboard interaction, dialog focus, selected states, and legibility. These are targeted improvements, not a claim of full WCAG conformance.",
+    "description": "An author-supplied report records a limited audit across iOS, Android and desktop. Its results are not generalized into a whole-product conformance claim.",
     "layout": "accessibility",
     "items": [
       {
-        "title": "Keyboard & focus",
-        "text": "The search entry supports Enter/Space. Filter and scheduling dialogs manage focus, Escape, and keyboard containment."
+        "title": "Multiple environments",
+        "text": "The report names VoiceOver on iPhone 14, TalkBack on Galaxy S23, and keyboard testing on a MacBook Pro."
       },
       {
-        "title": "Explicit states",
-        "text": "Text and selected states reinforce availability. Payment simulation distinguishes pending, failed, and successful outcomes."
+        "title": "Reported results",
+        "text": "It records 4.54:1 and 8.6:1 for two samples, plus passing 200% zoom, focus and touch-target checks within its scope."
       },
       {
-        "title": "Readable information",
-        "text": "Calendar labels are larger and the low-contrast week label was darkened. A complete assistive-technology audit remains future work."
+        "title": "Claim limit",
+        "text": "There is no component/state inventory or independent audit. The case study does not claim whole-product WCAG AA conformance."
       }
     ],
-    "evidence": "Targeted accessibility corrections · full conformance not claimed",
-    "note": "Targeted corrections are documented. Full WCAG conformance and screen-reader support remain unverified."
+    "evidence": "Author-supplied audit report · limited scope",
+    "note": "Open Evidence for the original report and reconciliation addendum. Complete raw-log/build mapping before making a stronger claim."
   },
   {
     "title": "A foundation\nfor what comes next.",
@@ -510,10 +510,10 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     ]
   },
   {
-    "title": "What changed.\nWhat remains to learn.",
+    "title": "There is retest data.\nLimits remain.",
     "chapter": "Reflect",
     "kicker": "21 / TAKEAWAYS",
-    "description": "The documented output now includes a connected prototype, an inspectable evidence pack and seventeen passing regression tests. User outcomes remain unmeasured.",
+    "description": "An author-supplied report describes a v1/v2 retest with five parents on three critical tasks; seventeen regression checks remain separate technical evidence.",
     "layout": "takeaways",
     "items": [
       {
@@ -525,34 +525,34 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
         "text": "Seventeen checks cover dates, availability, quote consistency, saved-slot restoration, draft parsing, overlap prevention and calendar serialization."
       },
       {
-        "title": "Research still required",
-        "text": "A ready-to-run study kit defines recruitment, neutral tasks, metrics, severity and retest. No participant data or uplift is invented."
+        "title": "Reported retest",
+        "text": "Quote, payment recovery and reschedule reached 5/5 completion on v2 in the reported n=5 round; raw artifacts still need reconciliation."
       }
     ],
-    "evidence": "Technical checks verified · parent research not yet conducted",
-    "note": "Open Evidence in the toolbar to inspect downloadable artifacts. Technical test results are not proof of task success among parents."
+    "evidence": "Author-supplied n=5 retest · 17 technical checks passed",
+    "note": "The results apply only to the three tasks and reported round; they are not generalized into product impact or independently verified research."
   },
   {
-    "title": "Validate. Refine.\nThen expand.",
+    "title": "Reconcile. Expand.\nThen publish.",
     "chapter": "Reflect",
     "kicker": "22 / NEXT STEPS",
-    "description": "Turn the design’s assumptions into evidence and use the results to guide the next iteration.",
+    "description": "Complete the evidence chain before widening claims from the reported retest and limited audit.",
     "layout": "cards",
     "items": [
       {
-        "title": "Test with parents",
-        "text": "Run task-based sessions and document confusion around tutor choice, schedules, and fees."
+        "title": "Reconcile the retest",
+        "text": "Retain anonymized consent, task logs, raw SEQ, observation notes and the v1/v2 versions for the five reported sessions."
       },
       {
-        "title": "Audit accessibility",
-        "text": "Check contrast, reading size, keyboard access, screen readers, and touch target sizes."
+        "title": "Extend the audit",
+        "text": "Measure every component/state, icon control and viewport; repeat with assistive technology and a defined environment matrix."
       },
       {
-        "title": "Refine & expand",
-        "text": "Resolve booking and pricing inconsistencies, then validate responsive layouts and edge cases."
+        "title": "Expand research scope",
+        "text": "Test discovery, onboarding, multi-child use, retention and error recovery before claiming product impact."
       }
     ],
-    "note": "Prioritize validation over adding more features. Dates, prices, and guarantees in the prototype are illustrative and need consistency review before production."
+    "note": "Prioritize inspectable artifacts over score claims. Dates, prices and payment in the prototype remain illustrative, not an operating service."
   },
   {
     "title": "Better learning\nstarts with trust.",

@@ -37,8 +37,8 @@ The demo uses a disclosed calendar anchor of 30 October 2026. All tutors, verifi
 
 ## Remaining validation
 
-- Conduct the proposed parent usability study and report observations without inventing outcomes.
-- Audit screen readers, text scaling, touch targets, contrast, and responsive behavior comprehensively.
+- An author-supplied report now describes a v1/v2 retest with five parents on three critical tasks and a limited accessibility audit. Treat it as supplied evidence, not independent verification; retain its raw observations, consent records and versioned v1/v2 artifacts before widening claims.
+- Extend the reported accessibility audit to all critical states, screen readers, text scaling, touch targets, contrast, and responsive behavior.
 - Production availability, payment reconciliation, authentication, server persistence, and service policies require separate implementation and validation.
 
 ## Publication
@@ -52,7 +52,7 @@ The demo uses a disclosed calendar anchor of 30 October 2026. All tutors, verifi
 - Calendar export creates an actual .ics file; the UI explains manual import and does not claim account synchronization.
 - Device-local drafts restore validated state. New tutor selection begins a draft.
 - Reschedule choices exclude overlapping booked sessions; renewal uses the selected booking.
-- The Evidence panel links to the research protocol, IA/decision log, verified desk-research log, clearly labeled synthetic research pipeline, accessibility measurement worksheet, capped self-assessment and verification scope.
+- The Evidence panel links to the research protocol, IA/decision log, verified desk-research log, clearly labeled synthetic research pipeline, accessibility measurement worksheet, capped self-assessment, author-supplied retest/audit report, evidence addendum and verification scope.
 
 The protocol includes recruitment criteria, consent, neutral tasks, success criteria, recording templates, severity rules and planned retesting. The IA document includes a scenario journey, sitemap, hypotheses, alternatives and trade-offs. The simulation materials are AI-generated exercises and cannot substitute for participants. These are preparation artifacts, not completed participant studies.
 
