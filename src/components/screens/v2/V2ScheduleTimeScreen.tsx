@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useModalFocus } from '../../../lib/useModalFocus';
 import { Button } from '../../ui/button';
 import {
   ArrowLeft, Calendar, Clock, Video, Home, CheckCircle2,
@@ -6,6 +7,7 @@ import {
   X, CalendarDays, Info
 } from 'lucide-react';
 import { ScreenId, BookingState } from '../../../types';
+import { calendarFor, DAY_CODES, tutorDays, DEMO_ANCHOR, formatDate, slotIdForTime } from '../../../lib/booking';
 import { formatCurrency } from '../../../data/mockData';
 
 interface V2ScheduleTimeScreenProps {
@@ -13,16 +15,6 @@ interface V2ScheduleTimeScreenProps {
   updateBooking: (fields: Partial<BookingState>) => void;
   onNavigate: (screen: ScreenId) => void;
 }
-
-const weekdays = [
-  { id: 'T2', label: 'Thứ 2', free: true },
-  { id: 'T3', label: 'Thứ 3', free: true, recommended: true },
-  { id: 'T4', label: 'Thứ 4', free: false },
-  { id: 'T5', label: 'Thứ 5', free: true, recommended: true },
-  { id: 'T6', label: 'Thứ 6', free: false },
-  { id: 'T7', label: 'Thứ 7', free: true },
-  { id: 'CN', label: 'Chủ nhật', free: false },
-];
 
 const getCalendarWeekday = (dateString: string) => {
   const [day, month, year] = dateString.split('/').map(Number);
@@ -43,75 +35,27 @@ interface CalendarDaySlot {
   recommended?: boolean;
 }
 
-const upcomingCalendarDays: CalendarDaySlot[] = [
-  { date: '14/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '14', month: 'Th10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '15/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '15', month: 'Th10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
-  { date: '16/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '16', month: 'Th10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '17/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '17', month: 'Th10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
-  { date: '18/10/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '18', month: 'Th10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '19/10/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '19', month: 'Th10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '20/10/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '20', month: 'Th10', isAvailable: false, statusNote: 'Nghỉ' },
-  { date: '21/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '21', month: 'Th10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '22/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '22', month: 'Th10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '23/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '23', month: 'Th10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '24/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '24', month: 'Th10', isAvailable: true, statusNote: 'Còn ca' },
-];
-
-// Full 32-day calendar dataset covering October & November 2026
-const calendarDaysMonth: CalendarDaySlot[] = [
-  // Tháng 10/2026
-  { date: '14/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '14', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '15/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '15', month: '10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
-  { date: '16/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '16', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '17/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '17', month: '10', isAvailable: true, statusNote: 'Còn ca', recommended: true },
-  { date: '18/10/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '18', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '19/10/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '19', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '20/10/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '20', month: '10', isAvailable: false, statusNote: 'Nghỉ' },
-  { date: '21/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '21', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '22/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '22', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '23/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '23', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '24/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '24', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '25/10/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '25', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '26/10/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '26', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '27/10/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '27', month: '10', isAvailable: false, statusNote: 'Nghỉ' },
-  { date: '28/10/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '28', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '29/10/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '29', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '30/10/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '30', month: '10', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '31/10/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '31', month: '10', isAvailable: true, statusNote: 'Còn ca' },
-  // Tháng 11/2026
-  { date: '01/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '01', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '02/11/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '02', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '03/11/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '03', month: '11', isAvailable: false, statusNote: 'Nghỉ' },
-  { date: '04/11/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '04', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '05/11/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '05', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '06/11/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '06', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '07/11/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '07', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '08/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '08', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '09/11/2026', dayOfWeek: 'Thứ 7', shortDay: 'T7', dayNumber: '09', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '10/11/2026', dayOfWeek: 'Chủ nhật', shortDay: 'CN', dayNumber: '10', month: '11', isAvailable: false, statusNote: 'Nghỉ' },
-  { date: '11/11/2026', dayOfWeek: 'Thứ 2', shortDay: 'T2', dayNumber: '11', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '12/11/2026', dayOfWeek: 'Thứ 3', shortDay: 'T3', dayNumber: '12', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '13/11/2026', dayOfWeek: 'Thứ 4', shortDay: 'T4', dayNumber: '13', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-  { date: '14/11/2026', dayOfWeek: 'Thứ 5', shortDay: 'T5', dayNumber: '14', month: '11', isAvailable: true, statusNote: 'Còn ca' },
-  { date: '15/11/2026', dayOfWeek: 'Thứ 6', shortDay: 'T6', dayNumber: '15', month: '11', isAvailable: false, statusNote: 'Kín lịch' },
-];
-
 export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
   booking,
   updateBooking,
   onNavigate,
 }) => {
+  const allowedDays = tutorDays(booking.tutor);
+  const weekdays = ['T2','T3','T4','T5','T6','T7','CN'].map(id=>({id,label:id,free:allowedDays.includes(id),recommended:false}));
+  const calendarDaysMonth = useMemo(()=>calendarFor(booking.tutor), [booking.tutor]);
+  const upcomingCalendarDays = calendarDaysMonth.slice(0,11);
   const [bookingType, setBookingType] = useState<'trial' | 'recurring'>(booking.bookingType || 'trial');
   const [trialDate, setTrialDate] = useState(booking.startDate || '15/10/2026');
   const [recurringStartDate, setRecurringStartDate] = useState(booking.startDate || '15/10/2026');
-  const [selectedDays, setSelectedDays] = useState<string[]>(booking.selectedDays?.length ? booking.selectedDays : ['T3', 'T5']);
+  const [selectedDays, setSelectedDays] = useState<string[]>(booking.selectedDays.filter(day=>allowedDays.includes(day)).length ? booking.selectedDays.filter(day=>allowedDays.includes(day)) : allowedDays.slice(0,2));
   const [durationHours, setDurationHours] = useState<number>(booking.sessionDurationHours || 1.5);
-  const [cycleWeeks, setCycleWeeks] = useState(booking.cycleWeeks || 8);
+  const [cycleWeeks, setCycleWeeks] = useState([4,8,12].includes(booking.cycleWeeks) ? booking.cycleWeeks : 8);
   const [sessionMode, setSessionMode] = useState<'online' | 'offline'>(booking.sessionMode || 'online');
-  const [selectedSlotId, setSelectedSlotId] = useState('evening-1');
+  const [selectedSlotId, setSelectedSlotId] = useState(()=>slotIdForTime(booking.timeSlot));
   
   // Calendar modal states
   const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const calendarRef = useModalFocus(showCalendarModal, ()=>setShowCalendarModal(false));
   const [calendarModalTarget, setCalendarModalTarget] = useState<'trial' | 'recurring'>('trial');
   const [calendarMonthTab, setCalendarMonthTab] = useState<'10' | '11'>(booking.startDate?.split('/')[1] === '11' ? '11' : '10');
   const [showAllTimelineSessions, setShowAllTimelineSessions] = useState(false);
@@ -167,6 +111,25 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     }
   }, [durationHours]);
 
+  const relevantDays = bookingType === 'trial' ? [getCalendarWeekday(trialDate).short] : selectedDays;
+  const permitted = (band: string) => relevantDays.length > 0 && relevantDays.every(day=>(booking.tutor.availableSlots || []).some(value=>value.startsWith(band)&&value.includes(day)));
+  const visibleSlots = {
+    morning: groupedSlots.morning.map(slot=>({...slot,free:slot.free&&permitted('Sáng')})),
+    afternoon: groupedSlots.afternoon.map(slot=>({...slot,free:slot.free&&permitted('Chiều')})),
+    evening: groupedSlots.evening.map(slot=>({...slot,free:slot.free&&permitted('Tối')})),
+  };
+  const chosenSlot = [...visibleSlots.morning,...visibleSlots.afternoon,...visibleSlots.evening].find(slot=>slot.id===selectedSlotId);
+  const validDate = calendarDaysMonth.some(day=>day.date===(bookingType==='trial'?trialDate:recurringStartDate)&&day.isAvailable);
+  const canProceed = Boolean(chosenSlot?.free) && validDate && (bookingType==='trial'||selectedDays.length>0);
+
+
+  useEffect(() => {
+    if (!chosenSlot?.free) {
+      const first = [...visibleSlots.morning,...visibleSlots.afternoon,...visibleSlots.evening].find(slot=>slot.free);
+      if (first) setSelectedSlotId(first.id);
+    }
+  }, [trialDate, bookingType, selectedDays.join(','), durationHours, booking.tutor.id, selectedSlotId]);
+
   // Selected time slot string
   const currentSlotString = useMemo(() => {
     const all = [...groupedSlots.morning, ...groupedSlots.afternoon, ...groupedSlots.evening];
@@ -186,7 +149,6 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     };
 
     const [startD, startM, startY] = recurringStartDate.split('/').map(Number);
-    const refAnchor = new Date(2026, 9, 14); // 14/10/2026 is Day 1 (T2)
     const curDate = new Date(startY || 2026, (startM || 10) - 1, startD || 15);
 
     const sessions: Array<{
@@ -204,9 +166,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     let safetyDays = 0;
 
     while (sessionCount < maxSessions && safetyDays < 180) {
-      const diffDays = Math.round((curDate.getTime() - refAnchor.getTime()) / (1000 * 3600 * 24));
-      const dayNum = ((diffDays % 7 + 7) % 7) + 1;
-      const dayInfo = numToDayCode[dayNum];
+      const dayInfo = { short: DAY_CODES[curDate.getDay()], full: curDate.getDay() === 0 ? 'Chủ nhật' : `Thứ ${curDate.getDay()+1}` };
 
       if (dayInfo && selectedDays.includes(dayInfo.short)) {
         sessionCount++;
@@ -233,6 +193,8 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
     return sessions;
   }, [recurringStartDate, selectedDays, cycleWeeks, currentSlotString]);
 
+  useEffect(()=>{const first=timelineSessions[0]?.fullDate;if(bookingType==='recurring'&&first&&first!==recurringStartDate)setRecurringStartDate(first);},[bookingType,timelineSessions[0]?.fullDate,recurringStartDate]);
+
   const estimatedEndDate = timelineSessions.length > 0 
     ? timelineSessions[timelineSessions.length - 1].fullDate 
     : '10/12/2026';
@@ -258,18 +220,21 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
   };
 
   const handleProceed = () => {
+    if (!canProceed) return;
     updateBooking({
       bookingType,
       sessionDurationHours: durationHours,
       sessionDuration: `${durationHours} giờ`,
       timeSlot: currentSlotString,
-      selectedDays: bookingType === 'trial' ? [trialDate] : selectedDays,
-      cycleWeeks: bookingType === 'trial' ? 1 : cycleWeeks,
+      selectedDays,
+      cycleWeeks,
+      isRecurring: bookingType === 'recurring',
+      paymentPlan: bookingType === 'trial' ? 'per_session' : booking.paymentPlan === 'full' ? 'full' : 'weekly',
       totalSessions,
       weeklyAmount,
       totalAmount,
       sessionMode,
-      startDate: bookingType === 'trial' ? trialDate : recurringStartDate,
+      startDate: bookingType === 'trial' ? trialDate : (timelineSessions[0]?.fullDate || recurringStartDate),
       endDate: bookingType === 'trial' ? trialDate : estimatedEndDate,
     });
     onNavigate('v2_checkout');
@@ -289,7 +254,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
         </Button>
 
         <div className="text-center">
-          <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Bước 1 / 2</div>
+          <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Bước 1 / 2</div>
           <h1 className="text-xs font-bold text-neutral-900">Thiết lập lịch & thời gian học</h1>
         </div>
 
@@ -308,10 +273,10 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
           />
           <div className="flex-1 min-w-0">
             <div className="text-xs font-bold text-neutral-900 truncate">Gia sư {booking.tutor.name}</div>
-            <div className="text-[11px] text-neutral-500 font-medium">Toán lớp 9 • {formatCurrency(booking.hourlyRate)}/giờ</div>
+            <div className="text-[11px] text-neutral-500 font-medium">{booking.subject} {booking.grade} • {formatCurrency(booking.hourlyRate)}/giờ</div>
           </div>
-          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200 shrink-0">
-            Đã kiểm định
+          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200 shrink-0">
+            Hồ sơ mẫu
           </span>
         </div>
 
@@ -322,7 +287,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               1. Hình thức học
             </h2>
             <span className="text-[11px] text-neutral-500 font-medium">
-              Đổi lịch trước 24h miễn phí
+              Điều kiện đổi lịch · minh họa
             </span>
           </div>
 
@@ -337,7 +302,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               }`}
             >
               <span>Học thử 1 buổi</span>
-              <span className="text-[10px] text-emerald-600 font-medium">Hoàn 100% nếu không hài lòng</span>
+              <span className="text-[11px] text-emerald-600 font-medium">Điều khoản học thử minh họa</span>
             </Button>
 
             <Button variant="legacy"
@@ -349,7 +314,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               }`}
             >
               <span>Lịch theo tuần</span>
-              <span className="text-[10px] text-neutral-500 font-normal">Gia hạn từng tuần linh hoạt</span>
+              <span className="text-[11px] text-neutral-500 font-normal">Gia hạn từng tuần linh hoạt</span>
             </Button>
           </div>
 
@@ -387,12 +352,12 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     return (
                       <div
                         key={item.date}
-                        className="flex flex-col items-center justify-between p-2 rounded-2xl border border-neutral-200/60 bg-neutral-100/60 text-neutral-400 min-w-[58px] h-[68px] shrink-0 opacity-60 cursor-not-allowed select-none"
+                        className="flex flex-col items-center justify-between p-2 rounded-2xl border border-neutral-200/60 bg-neutral-100/60 text-neutral-600 min-w-[58px] h-[68px] shrink-0 opacity-60 cursor-not-allowed select-none"
                         title={`${getCalendarWeekday(item.date).full} (${item.date}): ${item.statusNote}`}
                       >
-                        <span className="text-[10px] font-medium">{getCalendarWeekday(item.date).short}</span>
+                        <span className="text-[11px] font-medium">{getCalendarWeekday(item.date).short}</span>
                         <span className="text-sm font-semibold line-through decoration-neutral-400">{item.dayNumber}</span>
-                        <span className="text-[8px] text-neutral-400 font-medium">{item.statusNote}</span>
+                        <span className="text-[11px] text-neutral-600 font-medium">{item.statusNote}</span>
                       </div>
                     );
                   }
@@ -407,17 +372,17 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       }`}
                     >
                       {item.recommended && !isSelected && (
-                        <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1 rounded-full uppercase tracking-tighter shadow-2xs">
+                        <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[11px] font-bold px-1 rounded-full uppercase tracking-tighter shadow-2xs">
                           Gợi ý
                         </span>
                       )}
-                      <span className={`text-[10px] ${isSelected ? 'text-emerald-800 font-bold' : 'text-neutral-500'}`}>
+                      <span className={`text-[11px] ${isSelected ? 'text-emerald-800 font-bold' : 'text-neutral-500'}`}>
                         {getCalendarWeekday(item.date).short}
                       </span>
                       <span className="text-base font-extrabold leading-none">
                         {item.dayNumber}
                       </span>
-                      <span className={`text-[8px] font-medium px-1 rounded-sm ${
+                      <span className={`text-[11px] font-medium px-1 rounded-sm ${
                         isSelected ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-700'
                       }`}>
                         {item.statusNote}
@@ -445,17 +410,19 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     return (
                       <Button variant="legacy"
                         key={day.id}
+                        disabled={!day.free}
+                        aria-pressed={isSelected}
                         onClick={() => toggleDay(day.id)}
                         className={`flex flex-col items-center justify-center p-2 rounded-xl text-center border transition-all cursor-pointer min-h-[46px] ${
                           isSelected
                             ? 'bg-emerald-600 border-emerald-700 text-white font-bold shadow-2xs'
                             : day.free
                             ? 'bg-neutral-50 hover:bg-neutral-100 border-neutral-200 text-neutral-800 font-semibold'
-                            : 'bg-neutral-100/50 border-neutral-200/50 text-neutral-400 opacity-60'
+                            : 'bg-neutral-100/50 border-neutral-200/50 text-neutral-600 opacity-60'
                         }`}
                       >
                         <span className="text-xs">{day.id}</span>
-                        <span className="text-[9px] mt-0.5 font-normal">
+                        <span className="text-[11px] mt-0.5 font-normal">
                           {isSelected ? '✓' : day.recommended ? 'Gợi ý' : day.free ? 'Trống' : 'Bận'}
                         </span>
                       </Button>
@@ -467,7 +434,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {/* Ngày bắt đầu học (Khai giảng buổi 1) */}
               <div className="p-2.5 bg-neutral-50 rounded-2xl border border-neutral-200/90 flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày bắt đầu học (Buổi 1):</div>
+                  <div className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider">Ngày bắt đầu học (Buổi 1):</div>
                   <div className="text-xs font-extrabold text-neutral-900 flex items-center space-x-1.5 mt-0.5">
                     <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                     <span>
@@ -492,7 +459,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <div className="space-y-1.5 pt-1 border-t border-neutral-100">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-neutral-800">Lộ trình học tập:</span>
-                  <span className="text-[10px] text-neutral-500">Đóng học phí từng tuần</span>
+                  <span className="text-[11px] text-neutral-500">Đóng học phí từng tuần</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {[
@@ -510,10 +477,10 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       }`}
                     >
                       <div className="text-xs font-extrabold">{item.label}</div>
-                      <div className={`text-[10px] ${cycleWeeks === item.weeks ? 'text-emerald-100' : 'text-neutral-500'}`}>
+                      <div className={`text-[11px] ${cycleWeeks === item.weeks ? 'text-emerald-100' : 'text-neutral-500'}`}>
                         {item.weeks * selectedDays.length} buổi
                       </div>
-                      <span className={`text-[9px] mt-1 px-1.5 py-0.2 rounded-full font-bold ${
+                      <span className={`text-[11px] mt-1 px-1.5 py-0.2 rounded-full font-bold ${
                         cycleWeeks === item.weeks ? 'bg-emerald-600 text-emerald-100' : 'bg-neutral-200/70 text-neutral-600'
                       }`}>
                         {item.tag}
@@ -530,7 +497,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                     <CalendarDays className="w-4 h-4 text-emerald-700" />
                     <span className="text-xs font-bold text-neutral-900">Lịch trình học dự kiến ({totalSessions} buổi)</span>
                   </div>
-                  <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span className="text-[11px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
                     Xong: ~{estimatedEndDate}
                   </span>
                 </div>
@@ -543,7 +510,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                       className="flex items-center justify-between p-2 rounded-xl bg-white border border-neutral-200/80 text-xs shadow-2xs"
                     >
                       <div className="flex items-center space-x-2">
-                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold ${
                           session.sessionIndex === 1
                             ? 'bg-emerald-600 text-white'
                             : 'bg-neutral-100 text-neutral-700'
@@ -553,11 +520,11 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                         <span className="font-bold text-neutral-900">{session.dayText}, {session.dateText}</span>
                       </div>
                       {session.sessionIndex === 1 ? (
-                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
                           Khai giảng
                         </span>
                       ) : (
-                        <span className="text-[10px] text-neutral-400 font-medium">Tuần {session.weekIndex}</span>
+                        <span className="text-[11px] text-neutral-600 font-medium">Tuần {session.weekIndex}</span>
                       )}
                     </div>
                   ))}
@@ -609,9 +576,9 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               >
                 <div>
                   <div className="text-xs font-extrabold">{item.label}</div>
-                  <div className="text-[10px] text-neutral-500">{item.sub}</div>
+                  <div className="text-[11px] text-neutral-500">{item.sub}</div>
                 </div>
-                <span className={`text-[9px] mt-1 px-1.5 py-0.5 rounded-full font-bold ${
+                <span className={`text-[11px] mt-1 px-1.5 py-0.5 rounded-full font-bold ${
                   durationHours === item.hours
                     ? 'bg-emerald-200/80 text-emerald-900'
                     : 'bg-neutral-200/70 text-neutral-600'
@@ -630,7 +597,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <Sparkles className="w-4 h-4 text-emerald-600" />
               <span>3. Khung giờ học trong ngày ({durationHours}h/buổi)</span>
             </h2>
-            <span className="text-[10px] text-neutral-500">Quét 1 lượt cả ngày</span>
+            <span className="text-[11px] text-neutral-500">Quét 1 lượt cả ngày</span>
           </div>
 
           {/* Group 1: Buổi Sáng */}
@@ -640,24 +607,25 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <span>Buổi Sáng</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {groupedSlots.morning.map((slot) => {
+              {visibleSlots.morning.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
                   <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
+                    aria-pressed={isSelected}
                     onClick={() => setSelectedSlotId(slot.id)}
                     className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-600 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <span className="text-xs font-bold">{slot.time}</span>
+                    <span className="text-xs font-bold">{slot.time}{isSelected && <span className="sr-only"> · Đã chọn</span>}</span>
                     {!slot.free && (
-                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                      <span className="text-[11px] text-neutral-600 font-medium">Kín</span>
                     )}
                   </Button>
                 );
@@ -672,24 +640,25 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <span>Buổi Chiều</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {groupedSlots.afternoon.map((slot) => {
+              {visibleSlots.afternoon.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
                   <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
+                    aria-pressed={isSelected}
                     onClick={() => setSelectedSlotId(slot.id)}
                     className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-600 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <span className="text-xs font-bold">{slot.time}</span>
+                    <span className="text-xs font-bold">{slot.time}{isSelected && <span className="sr-only"> · Đã chọn</span>}</span>
                     {!slot.free && (
-                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                      <span className="text-[11px] text-neutral-600 font-medium">Kín</span>
                     )}
                   </Button>
                 );
@@ -704,36 +673,37 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 <Moon className="w-3.5 h-3.5 text-indigo-500" />
                 <span>Buổi Tối</span>
               </div>
-              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded">
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded">
                 ★ Phổ biến nhất
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {groupedSlots.evening.map((slot) => {
+              {visibleSlots.evening.map((slot) => {
                 const isSelected = selectedSlotId === slot.id;
                 return (
                   <Button variant="legacy"
                     key={slot.id}
                     disabled={!slot.free}
+                    aria-pressed={isSelected}
                     onClick={() => setSelectedSlotId(slot.id)}
                     className={`py-2 px-3 rounded-xl border flex items-center justify-between transition-all ${
                       !slot.free
-                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-400 opacity-60 cursor-not-allowed'
+                        ? 'bg-neutral-100/70 border-neutral-200 text-neutral-600 opacity-60 cursor-not-allowed'
                         : isSelected
                         ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20 text-emerald-950 font-bold cursor-pointer'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 cursor-pointer'
                     }`}
                   >
-                    <span className="text-xs font-bold">{slot.time}</span>
+                    <span className="text-xs font-bold">{slot.time}{isSelected && <span className="sr-only"> · Đã chọn</span>}</span>
                     {slot.recommended && (
-                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                      <span className={`text-[11px] font-bold px-1.5 py-0.2 rounded ${
                         isSelected ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800'
                       }`}>
                         Gợi ý
                       </span>
                     )}
                     {!slot.free && (
-                      <span className="text-[9px] text-neutral-400 font-medium">Kín</span>
+                      <span className="text-[11px] text-neutral-600 font-medium">Kín</span>
                     )}
                   </Button>
                 );
@@ -759,7 +729,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <Video className="w-4 h-4 text-emerald-700" />
               <div className="text-left text-xs">
                 <div>Dạy Online 1-1</div>
-                <div className="text-[9px] text-neutral-500">Google Meet HD</div>
+                <div className="text-[11px] text-neutral-500">Google Meet HD</div>
               </div>
             </Button>
 
@@ -774,7 +744,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <Home className="w-4 h-4 text-emerald-700" />
               <div className="text-left text-xs">
                 <div>Dạy tại nhà</div>
-                <div className="text-[9px] text-neutral-500">Quận 3, TP.HCM</div>
+                <div className="text-[11px] text-neutral-500">Quận 3, TP.HCM</div>
               </div>
             </Button>
           </div>
@@ -782,10 +752,11 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
 
       </div>
 
+      {!canProceed && <p role="status" className="px-4 py-2 bg-amber-50 text-amber-950 text-xs">Hãy chọn ngày và khung giờ trống phù hợp. Với lịch theo tuần, các ngày phải có cùng khung giờ rảnh.</p>}
       {/* Sticky Bottom Action Bar with Dynamic Pricing */}
       <div className="bg-white border-t border-neutral-200 px-4 py-3 shrink-0 flex items-center justify-between shadow-lg z-30">
         <div>
-          <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+          <div className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider">
             {bookingType === 'trial' ? 'Học thử 1 buổi' : `${selectedDays.length} buổi/tuần • ${durationHours}h/buổi`}
           </div>
           <div className="flex items-baseline space-x-1">
@@ -800,6 +771,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
 
         <Button variant="legacy"
           onClick={handleProceed}
+          disabled={!canProceed}
           className="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white rounded-2xl text-xs font-bold flex items-center space-x-2 shadow-md cursor-pointer transition-all min-h-[46px]"
         >
           <span>{bookingType === 'trial' ? 'Đặt lịch học thử' : 'Tiếp tục thanh toán'}</span>
@@ -810,7 +782,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
       {/* 30-Day Month Calendar Modal */}
       {showCalendarModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4 animate-fadeIn">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-slideUp">
+          <div ref={calendarRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Chọn ngày học" className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-slideUp">
             {/* Modal Header */}
             <div className="p-4 border-b border-neutral-200 flex items-center justify-between shrink-0">
               <div>
@@ -818,7 +790,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   <Calendar className="w-4 h-4 text-emerald-600" />
                   <span>{calendarModalTarget === 'trial' ? 'Chọn ngày học thử (30 ngày)' : 'Chọn ngày bắt đầu học'}</span>
                 </h3>
-                <p className="text-[10px] text-neutral-500 mt-0.5">
+                <p className="text-[11px] text-neutral-500 mt-0.5">
                   {calendarModalTarget === 'trial'
                     ? 'Lịch trống thực tế của gia sư trong 30 ngày tới'
                     : `Khuyên chọn các ngày trùng: Thứ ${selectedDays.map(d => d.replace('T', '')).join(', ')}`}
@@ -827,6 +799,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               <Button variant="legacy"
                 type="button"
                 onClick={() => setShowCalendarModal(false)}
+                aria-label="Đóng lịch"
                 className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-600 cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -863,7 +836,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
             <div className="p-4 overflow-y-auto no-scrollbar space-y-3.5">
               
               {/* Weekday Labels */}
-              <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-neutral-400">
+              <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-neutral-600">
                 <span>T2</span>
                 <span>T3</span>
                 <span>T4</span>
@@ -873,147 +846,21 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                 <span>CN</span>
               </div>
 
-              {/* Calendar Grid for Month 10 */}
-              {calendarMonthTab === '10' && (
-                <div className="grid grid-cols-7 gap-1.5">
-                  {/* 2 Empty cells for T2, T3 before 1/10 */}
-                  <div className="h-10" />
-                  <div className="h-10" />
-
-                  {/* Days 1 to 13 (Past days) */}
-                  {Array.from({ length: 13 }, (_, i) => i + 1).map((d) => (
-                    <div
-                      key={`past-${d}`}
-                      className="h-10 rounded-xl bg-neutral-100/40 text-neutral-300 text-xs flex flex-col items-center justify-center cursor-not-allowed select-none"
-                    >
-                      <span>{d}</span>
-                      <span className="text-[7px]">Đã qua</span>
-                    </div>
-                  ))}
-
-                  {/* Days 14 to 31 (Active slots from calendarDaysMonth) */}
-                  {calendarDaysMonth.filter(d => d.month === '10').map((slot) => {
-                    const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
-                    const isSelected = targetDate === slot.date;
-                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(getCalendarWeekday(slot.date).short);
-
-                    if (!slot.isAvailable) {
-                      return (
-                        <div
-                          key={slot.date}
-                          className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
-                          title={`${getCalendarWeekday(slot.date).full}: ${slot.statusNote}`}
-                        >
-                          <span>{slot.dayNumber}</span>
-                          <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <Button variant="legacy"
-                        key={slot.date}
-                        type="button"
-                        onClick={() => {
-                          if (calendarModalTarget === 'trial') {
-                            setTrialDate(slot.date);
-                          } else {
-                            setRecurringStartDate(slot.date);
-                          }
-                        }}
-                        className={`h-10 rounded-xl border flex flex-col items-center justify-center cursor-pointer transition-all relative ${
-                          isSelected
-                            ? 'bg-emerald-600 border-emerald-700 text-white font-extrabold shadow-sm ring-2 ring-emerald-500/40'
-                            : matchesRecurringDay
-                            ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950 font-bold hover:bg-emerald-100'
-                            : 'bg-white border-neutral-200 hover:bg-neutral-50 text-neutral-800 font-semibold'
-                        }`}
-                      >
-                        <span className="text-xs leading-none">{slot.dayNumber}</span>
-                        <span className={`text-[7px] mt-0.5 ${
-                          isSelected ? 'text-white' : matchesRecurringDay ? 'text-emerald-700 font-bold' : 'text-neutral-500'
-                        }`}>
-                          {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
-                        </span>
-                      </Button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Calendar Grid for Month 11 */}
-              {calendarMonthTab === '11' && (
-                <div className="grid grid-cols-7 gap-1.5">
-                  {/* 4 Empty cells for T2, T3, T4, T5 before 1/11 */}
-                  <div className="h-10" />
-                  <div className="h-10" />
-                  <div className="h-10" />
-                  <div className="h-10" />
-
-                  {/* Days 1 to 15 (Active slots from calendarDaysMonth) */}
-                  {calendarDaysMonth.filter(d => d.month === '11').map((slot) => {
-                    const targetDate = calendarModalTarget === 'trial' ? trialDate : recurringStartDate;
-                    const isSelected = targetDate === slot.date;
-                    const matchesRecurringDay = calendarModalTarget === 'recurring' && selectedDays.includes(getCalendarWeekday(slot.date).short);
-
-                    if (!slot.isAvailable) {
-                      return (
-                        <div
-                          key={slot.date}
-                          className="h-10 rounded-xl bg-neutral-100/60 border border-neutral-200/50 text-neutral-400 text-xs flex flex-col items-center justify-center opacity-60 cursor-not-allowed select-none line-through"
-                          title={`${getCalendarWeekday(slot.date).full}: ${slot.statusNote}`}
-                        >
-                          <span>{slot.dayNumber}</span>
-                          <span className="text-[7px] no-underline font-medium text-neutral-400">{slot.statusNote}</span>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <Button variant="legacy"
-                        key={slot.date}
-                        type="button"
-                        onClick={() => {
-                          if (calendarModalTarget === 'trial') {
-                            setTrialDate(slot.date);
-                          } else {
-                            setRecurringStartDate(slot.date);
-                          }
-                        }}
-                        className={`h-10 rounded-xl border flex flex-col items-center justify-center cursor-pointer transition-all relative ${
-                          isSelected
-                            ? 'bg-emerald-600 border-emerald-700 text-white font-extrabold shadow-sm ring-2 ring-emerald-500/40'
-                            : matchesRecurringDay
-                            ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950 font-bold hover:bg-emerald-100'
-                            : 'bg-white border-neutral-200 hover:bg-neutral-50 text-neutral-800 font-semibold'
-                        }`}
-                      >
-                        <span className="text-xs leading-none">{slot.dayNumber}</span>
-                        <span className={`text-[7px] mt-0.5 ${
-                          isSelected ? 'text-white' : matchesRecurringDay ? 'text-emerald-700 font-bold' : 'text-neutral-500'
-                        }`}>
-                          {isSelected ? '✓ Chọn' : matchesRecurringDay ? 'Lịch' : 'Còn'}
-                        </span>
-                      </Button>
-                    );
-                  })}
-
-                  {/* Days 16 to 30 (Beyond 30-day window) */}
-                  {Array.from({ length: 15 }, (_, i) => i + 16).map((d) => (
-                    <div
-                      key={`future-${d}`}
-                      className="h-10 rounded-xl bg-neutral-50/50 border border-dashed border-neutral-200/60 text-neutral-300 text-xs flex flex-col items-center justify-center cursor-not-allowed select-none"
-                      title="Gia sư mở lịch theo chu kỳ 30 ngày"
-                    >
-                      <span>{d}</span>
-                      <span className="text-[7px] text-neutral-400">Chưa mở</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="grid grid-cols-7 gap-1.5">
+                {Array.from({length:(new Date(2026, Number(calendarMonthTab)-1, 1).getDay()+6)%7},(_,i)=><div key={`blank-${i}`} />)}
+                {Array.from({length:new Date(2026,Number(calendarMonthTab),0).getDate()},(_,i)=>{
+                  const date = new Date(2026,Number(calendarMonthTab)-1,i+1);
+                  const value = formatDate(date);
+                  const slot = calendarDaysMonth.find(day=>day.date===value);
+                  const available = Boolean(slot?.isAvailable) && (calendarModalTarget==='trial'||selectedDays.includes(DAY_CODES[date.getDay()]));
+                  const selected = (calendarModalTarget==='trial'?trialDate:recurringStartDate)===value;
+                  const label = date<DEMO_ANCHOR?'Đã qua':!slot?'Chưa mở':available?'Trống':'Bận';
+                  return <Button key={value} variant="legacy" type="button" disabled={!available} aria-pressed={selected} aria-label={`${getCalendarWeekday(value).full}, ${value}: ${selected?'Đã chọn':label}`} onClick={()=>calendarModalTarget==='trial'?setTrialDate(value):setRecurringStartDate(value)} className={`min-h-[48px] rounded-xl border flex flex-col items-center justify-center ${selected?'bg-emerald-700 text-white border-emerald-800':'bg-white text-neutral-700 border-neutral-200'}`}><span className="text-xs">{i+1}</span><span className="text-[11px]">{selected?'✓ Chọn':label}</span></Button>;
+                })}
+              </div>
 
               {/* Legend */}
-              <div className="flex items-center justify-between text-[10px] text-neutral-500 pt-1 border-t border-neutral-100 px-1">
+              <div className="flex items-center justify-between text-[11px] text-neutral-500 pt-1 border-t border-neutral-100 px-1">
                 <span className="flex items-center space-x-1">
                   <span className="w-2.5 h-2.5 rounded-md bg-white border border-neutral-300 inline-block" />
                   <span>Còn trống</span>
@@ -1035,7 +882,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
               {/* Pedagogical Advisory Box */}
               <div className="p-2.5 bg-neutral-100 rounded-2xl flex items-center space-x-2.5 text-left">
                 <Info className="w-4 h-4 text-neutral-500 shrink-0" />
-                <p className="text-[10px] text-neutral-600 leading-snug">
+                <p className="text-[11px] text-neutral-600 leading-snug">
                   Gia sư mở lịch chuẩn xác trong <strong>30 ngày tới</strong>. Để đặt dài hạn hơn, bạn có thể nhắn tin trực tiếp với gia sư sau khi hoàn tất.
                 </p>
               </div>
@@ -1045,7 +892,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
             {/* Modal Sticky Bottom Action Bar */}
             <div className="p-3.5 border-t border-neutral-200 bg-neutral-50 shrink-0 flex items-center justify-between">
               <div>
-                <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Ngày đã chọn:</div>
+                <div className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider">Ngày đã chọn:</div>
                 <div className="text-xs font-extrabold text-emerald-800">
                   {getCalendarWeekday(calendarModalTarget === 'trial' ? trialDate : recurringStartDate).full}, {calendarModalTarget === 'trial' ? trialDate : recurringStartDate}
                 </div>

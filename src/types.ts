@@ -60,6 +60,9 @@ export type PaymentPlan = 'weekly' | 'full' | 'per_session';
 export type PaymentProvider = 'Ví MoMo' | 'Ngân hàng' | 'Mã QR';
 
 export interface BookingState {
+  draftUpdatedAt?: string;
+  learningNote?: string;
+  pendingReschedule?: { date: string; time: string };
   tutor: Tutor;
   grade: string;
   subject: string;

@@ -5,7 +5,8 @@ import {
   RotateCcw, CreditCard, ChevronRight, House, Search, UserCheck, MessageCircle
 } from 'lucide-react';
 import { ScreenId, BookingState } from '../../../types';
-import { MOCK_SCHEDULE_SESSIONS, MOCK_PAYMENT_SCHEDULE, formatCurrency } from '../../../data/mockData';
+import { bookingSessions, bookingPayments } from '../../../lib/booking';
+import { formatCurrency } from '../../../data/mockData';
 
 interface V2ScheduleManageScreenProps {
   booking: BookingState;
@@ -18,6 +19,8 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'sessions' | 'payments'>('sessions');
 
+  const sessions = bookingSessions(booking);
+  const payments = bookingPayments(booking);
   return (
     <div className="flex-1 flex flex-col justify-between bg-neutral-50 h-full overflow-hidden text-neutral-900 font-sans">
       
@@ -46,7 +49,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
               : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
           }`}
         >
-          Danh sách buổi học ({MOCK_SCHEDULE_SESSIONS.length})
+          Danh sách buổi học ({sessions.length})
         </Button>
 
         <Button variant="legacy"
@@ -64,6 +67,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
       {/* Main Tab Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 space-y-3">
         
+        {booking.pendingReschedule && <div role="status" className="p-3 border border-amber-200 bg-amber-50 rounded-xl text-xs text-amber-950">Yêu cầu đổi sang {booking.pendingReschedule.date} · {booking.pendingReschedule.time} đang chờ xác nhận. Lịch dưới đây chưa thay đổi.</div>}
         {/* Tutor info bar */}
         <div className="bg-white rounded-2xl p-3 border border-neutral-200/90 shadow-2xs flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
@@ -74,10 +78,10 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
             />
             <div>
               <div className="text-xs font-bold text-neutral-900">{booking.tutor.name}</div>
-              <div className="text-[11px] text-neutral-500 font-medium">Toán lớp 9 • {booking.selectedDays.join(', ')} ({booking.timeSlot})</div>
+              <div className="text-[11px] text-neutral-500 font-medium">{booking.subject} {booking.grade} • {booking.selectedDays.join(', ')} ({booking.timeSlot})</div>
             </div>
           </div>
-          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
             Đang hoạt động
           </span>
         </div>
@@ -87,10 +91,10 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           <div className="space-y-2.5">
             <div className="flex items-center justify-between text-xs text-neutral-600 px-0.5">
               <span>Chính sách: <strong className="text-neutral-900">Đổi lịch trước 24h miễn phí</strong></span>
-              <span className="text-[11px] text-neutral-500">Tổng 16 buổi</span>
+              <span className="text-[11px] text-neutral-500">Tổng {sessions.length} buổi</span>
             </div>
 
-            {MOCK_SCHEDULE_SESSIONS.map((sess) => {
+            {sessions.map((sess) => {
               const isPast = sess.status === 'Đã học';
               const isUpcoming = sess.status === 'Sắp học';
 
@@ -119,7 +123,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                       </span>
                     </div>
 
-                    <span className={`${isUpcoming ? 'v3-semantic-info-soft' : ''} text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                    <span className={`${isUpcoming ? 'v3-semantic-info-soft' : ''} text-[11px] font-bold px-2 py-0.5 rounded-md ${
                       isPast
                         ? 'bg-neutral-100 text-neutral-600'
                         : isUpcoming
@@ -131,7 +135,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                   </div>
 
                   <div className="flex items-center justify-between pt-1 border-t border-neutral-100 text-xs">
-                    <span className="text-[11px] text-neutral-500">Môn: Toán hình lớp 9</span>
+                    <span className="text-[11px] text-neutral-500">Môn: {booking.subject} · {booking.grade}</span>
 
                     <div className="flex items-center space-x-2">
                       {isUpcoming && (
@@ -147,7 +151,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
                       {isUpcoming && (
                         <span className="px-2.5 py-1 bg-emerald-600 text-white font-bold rounded-lg text-[11px] shadow-2xs flex items-center space-x-1">
                           <Video className="w-3 h-3" />
-                          <span>Vào lớp</span>
+                          <span>Link lớp học (minh họa)</span>
                         </span>
                       )}
                     </div>
@@ -171,7 +175,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
               </div>
             </div>
 
-            {MOCK_PAYMENT_SCHEDULE.map((item) => {
+            {payments.map((item) => {
               const isPaid = item.status === 'Đã thanh toán';
               const isPending = item.status === 'Chưa thanh toán';
 
@@ -217,7 +221,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <House className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Trang chủ</span>
+          <span className="text-[11px] mt-0.5">Trang chủ</span>
         </Button>
 
         <Button variant="legacy"
@@ -225,7 +229,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <Search className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tìm kiếm</span>
+          <span className="text-[11px] mt-0.5">Tìm kiếm</span>
         </Button>
 
         <Button variant="legacy"
@@ -235,7 +239,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           <div className="p-1 rounded-full bg-emerald-50">
             <Calendar className="w-4 h-4 text-emerald-700" />
           </div>
-          <span className="text-[10px] mt-0.5">Lịch học</span>
+          <span className="text-[11px] mt-0.5">Lịch học</span>
         </Button>
 
         <Button variant="legacy"
@@ -243,7 +247,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <MessageCircle className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tin nhắn</span>
+          <span className="text-[11px] mt-0.5">Tin nhắn</span>
         </Button>
 
         <Button variant="legacy"
@@ -251,7 +255,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"
         >
           <UserCheck className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5">Tôi</span>
+          <span className="text-[11px] mt-0.5">Tôi</span>
         </Button>
       </nav>
 

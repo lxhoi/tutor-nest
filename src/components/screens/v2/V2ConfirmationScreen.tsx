@@ -1,3 +1,4 @@
+import { calendarFile } from '../../../lib/booking';
 import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import {
@@ -17,6 +18,14 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
   onNavigate,
 }) => {
   const [calendarAdded, setCalendarAdded] = useState(false);
+  const [calendarError, setCalendarError] = useState(false);
+  const downloadCalendar = () => {
+    try {
+      const url = URL.createObjectURL(new Blob([calendarFile(booking)],{type:'text/calendar;charset=utf-8'}));
+      const link = document.createElement('a');link.href=url;link.download='tutornest-demo.ics';link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);setCalendarAdded(true);setCalendarError(false);
+    } catch { setCalendarError(true); }
+  };
   const isTrial = booking.bookingType === 'trial';
   const sessionAmount = Math.round(booking.hourlyRate * (booking.sessionDurationHours || 1.5));
 
@@ -53,7 +62,7 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
         {/* First Session Spotlight Card */}
         <div className="w-full bg-neutral-50 rounded-2xl p-4 border border-neutral-200/90 text-left space-y-2.5 shadow-2xs">
           <div className="flex items-center justify-between pb-1.5 border-b border-neutral-200/60">
-            <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded">
               {isTrial ? 'BUỔI HỌC THỬ' : `Buổi số 1 / ${booking.totalSessions}`}
             </span>
             <span className="text-[11px] text-neutral-500 font-medium">{booking.sessionMode === 'offline' ? 'Học tại nhà' : 'Học trực tuyến'}</span>
@@ -71,15 +80,15 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
           <div className="p-2.5 rounded-xl bg-white border border-neutral-200 text-xs flex items-center justify-between">
             <div className="flex items-center space-x-1.5 text-neutral-700">
               <Video className="w-4 h-4 text-emerald-600" />
-              <span className="text-[11px] font-mono text-neutral-600">meet.google.com/abc-xyz</span>
+              <span className="text-[11px] text-neutral-600">Phòng học trực tuyến (minh họa)</span>
             </div>
-            <span className="v3-semantic-success-text text-[10px] font-bold text-emerald-700">Link học sẵn sàng</span>
+            <span className="v3-semantic-success-text text-[11px] font-bold text-emerald-700">Chưa tạo link thật</span>
           </div>
         </div>
 
         {isTrial && (
           <div className="w-full rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-left text-[11px] leading-relaxed text-emerald-950">
-            <strong>Bảo lãnh học thử:</strong> Hoàn 100% học phí nếu bạn không hài lòng sau buổi học. Liên hệ hỗ trợ trong vòng 24 giờ để yêu cầu hoàn tiền.
+            <strong>Điều khoản học thử:</strong> Chính sách học thử là nội dung minh họa, chưa phải cam kết dịch vụ.
             <div className="mt-2 flex justify-between border-t border-emerald-200 pt-2">
               <span>Đã thanh toán • 1 buổi</span>
               <strong>{formatCurrency(sessionAmount)}</strong>
@@ -87,9 +96,11 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
           </div>
         )}
 
+        {calendarAdded && <p role="status" className="text-xs text-emerald-800">Đã tạo file lịch demo. Mở file để tự thêm vào ứng dụng lịch; chưa đồng bộ tài khoản.</p>}
+        {calendarError && <p role="alert" className="text-xs text-rose-800">Không tạo được file lịch. Lịch học của bạn vẫn được giữ; vui lòng thử lại.</p>}
         {/* Calendar Add Button */}
         <Button variant="legacy"
-          onClick={() => setCalendarAdded(true)}
+          onClick={downloadCalendar}
           className={`w-full py-2.5 rounded-xl border text-xs font-bold flex items-center justify-center space-x-1.5 transition-all cursor-pointer min-h-[42px] ${
             calendarAdded
               ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
@@ -97,7 +108,7 @@ export const V2ConfirmationScreen: React.FC<V2ConfirmationScreenProps> = ({
           }`}
         >
           <Calendar className="w-4 h-4 text-emerald-600" />
-          <span>{calendarAdded ? '✓ Đã đồng bộ vào Lịch điện thoại' : '+ Đồng bộ vào Google / Apple Calendar'}</span>
+          <span>{calendarAdded ? 'Tải lại file lịch .ics' : 'Tải file lịch .ics'}</span>
         </Button>
 
       </div>

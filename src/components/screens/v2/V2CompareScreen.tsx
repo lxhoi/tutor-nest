@@ -67,11 +67,11 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
                   className="w-12 h-12 rounded-xl object-cover mx-auto ring-1 ring-neutral-200"
                 />
                 <div className="flex items-center justify-center space-x-1">
-                  <span className="text-[10px] font-bold text-neutral-900 truncate">{tutor.name}</span>
+                  <span className="text-[11px] font-bold text-neutral-900 truncate">{tutor.name}</span>
                   <CheckCircle2 className="w-3 h-3 text-emerald-600 fill-emerald-50 shrink-0" />
                 </div>
                 <div className="text-xs font-extrabold text-emerald-700">
-                  {formatCurrency(tutor.hourlyRate)}<span className="text-[10px] text-neutral-500 font-normal">/h</span>
+                  {formatCurrency(tutor.hourlyRate)}<span className="text-[11px] text-neutral-500 font-normal">/h</span>
                 </div>
               </div>
 
@@ -80,7 +80,7 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
                   onSelectTutor(tutor);
                   onNavigate('v2_schedule_time');
                 }}
-                className="w-full py-2 px-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-bold cursor-pointer shadow-2xs min-h-[36px]"
+                className="w-full py-2 px-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-bold cursor-pointer shadow-2xs min-h-[36px]"
               >
                 Chọn gia sư này
               </Button>
@@ -93,40 +93,40 @@ export const V2CompareScreen: React.FC<V2CompareScreenProps> = ({
           
           {/* Row 1: Đánh giá */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
+            <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider text-center">
               Đánh giá & Review
             </div>
-            <div className={`grid ${columnsClass} text-center text-[10px]`}>
+            <div className={`grid ${columnsClass} text-center text-[11px]`}>
               {comparedTutors.map((tutor) => <div key={tutor.id} className="p-2 rounded-xl bg-neutral-50 font-bold text-amber-800 flex items-center justify-center gap-1 min-w-0"><Star className="w-3 h-3 fill-amber-500 text-amber-500 shrink-0" /><span className="truncate">{tutor.rating} ({tutor.reviewsCount})</span></div>)}
             </div>
           </div>
 
           {/* Row 2: Bằng cấp & Kinh nghiệm */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
+            <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider text-center">
               Bằng cấp & Kinh nghiệm
             </div>
-            <div className={`grid ${columnsClass} text-center text-[10px] text-neutral-700`}>
-              {comparedTutors.map((tutor) => <div key={tutor.id} className="p-2 rounded-xl bg-neutral-50 space-y-0.5 min-w-0"><div className="font-bold text-neutral-900 truncate">{tutor.university?.replace('Đại học', 'ĐH')}</div><div className="text-[9px] text-neutral-500">{tutor.experienceYears} năm kinh nghiệm</div></div>)}
+            <div className={`grid ${columnsClass} text-center text-[11px] text-neutral-700`}>
+              {comparedTutors.map((tutor) => <div key={tutor.id} className="p-2 rounded-xl bg-neutral-50 space-y-0.5 min-w-0"><div className="font-bold text-neutral-900 truncate">{tutor.university?.replace('Đại học', 'ĐH')}</div><div className="text-[11px] text-neutral-500">{tutor.experienceYears} năm kinh nghiệm</div></div>)}
             </div>
           </div>
 
           {/* Row 3: Lịch rảnh trong tuần */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
+            <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider text-center">
               Lịch rảnh trong tuần
             </div>
-            <div className={`grid ${columnsClass} text-center text-[10px]`}>
+            <div className={`grid ${columnsClass} text-center text-[11px]`}>
               {comparedTutors.map((tutor) => <div key={tutor.id} className="p-2 rounded-xl bg-emerald-50 text-emerald-900 font-bold leading-snug">{tutor.availableSlots?.join(', ') || 'Tối T3, T5'}</div>)}
             </div>
           </div>
 
           {/* Row 4: Thế mạnh nổi bật */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
+            <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider text-center">
               Thế mạnh nổi bật
             </div>
-            <div className={`grid ${columnsClass} text-center text-[10px] text-neutral-700`}>
+            <div className={`grid ${columnsClass} text-center text-[11px] text-neutral-700`}>
               {comparedTutors.map((tutor) => <div key={tutor.id} className="p-2 rounded-xl bg-neutral-50 leading-snug">{tutor.trustHighlights?.[0] || 'Chuyên sâu luyện thi'}</div>)}
             </div>
           </div>

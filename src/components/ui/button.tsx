@@ -38,7 +38,7 @@ export interface ButtonProps
 function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
   const Comp = asChild ? Slot : 'button';
   const resolvedClassName = variant === 'legacy'
-    ? className
+    ? cn('min-h-11 min-w-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 disabled:cursor-not-allowed disabled:opacity-50', className)
     : cn(buttonVariants({ variant, size }), className);
 
   return (

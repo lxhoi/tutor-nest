@@ -1,21 +1,31 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# TutorNest — UX/UI concept case study
 
-# Run and deploy your AI Studio app
+Bryan Lê · UX and UI design · 10 weeks
+Contact: lxhoi.2k@gmail.com
 
-This contains everything you need to run your app locally.
+A mobile tutoring prototype and a 28-slide bilingual case study. Research assumptions, evaluator findings, and technical verification are distinguished explicitly. All service and payment interactions are simulated.
 
-View your app in AI Studio: https://ai.studio/apps/57de2d5e-7bb7-4616-9f8c-795c9eaa8ccd
+## Local development
 
-## Run Locally
+Node.js 22+ is recommended.
 
-**Prerequisites:**  Node.js
+```sh
+npm ci
+npm run dev
+```
 
+Open http://localhost:3000/?view=case-study&lang=en (or `lang=vi`).
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-# tutor-nest
+## Verification and production build
+
+```sh
+npm run lint
+npm test
+npm run build
+```
+
+The static build is in `dist/`. See [release scope and evidence](docs/CASE_STUDY_RELEASE.md) for corrections, checks, and limitations.
+
+[Figma design](https://www.figma.com/design/6P3XwYly9wYY2jHWQgclYY/TutorNest?node-id=23201-4624)
+
+The presentation’s **Evidence / Bằng chứng** button provides downloadable decision logs, verified desk-research sources, clearly labeled synthetic research exercises, an accessibility measurement worksheet, and a capped self-assessment. Research with parents remains pending; synthetic material is excluded from real outcomes.

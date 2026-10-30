@@ -5,7 +5,10 @@ import { IPhone16ProMaxFrame } from './components/IPhone16ProMaxFrame';
 import { FlowOverviewBoard } from './components/FlowOverviewBoard';
 import { OriginalReferenceModal } from './components/OriginalReferenceModal';
 import { DesignSystemModal } from './components/DesignSystemModal';
+import { DRAFT_KEY, restoreDemoBooking } from './lib/demoStorage';
+import { calendarFor, tutorDays } from './lib/booking';
 import { Button } from './components/ui/button';
+import { CaseStudyPresentation } from './components/CaseStudyPresentation';
 
 // Version 1 Screens
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -25,7 +28,7 @@ import { CompareTutorsScreen } from './components/screens/CompareTutorsScreen';
 
 // Version 2 Screens (Optimized & Minimalist)
 import { V2HomeScreen } from './components/screens/v2/V2HomeScreen';
-import { V2SearchScreen } from './components/screens/v2/V2SearchScreen';
+import { V2SearchScreen, rememberSearchSubject } from './components/screens/v2/V2SearchScreen';
 import { V2TutorProfileScreen } from './components/screens/v2/V2TutorProfileScreen';
 import { V2ScheduleTimeScreen } from './components/screens/v2/V2ScheduleTimeScreen';
 import { V2CheckoutScreen } from './components/screens/v2/V2CheckoutScreen';
@@ -51,8 +54,7 @@ import {
   Sparkles,
   Image as ImageIcon,
   Palette,
-  Play,
-  Pause,
+  Presentation,
   ZoomIn,
   ZoomOut,
   Info,
@@ -62,15 +64,24 @@ export default function App() {
   const [appVersion, setAppVersion] = useState<AppVersion>('v2');
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('v2_home');
   const [history, setHistory] = useState<ScreenId[]>(['v2_home']);
-  const [viewMode, setViewMode] = useState<'iphone' | 'board'>('iphone');
-  const [booking, setBooking] = useState<BookingState>(INITIAL_BOOKING);
+  const [viewMode, setViewMode] = useState<'iphone' | 'board' | 'presentation'>(new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
+  const [booking, setBooking] = useState<BookingState>(()=>{try{return restoreDemoBooking(localStorage.getItem(DRAFT_KEY),INITIAL_BOOKING,TUTORS);}catch{return INITIAL_BOOKING;}});
   const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
-  const [frameColor, setFrameColor] = useState<'desert' | 'natural' | 'black' | 'white'>('desert');
   const [scale, setScale] = useState<number>(0.95);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
   const [showDesignSystemModal, setShowDesignSystemModal] = useState(false);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [showHotspots, setShowHotspots] = useState(false);
+
+  useEffect(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify({version:1,booking}));}catch{/* Private browsing may disable storage. */}},[booking]);
+
+  useEffect(() => {
+    if (viewMode !== 'presentation') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', viewMode === 'board' ? 'board' : 'prototype');
+      url.searchParams.delete('slide');
+      window.history.replaceState(null, '', url);
+    }
+  }, [viewMode]);
 
   // Auto scale calculation based on viewport
   useEffect(() => {
@@ -87,29 +98,7 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Auto-play walkthrough effect
   const activeFlowSteps = appVersion === 'v1' ? FLOW_STEPS_V1 : FLOW_STEPS_V2;
-
-  // Auto-play walkthrough effect
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isAutoPlaying) {
-      const currentIndex = activeFlowSteps.findIndex((s) => s.id === currentScreen);
-      if (currentIndex < 0) {
-        setIsAutoPlaying(false);
-        return;
-      }
-      timer = setTimeout(() => {
-        if (currentIndex < activeFlowSteps.length - 1) {
-          const nextStep = activeFlowSteps[currentIndex + 1].id;
-          navigateTo(nextStep);
-        } else {
-          setIsAutoPlaying(false);
-        }
-      }, 3500);
-    }
-    return () => clearTimeout(timer);
-  }, [isAutoPlaying, currentScreen, activeFlowSteps]);
 
   const navigateTo = (screen: ScreenId) => {
     setHistory((prev) => [...prev, screen]);
@@ -117,16 +106,16 @@ export default function App() {
   };
 
   const updateBooking = (fields: Partial<BookingState>) => {
-    setBooking((prev) => ({ ...prev, ...fields }));
+    setBooking((prev) => ({ ...prev, ...fields, draftUpdatedAt: new Date().toISOString() }));
   };
 
   const handleSelectTutor = (tutor: Tutor) => {
-    updateBooking({
-      tutor,
-      hourlyRate: tutor.hourlyRate,
-      weeklyAmount: tutor.hourlyRate * booking.selectedDays.length,
-      totalAmount: tutor.hourlyRate * booking.totalSessions,
-    });
+    const available = calendarFor(tutor).find(day=>day.isAvailable);
+    const days = tutorDays(tutor).slice(0,2);
+    const duration = booking.sessionDurationHours || 1.5;
+    updateBooking({ tutor, status: 'draft', grade: booking.grade === 'Tất cả' ? 'Lớp 9' : booking.grade, subject: tutor.subject, selectedDays: days, startDate: available?.date || booking.startDate, pendingReschedule: undefined,
+      hourlyRate: tutor.hourlyRate, weeklyAmount: tutor.hourlyRate * duration * days.length,
+      totalSessions: days.length * booking.cycleWeeks, totalAmount: tutor.hourlyRate * duration * days.length * booking.cycleWeeks });
   };
 
   const handlePaymentSuccess = () => {
@@ -142,7 +131,6 @@ export default function App() {
       setCurrentScreen('v2_home');
       setHistory(['v2_home']);
     }
-    setIsAutoPlaying(false);
   };
 
   const resetFlow = () => {
@@ -151,7 +139,6 @@ export default function App() {
     const defaultScreen = appVersion === 'v1' ? '1_home' : 'v2_home';
     setCurrentScreen(defaultScreen);
     setHistory([defaultScreen]);
-    setIsAutoPlaying(false);
   };
 
   const currentStepIndex = activeFlowSteps.findIndex((s) => s.id === currentScreen);
@@ -181,6 +168,7 @@ export default function App() {
       case 'v2_home':
         return (
           <V2HomeScreen
+            onChooseSubject={subject=>{rememberSearchSubject(subject);navigateTo('v2_search');}}
             booking={booking}
             onNavigate={navigateTo}
             onSelectTutor={handleSelectTutor}
@@ -396,6 +384,7 @@ export default function App() {
           />
         ) : (
           <V2HomeScreen
+            onChooseSubject={subject=>{rememberSearchSubject(subject);navigateTo('v2_search');}}
             booking={booking}
             onNavigate={navigateTo}
             onSelectTutor={handleSelectTutor}
@@ -407,14 +396,14 @@ export default function App() {
   return (
     <div className={`flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans ${appVersion === 'v3' ? 'app-version-v3' : appVersion === 'v2' ? 'app-version-v2' : ''}`}>
       {/* Top Prototype Navigation Bar */}
-      <header className="h-14 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
+      <header className="h-14 gap-4 overflow-x-auto [&>div]:shrink-0 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
         {/* Brand & Version Switcher */}
         <div className="flex items-center space-x-2 md:space-x-3">
           <img src="/tutornest-logo.svg" alt="TutorNest" className="h-[18px] w-auto shrink-0" />
-          <span className="hidden sm:inline-block text-neutral-700">|</span>
+          <span className={`${viewMode === 'presentation' ? 'hidden' : 'hidden sm:inline-block'} text-neutral-700`}>|</span>
 
           {/* Version Switcher Segmented Control */}
-          <div className="flex items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner">
+          <div className={`${viewMode === 'presentation' ? 'hidden' : 'flex'} items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner`}>
             <button
               onClick={() => handleSwitchVersion('v1')}
               className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
@@ -422,10 +411,10 @@ export default function App() {
                   ? 'bg-neutral-800 text-amber-400 border border-amber-500/50 shadow-xs'
                   : 'text-neutral-400 hover:text-neutral-200'
               }`}
-              title="Version 1: Bản thiết kế gốc (12 màn hình, UX 4.8)"
+              title="Version 1: Bản thiết kế gốc"
             >
               <span>V1: Gốc</span>
-              <span className="text-[10px] px-1 py-0.2 rounded bg-neutral-950/80 text-amber-300 font-mono">4.8 UX</span>
+              <span className="text-[10px] px-1 py-0.2 rounded bg-neutral-950/80 text-amber-300 font-mono">Bản đầu</span>
             </button>
 
             <button
@@ -435,11 +424,11 @@ export default function App() {
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-neutral-400 hover:text-neutral-200'
               }`}
-              title="Version 2: Bản tinh gọn (Phễu 4 bước, WCAG AA, UX 9.2)"
+              title="Version 2: Bản tinh gọn"
             >
               <Sparkles className="w-3 h-3 text-amber-300" />
               <span>V2: Tinh gọn</span>
-              <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-800 text-white font-mono font-bold">9.2 UX</span>
+              <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-800 text-white font-mono font-bold">Cải tiến</span>
             </button>
 
             {appVersion === 'v3' ? (
@@ -465,7 +454,7 @@ export default function App() {
         </div>
 
         {/* Center: Step Selector & Navigation */}
-        <div className="flex items-center space-x-1.5 md:space-x-2">
+        <div className={`${viewMode === 'presentation' ? 'hidden' : 'flex'} items-center space-x-1.5 md:space-x-2`}>
           <button
             onClick={goToPreviousStep}
             disabled={!isCompareScreen && currentStepIndex <= 0}
@@ -545,6 +534,15 @@ export default function App() {
             </button>
           </div>
 
+          <button
+            onClick={() => setViewMode('presentation')}
+            aria-pressed={viewMode === 'presentation'}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${viewMode === 'presentation' ? 'bg-emerald-600 text-white border-emerald-500' : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'}`}
+          >
+            <Presentation className="w-4 h-4" />
+            <span>Case Study Presentation</span>
+          </button>
+
           {/* Design System modal button */}
           <button
             onClick={() => setShowDesignSystemModal(true)}
@@ -576,9 +574,12 @@ export default function App() {
         </div>
       </header>
 
+      {viewMode !== 'presentation' && <div className="text-center text-[11px] py-1 bg-amber-950/40 text-amber-100 border-b border-amber-800/30">Prototype mô phỏng · Dữ liệu minh họa · Không thực hiện giao dịch thật · Mốc lịch demo: 30/10/2026</div>}
       {/* Main Workspace Area */}
       <main className="flex-1 relative overflow-hidden flex items-center justify-center">
-        {viewMode === 'board' ? (
+        {viewMode === 'presentation' ? (
+          <CaseStudyPresentation onOpenPrototype={() => { handleSwitchVersion('v2'); setViewMode('iphone'); }} />
+        ) : viewMode === 'board' ? (
           <FlowOverviewBoard
             currentScreen={currentScreen}
             onSelectScreen={(screen) => {
@@ -603,57 +604,7 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Titanium Finish and Tour Controls */}
               <div className="pointer-events-auto flex items-center space-x-2 bg-neutral-900/90 border border-neutral-800/90 backdrop-blur-md p-1.5 rounded-full shadow-lg">
-                {/* Auto Play Walkthrough */}
-                <button
-                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors cursor-pointer ${
-                    isAutoPlaying
-                      ? 'bg-emerald-600 text-white animate-pulse'
-                      : 'text-neutral-300 hover:bg-neutral-800'
-                  }`}
-                >
-                  {isAutoPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-                  <span>{isAutoPlaying ? 'Tạm dừng Tour' : 'Tự động chạy'}</span>
-                </button>
-
-                <div className="w-[1px] h-4 bg-neutral-700" />
-
-                {/* Titanium color choices */}
-                <div className="flex items-center space-x-1.5 px-1">
-                  <button
-                    onClick={() => setFrameColor('desert')}
-                    title="Desert Titanium"
-                    className={`w-4 h-4 rounded-full bg-[#877464] border-2 transition-transform cursor-pointer ${
-                      frameColor === 'desert' ? 'border-white scale-110' : 'border-transparent'
-                    }`}
-                  />
-                  <button
-                    onClick={() => setFrameColor('natural')}
-                    title="Natural Titanium"
-                    className={`w-4 h-4 rounded-full bg-[#5a5855] border-2 transition-transform cursor-pointer ${
-                      frameColor === 'natural' ? 'border-white scale-110' : 'border-transparent'
-                    }`}
-                  />
-                  <button
-                    onClick={() => setFrameColor('black')}
-                    title="Black Titanium"
-                    className={`w-4 h-4 rounded-full bg-[#202124] border-2 transition-transform cursor-pointer ${
-                      frameColor === 'black' ? 'border-white scale-110' : 'border-transparent'
-                    }`}
-                  />
-                  <button
-                    onClick={() => setFrameColor('white')}
-                    title="White Titanium"
-                    className={`w-4 h-4 rounded-full bg-[#d0d3db] border-2 transition-transform cursor-pointer ${
-                      frameColor === 'white' ? 'border-white scale-110' : 'border-transparent'
-                    }`}
-                  />
-                </div>
-
-                <div className="w-[1px] h-4 bg-neutral-700" />
-
                 {/* Scale buttons */}
                 <button
                   onClick={() => setScale((s) => Math.max(0.65, s - 0.05))}
@@ -685,7 +636,7 @@ export default function App() {
             >
               <IPhone16ProMaxFrame
                 currentTime="9:41"
-                frameColor={frameColor}
+                frameColor="black"
                 showReflection={true}
               >
                 {renderScreenContent()}

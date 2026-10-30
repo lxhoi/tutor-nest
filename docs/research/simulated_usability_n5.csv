@@ -1,0 +1,31 @@
+session_id,persona,task,outcome,time_sec,errors,support_level,SEQ,quote_simulated,observation,timestamp_gia_dinh
+[MÔ PHỎNG]-S1-T1,S1,T1,U,49,0,none,7,"[MÔ PHỎNG] Lọc cuối tuần và 500k là đủ để tôi chọn.","[MÔ PHỎNG] Chọn đúng Nguyễn Minh Anh.",2026-10-01T09:14:00+07:00
+[MÔ PHỎNG]-S2-T1,S2,T1,U,61,0,none,6,"[MÔ PHỎNG] Tôi muốn thấy lịch cho cả hai con sau này.","[MÔ PHỎNG] Dùng lọc giá và lịch.",2026-10-01T10:02:00+07:00
+[MÔ PHỎNG]-S3-T1,S3,T1,U,76,1,none,5,"[MÔ PHỎNG] Tôi cần chắc 500k là theo giờ.","[MÔ PHỎNG] Đọc lại đơn vị học phí.",2026-10-01T11:18:00+07:00
+[MÔ PHỎNG]-S4-T1,S4,T1,U,54,0,none,6,"[MÔ PHỎNG] Tôi mở hồ sơ để xem cách dạy.","[MÔ PHỎNG] Hoàn thành nhanh.",2026-10-01T13:05:00+07:00
+[MÔ PHỎNG]-S5-T1,S5,T1,A,161,2,facilitator-neutral,4,"[MÔ PHỎNG] Tôi không biết lọc cuối tuần ở đâu.","[MÔ PHỎNG] Cần nhắc ‘bạn sẽ làm gì tiếp?’ một lần.",2026-10-01T15:26:00+07:00
+[MÔ PHỎNG]-S1-T2,S1,T2,U,73,0,none,6,"[MÔ PHỎNG] Quay lại mà vẫn giữ 19:30 thì ổn.","[MÔ PHỎNG] Xác nhận đúng date/time/amount.",2026-10-02T09:08:00+07:00
+[MÔ PHỎNG]-S2-T2,S2,T2,U,92,0,none,6,"[MÔ PHỎNG] Tôi muốn biết lịch nào của con nào.","[MÔ PHỎNG] Hoàn thành nhưng nêu nhu cầu nhiều con.",2026-10-02T10:11:00+07:00
+[MÔ PHỎNG]-S3-T2,S3,T2,F,219,2,none,2,"[MÔ PHỎNG] Tôi không chắc giờ cũ còn giữ hay chưa.","[MÔ PHỎNG] Bỏ tác vụ sau quay lại ở bản trước sửa.",2026-10-02T11:36:00+07:00
+[MÔ PHỎNG]-S4-T2,S4,T2,U,88,0,none,6,"[MÔ PHỎNG] Tóm tắt trước trả tiền rõ.","[MÔ PHỎNG] Hoàn thành.",2026-10-02T13:22:00+07:00
+[MÔ PHỎNG]-S5-T2,S5,T2,U,118,1,none,5,"[MÔ PHỎNG] Tôi tìm lại ngày hơi lâu.","[MÔ PHỎNG] Hoàn thành chậm.",2026-10-02T15:03:00+07:00
+[MÔ PHỎNG]-S1-T3,S1,T3,A,171,1,facilitator-neutral,4,"[MÔ PHỎNG] Tôi tưởng 12 triệu là trả ngay.","[MÔ PHỎNG] Cần đọc lại plan.",2026-10-03T09:17:00+07:00
+[MÔ PHỎNG]-S2-T3,S2,T3,U,121,0,none,6,"[MÔ PHỎNG] Kỳ này khác tổng khóa.","[MÔ PHỎNG] Tự giải thích đúng.",2026-10-03T10:05:00+07:00
+[MÔ PHỎNG]-S3-T3,S3,T3,A,198,2,facilitator-neutral,3,"[MÔ PHỎNG] Học thử có tự gia hạn không?","[MÔ PHỎNG] Nhầm trial với weekly.",2026-10-03T11:42:00+07:00
+[MÔ PHỎNG]-S4-T3,S4,T3,A,143,1,facilitator-neutral,4,"[MÔ PHỎNG] Tôi cần so sánh ba số cạnh nhau.","[MÔ PHỎNG] Tìm plan full trước.",2026-10-03T13:18:00+07:00
+[MÔ PHỎNG]-S5-T3,S5,T3,F,286,3,none,2,"[MÔ PHỎNG] Tôi không biết số nào phải trả hôm nay.","[MÔ PHỎNG] Không hoàn thành.",2026-10-03T15:33:00+07:00
+[MÔ PHỎNG]-S1-T4,S1,T4,U,89,0,none,6,"[MÔ PHỎNG] Chưa xác nhận thì tôi chờ.","[MÔ PHỎNG] Dừng ở pending.",2026-10-04T09:20:00+07:00
+[MÔ PHỎNG]-S2-T4,S2,T4,U,104,0,none,5,"[MÔ PHỎNG] Timeout thì phải kiểm tra trước.","[MÔ PHỎNG] Chọn đúng CTA.",2026-10-04T10:04:00+07:00
+[MÔ PHỎNG]-S3-T4,S3,T4,A,164,2,facilitator-neutral,3,"[MÔ PHỎNG] Tôi định gửi lại ngay.","[MÔ PHỎNG] Cần nhắc xem trạng thái.",2026-10-04T11:47:00+07:00
+[MÔ PHỎNG]-S4-T4,S4,T4,A,138,1,facilitator-neutral,4,"[MÔ PHỎNG] Tôi muốn biết lỗi do mạng hay ngân hàng.","[MÔ PHỎNG] Đọc copy sau gợi ý.",2026-10-04T13:09:00+07:00
+[MÔ PHỎNG]-S5-T4,S5,T4,F,301,3,none,2,"[MÔ PHỎNG] Tôi tưởng bấm lại sẽ sửa được.","[MÔ PHỎNG] Lặp lại CTA gửi.",2026-10-04T15:28:00+07:00
+[MÔ PHỎNG]-S1-T5,S1,T5,U,88,0,none,6,"[MÔ PHỎNG] Yêu cầu khác với lịch đang có.","[MÔ PHỎNG] Hoàn thành.",2026-10-05T09:11:00+07:00
+[MÔ PHỎNG]-S2-T5,S2,T5,U,115,0,none,5,"[MÔ PHỎNG] Tôi muốn đổi đúng buổi của con.","[MÔ PHỎNG] Nêu khoảng trống multi-child.",2026-10-05T10:16:00+07:00
+[MÔ PHỎNG]-S3-T5,S3,T5,A,151,1,facilitator-neutral,4,"[MÔ PHỎNG] Tôi nghĩ lịch đã đổi rồi.","[MÔ PHỎNG] Đọc lại pending sau gợi ý.",2026-10-05T11:34:00+07:00
+[MÔ PHỎNG]-S4-T5,S4,T5,U,103,0,none,5,"[MÔ PHỎNG] Lịch cũ cần còn đó.","[MÔ PHỎNG] Hoàn thành.",2026-10-05T13:13:00+07:00
+[MÔ PHỎNG]-S5-T5,S5,T5,F,242,2,none,2,"[MÔ PHỎNG] Tôi không biết đang chờ ai.","[MÔ PHỎNG] Không giải thích được status.",2026-10-05T15:44:00+07:00
+[MÔ PHỎNG]-S1-T6,S1,T6,U,54,0,none,6,"[MÔ PHỎNG] Tôi xem tiền sau khi xem lịch.","[MÔ PHỎNG] Hoàn thành.",2026-10-06T09:07:00+07:00
+[MÔ PHỎNG]-S2-T6,S2,T6,U,83,0,none,6,"[MÔ PHỎNG] Cần lọc theo con khi có nhiều lịch.","[MÔ PHỎNG] Hoàn thành.",2026-10-06T10:12:00+07:00
+[MÔ PHỎNG]-S3-T6,S3,T6,A,176,1,facilitator-neutral,4,"[MÔ PHỎNG] Tôi tìm trong Lịch học trước.","[MÔ PHỎNG] Cần gợi ý tên section.",2026-10-06T11:39:00+07:00
+[MÔ PHỎNG]-S4-T6,S4,T6,U,67,0,none,5,"[MÔ PHỎNG] Hóa đơn nên gắn với lịch.","[MÔ PHỎNG] Hoàn thành.",2026-10-06T13:16:00+07:00
+[MÔ PHỎNG]-S5-T6,S5,T6,U,95,0,none,5,"[MÔ PHỎNG] Tôi quay về lịch được.","[MÔ PHỎNG] Hoàn thành.",2026-10-06T15:02:00+07:00
