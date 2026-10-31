@@ -25,8 +25,26 @@
 .cs-release-comparison{display:grid;grid-template-columns:1.45fr .55fr;gap:55px}.cs-release-comparison .cs-lead{font-size:17px}.cs-release-corrections{margin-top:22px;display:grid;gap:15px}.cs-release-corrections article{display:flex;gap:18px;border-top:1px solid #c3cfb7;padding-top:16px}.cs-release-corrections article>span{font-size:11px;color:#9a704c;margin-top:5px}.cs-release-corrections h2{font-size:21px;margin-bottom:6px}.cs-release-corrections p{font-size:16px!important;max-width:720px}.cs-release-phone{display:flex;flex-direction:column;align-items:center;padding-top:15px}.cs-contact-note a{display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:underline;text-underline-offset:4px}.cs-layout-findings .cs-finding-response p{font-size:14px}.cs-layout-study .cs-study-grid article p{font-size:16px}
 .cs-toolbar .cs-evidence-trigger{font-size:11px;font-weight:600;white-space:nowrap;border:1px solid #bdcdb6;padding:7px 10px;background:#f8f6ef}.cs-evidence-backdrop{position:fixed;inset:0;z-index:90;background:#102c2b99;backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:24px}.cs-evidence-panel{background:#faf9f3;color:#173e3a;border-radius:16px;width:min(820px,100%);max-height:90vh;overflow:auto;box-shadow:0 30px 90px #102c2b55;padding:30px;font-family:Arial,Helvetica,sans-serif}.cs-evidence-panel header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.cs-evidence-panel header span{font-size:10px;letter-spacing:1.7px;color:#61735a}.cs-evidence-panel h2{font:32px/1.2 Georgia,serif;margin-top:10px}.cs-evidence-panel header button{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #c7d3bf;border-radius:50%;flex-shrink:0}.cs-evidence-intro{font-size:14px;line-height:1.65;color:#52634b;padding:20px 0;border-bottom:1px solid #d7dfcf}.cs-evidence-documents{display:grid;gap:20px;margin-top:22px}.cs-evidence-documents article{display:flex;gap:17px;align-items:flex-start}.cs-evidence-documents article>svg{color:#387460;flex-shrink:0;margin-top:3px}.cs-evidence-documents h3{font-size:16px;font-weight:600;margin-bottom:7px}.cs-evidence-documents p{font-size:13px;line-height:1.6;color:#5c6c54}.cs-evidence-documents a{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:#1e684f;text-decoration:underline;text-underline-offset:4px;min-height:44px}.cs-evidence-panel footer{border-top:1px solid #d7dfcf;margin-top:15px;padding-top:15px;font-size:12px;line-height:1.6;color:#63735b}@media(max-width:760px){.cs-toolbar .cs-toolbar-divider,.cs-toolbar>div:first-child>span{display:none}.cs-evidence-panel{padding:22px}.cs-evidence-backdrop{padding:12px}.cs-evidence-panel h2{font-size:26px}}
 
-/* Keep the five-stage journey clear of the slide footer in both languages. */
+/* Keep the six-stage parent journey legible and clear of the slide footer. */
 .cs-journey{margin-top:26px}.cs-journey h2{font-size:25px}.cs-journey-question{margin-top:14px;padding:14px}.cs-journey-question p{font-size:20px}.cs-journey-opportunity{margin-top:13px;padding-top:10px}
 
 .cs-mobile-sizes{display:flex;justify-content:center;align-items:flex-end;gap:110px;margin-top:24px}.cs-mobile-sizes>div{display:flex;flex-direction:column;align-items:center}.cs-mobile-sizes .cs-visual-label{margin-top:16px}.cs-layout-mobile-sizes h1{font-size:52px}.cs-layout-mobile-sizes .cs-lead{font-size:17px;max-width:1100px;margin-top:14px}
 .cs-mobile-states{display:flex;justify-content:center;align-items:flex-end;gap:92px;margin-top:24px}.cs-mobile-states>div{display:flex;flex-direction:column;align-items:center}.cs-mobile-states .cs-visual-label{margin-top:14px;text-align:center}.cs-mobile-states .cs-visual-label small{display:block;margin-top:5px;font:10px Arial;letter-spacing:0;color:#6e7c6e}.cs-layout-mobile-states h1{font-size:52px}.cs-layout-mobile-states .cs-lead{font-size:17px;max-width:1100px;margin-top:14px}
+
+.cs-map-branches{grid-template-columns:repeat(3,1fr)}
+.cs-layout-journey .cs-journey{grid-template-columns:repeat(3,1fr);gap:14px 22px;margin-top:20px}
+.cs-layout-journey .cs-journey-step{padding-top:15px}
+.cs-layout-journey .cs-journey-step>p{font-size:13px;line-height:1.35;min-height:37px}
+.cs-layout-journey .cs-journey-question{min-height:67px;padding:8px;margin-top:8px}
+.cs-layout-journey .cs-journey-question p{font:13px/1.3 Arial,sans-serif;margin-top:5px}
+.cs-layout-journey .cs-journey-opportunity{margin-top:6px;padding-top:5px}
+.cs-layout-journey .cs-journey-opportunity p{font-size:12px;line-height:1.3}
+.cs-heuristics-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin-top:12px}
+.cs-heuristics-grid article{display:grid;grid-template-columns:1fr auto;column-gap:10px;border-top:1px solid #c3ceb9;padding:5px 0 4px;min-height:48px}
+.cs-heuristics-grid article>div{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:46px;background:#e6ebdd;color:#235844;border-radius:4px}
+.cs-heuristics-grid article>div span{font-size:9px;color:#8a7758}
+.cs-heuristics-grid article>div strong{font:20px Georgia}
+.cs-heuristics-grid h2{font-size:14px;line-height:1.15;margin:0 0 3px}
+.cs-heuristics-grid p{font-size:10.5px;line-height:1.22;color:#5e6d58;margin:0;max-width:540px}
+.cs-heuristics-note{font-size:10px;color:#71806a;margin-top:5px}
+.cs-presentation[lang=vi] .cs-heuristics-grid h2{font-size:13px}

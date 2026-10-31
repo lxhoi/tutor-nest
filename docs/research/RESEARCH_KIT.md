@@ -2,7 +2,7 @@
 
 Bryan Lê · UX/UI design · 10-week concept project
 
-**Status: ready to conduct; no real participant results have been collected or verified for this case study.** Templates and targets below are prospective. Do not replace missing evidence with invented interviews, quotes, dates, or scores. Heuristic findings and technical tests are separate evidence classes.
+**Status: prospective protocol, separate from the author-supplied Phase 4 v1 usability notes and the later n=5 retest report.** Phase 4 reports six sessions (four parents, two tutors); the later report covers five parents and three tasks. Neither report is independently verified here. The protocol below was not the exact script used in those reports; its tasks, targets and templates remain proposed. Do not backfill missing session records or treat technical checks as user findings.
 
 ## 1. Research objectives
 

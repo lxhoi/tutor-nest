@@ -1,6 +1,6 @@
 # TutorNest — IA, journey and decision record
 
-Status: documented from the current concept and retrospective evaluator review. This is not evidence that card sorting, tree testing or participant interviews have already occurred. Decisions below are being documented now; no historical ideation timeline is implied.
+Status: the current concept and evaluator decisions are documented retrospectively. The supplied Phase 4 PDF reports moderated v1 usability notes for six people, including four parents; those notes support specific search/compare/booking findings but do not report card sorting or tree testing. Decisions below do not imply a historical ideation timeline. See `PHASE_2_3_4_EVIDENCE_REVIEW_VI.md` for source reconciliation.
 
 ## 1. Problem framing
 
@@ -64,12 +64,13 @@ Use a text-only navigation tree. Tasks: find an upcoming lesson; identify the ne
 
 | Stage | Touchpoints | Action | Assumed question/emotion | Risk | Opportunity | Evidence status |
 | --- | --- | --- | --- | --- | --- | --- |
-| Recognize need | Parent/child discussion; school feedback | Decide whether tutoring is appropriate | “What support would actually help?” / uncertainty | Designing only for parents' stated needs while missing child's fit | Ask about a recent real decision and involve child perspective appropriately | Hypothesis; interviews pending |
-| Consider | Referrals, search, profile, reviews | Compare fit and credentials | “Can I trust this tutor?” / caution | Treating badges as enough evidence of fit | Make qualifications, teaching approach and review context visible | Concept/UI; parent validation pending |
-| Prepare | Availability and schedule | Match date, duration and routine | “Will this fit our week?” / concern | Wrong or silently changed time | Shared dates, preserved selections, review summary | Evaluator issue and technical checks |
-| Commit | Checkout and payment | Explain amount due and commitment | “What do I owe now?” / hesitation | Wrong totals or unclear recurring commitment | Unified quote and explicit trial/weekly/full options | Technical checks; comprehension study pending |
-| Learn and maintain | Lessons, invoices, messages | Attend and track upcoming obligations | “What is next?” / reassurance if clear | Stale information or a changed schedule | Booking-derived session and invoice views | Implementation; field use unvalidated |
-| Change or leave | Reschedule, future-week pause, help | Request change or stop continuation | “Has my request changed the lesson?” / concern | Pending confused with confirmed | Request state, cancellation and clear renewal eligibility | Evaluator check; user study pending |
+| Recognize need | Parent/child discussion; school feedback | Decide whether tutoring is appropriate | “What support would actually help?” / uncertainty | Designing only for parents' stated needs while missing child's fit | Ask about a recent real decision and involve child perspective appropriately | Phase 2 hypothesis; not included in Phase 4 tasks |
+| Find candidates | Referrals, search, filters | Find tutors by subject, grade, price and schedule | “Where should I start?” / uncertainty | Hidden filters or insufficient location criteria | Keep core filters visible and plain-language | Phase 4 report: 4/4 found candidates; 3/4 had filter friction or wanted more filters |
+| Vet and compare | Profile, credentials, reviews, compare | Compare fit and evidence | “Can I trust this tutor?” / caution | Treating badges as enough evidence of fit | Explain what verification covers; show review provenance | Phase 4 report: 4/4 asked for more trust evidence; 3/4 missed Compare initially |
+| Check availability | Tutor calendar and schedule | Match date, duration and routine | “Will this fit our week?” / concern | Wrong or silently changed time | Clear date controls and persistent selection | Phase 4 report: 3/4 selected a slot without difficulty; one corrected the wrong day |
+| Commit | Checkout and payment | Explain amount due and commitment | “What do I owe now?” / hesitation | Card-only payment and unclear policy | Show amount, policy, support and available payment choices before commitment | Phase 4 report: 2/4 completed booking; 2/4 stopped at card-only payment |
+| Learn and maintain | Lessons, invoices, messages | Attend and track upcoming obligations | “What is next?” / reassurance if clear | Stale information or a changed schedule | Booking-derived session and invoice views | Phase 4 asked about expectations after booking; ongoing behavior not observed |
+| Change or leave | Reschedule, future-week pause, help | Request change or stop continuation | “Has my request changed the lesson?” / concern | Pending confused with confirmed | Request state, cancellation and clear renewal eligibility | Separate n=5 report covers a reschedule task; not part of Phase 4 baseline |
 
 These thoughts and emotions are hypotheses, not participant quotes.
 
@@ -84,7 +85,7 @@ These thoughts and emotions are hypotheses, not participant quotes.
 | Schedule availability | Allow every day/time vs tutor-specific allowed bands and overlap checks | Restrict availability and propose non-overlapping replacements | Fixtures describe bands, not live capacity; mixed days can have no common slot | Regression tests; usability validation pending |
 | Calendar | Claim account sync vs create portable .ics file | Download a real file, explicitly requiring manual import | Not connected calendar sync; calendar-app import QA remains to be completed | File structure/time/escaping tests and browser download |
 | Filter behavior | Staged Apply/Cancel vs immediate filtering | Live updates with explicit “closing keeps selections” copy | Changes persist when closing; must be tested for understanding | Source/browser checks; parent study pending |
-| Research presentation | Invent outcomes vs label actual evidence classes | Real implementation findings, proposed protocol, clearly marked synthetic example only | Cannot claim measured task success or impact yet | Evidence audit; requires real sessions to complete |
+| Research presentation | Blend reported/synthetic outcomes vs separate evidence classes | Attribute Phase 4 baseline notes, keep the separate n=5 retest distinct, and exclude the synthetic example | Supplied reports still lack independently reconciled raw records/builds | Evidence audit; reconcile source artifacts and retest current parent flow |
 
 ## 9. Prospective prioritization
 

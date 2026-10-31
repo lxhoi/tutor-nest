@@ -1,5 +1,7 @@
 # Bước 3–6 — Pipeline nghiên cứu mô phỏng minh bạch
 
+**Phân biệt nguồn:** Tài liệu này vẫn là bài tập mô phỏng do AI tạo, không phải Phase 4 usability notes do tác giả cung cấp. S1–S5, CSV và SIM-* không được tính vào sample, findings hay metrics của case study parent-flow.
+
 **Đầu vào cần từ bạn:** Không cần thêm. Tài liệu này chỉ minh họa cách một pipeline nghiên cứu có thể vận hành khi không thể tuyển người dùng thật.
 
 > [MÔ PHỎNG] Toàn bộ persona S1–S5, bảng tác vụ, quote, card sorting, tree testing, chỉ số, affinity map, issue log và retest dưới đây được AI tạo từ proto-persona và heuristic. Không có người thật, recording, consent, timestamp thực, số liệu thực hoặc trích dẫn thực. Không dùng các kết quả này làm impact, uplift, “đã kiểm chứng”, hay insight người dùng.

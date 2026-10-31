@@ -1,59 +1,51 @@
-# TutorNest — concept case study
+# TutorNest — parent-flow concept case study
 
 Author: Bryan Lê
 Role: UX and UI design
 Project duration: 10 weeks
-Public contact: lxhoi.2k@gmail.com
-Release review: 30 October 2026
+Release review: 31 October 2026
 
 ## Scope and evidence
 
-This is a portfolio concept, not an operating tutoring service. Its 28-slide English/Vietnamese presentation follows the supplied Google UX case-study sequence. It documents interface decisions, a scenario-based proto-persona, retrospective layout diagrams, and an evaluator review. It does not claim completed participant research, WCAG conformance, a conversion uplift, or production deployment.
+The bilingual case study now focuses on the parent path from search through booking confirmation. Tutor onboarding and earnings are outside the narrative scope. Tutor profiles, reviews, availability, verification labels, policies and payment choices in the local prototype are demo data; this is not an operating service.
 
-The designer supplied their name, role, duration, and contact. Original Figma mockups and the local prototype inform the design. The review identified concrete defects and their corrections; these are heuristic/implementation findings rather than participant observations.
+The case study uses three author-supplied phase PDFs:
 
-## Traceable corrections
+- **Phase 2:** competitor/community synthesis, a parent proto-persona (Linh) and a six-stage journey. The PDF characterizes these as secondary-research synthesis, not direct participant interviews.
+- **Phase 3:** parent flow, tutor flow and sitemap. The parent flow diagram reports 15 steps and 3 decisions; those counts are not observed taps or time.
+- **Phase 4:** a study plan and a worksheet that reports moderated prototype-v1 sessions with 6 participants (4 parents, 2 tutors). Parent findings in the deck use n=4 only.
 
-| Observed issue | Correction | Verification |
-| --- | --- | --- |
-| Weekend filter selected Monday | Explicit Saturday/Sunday matching and stable chip label | Regression test and browser walkthrough |
-| Weekday labels contradicted calendar dates | Calendar and recurring timeline use actual Date weekdays | Regression tests and 03/11/2026 Tuesday → 05/11/2026 Thursday browser check |
-| Availability was not specific to the chosen tutor | Tutor weekday and time-band availability determine selectable slots | Calendar regression test and browser walkthrough |
-| Lesson management always showed a fixed mock list | Session and invoice lists are generated from the booking | Trial, recurring, and full-plan regression tests |
-| Rescheduling immediately changed confirmed booking | Separate pending request, cancellation, unchanged confirmed schedule | Browser walkthrough |
-| Manual payment confirmation implied completed reconciliation | Explicitly simulated pending, failed, retry, and successful reconciliation | Browser walkthrough; no real financial transaction |
-| Keyboard and modal interaction gaps | Keyboard search activation; named dialogs; focus containment, return, Escape | Source review and keyboard walkthrough |
-| Unsupported UX scores and compliance claim | Removed scores and WCAG AA claim | Source search |
+These PDFs were supplied by the project author and were not independently verified. The Phase 4 files do not include consent records, raw recordings, complete task-level logs, or exact build identifiers. A separate author-supplied n=5 retest report in the project covers three tasks and must not be merged with the Phase 4 baseline.
 
-## Reproducible checks
+The overview now includes proposed success measures for independent comparison discovery, correct schedule selection, checkout comprehension, and recovery from interrupted states. These are measurement definitions for a future study, not achieved targets or results. Numeric thresholds should be set after a pilot and before the next round.
 
-- `npm ci`
-- `npm run lint`
-- `npm test` — 17 regression tests; these do not measure user usability.
-- `npm run build`
-- Open `/?view=case-study&slide=1&lang=en` or `lang=vi`.
+## Parent-flow findings represented
 
-The demo uses a disclosed calendar anchor of 30 October 2026. All tutors, verification badges, reviews, provider choices, transactions, and service policies are illustrative. QR artwork is intentionally not a payment QR; no bank account should receive money through this demo.
+- 4/4 parents asked for more evidence about tutor trust or review provenance.
+- 3/4 did not find Compare immediately; some also had filter friction or wanted additional filters.
+- 2/4 did not complete the v1 booking at the card-only payment step.
+- The Phase 4 report says 3/4 chose an available slot without difficulty and 3/4 raised cancellation/refund/support concerns.
 
-## Remaining validation
+Counts describe the reported sample, not prevalence or market demand. The deck links these findings to current implementation responses and marks untested changes as such.
 
-- An author-supplied report now describes a v1/v2 retest with five parents on three critical tasks and a limited accessibility audit. Treat it as supplied evidence, not independent verification; retain its raw observations, consent records and versioned v1/v2 artifacts before widening claims.
-- Extend the reported accessibility audit to all critical states, screen readers, text scaling, touch targets, contrast, and responsive behavior.
-- Production availability, payment reconciliation, authentication, server persistence, and service policies require separate implementation and validation.
+## Implementation and quality checks
 
-## Publication
+The local V2 prototype has parent discovery, compare, tutor profile, schedule, checkout, simulated VietQR/MoMo options, confirmation and lesson management. It does not process real payments, use live tutor availability, verify tutors, or deliver operational support. Existing source review and regression checks cover date/time, quote consistency, state recovery and calendar export; they are not user-usability measures.
 
-`dist/` is the static production build. It can be uploaded to the chosen static host. This release preparation does not itself publish to a public URL or push a repository. Figma remains a reference artifact; local corrections have not been synchronized back into that Figma file.
+A separate author-supplied report describes a later n=5 v1/v2 retest on quote, payment recovery and reschedule tasks. It reports 5/5 completion on v2 for those three tasks. Raw task records and tested-build mapping remain to be reconciled; these results are not evidence for search, compare or the full parent journey.
 
-## Additional corrections and evidence kit
+A separate accessibility report records checks across named iOS, Android and desktop environments. Coverage is limited; no whole-product WCAG conformance claim is made.
 
-- Back/Continue preserves the selected 19:30–21:00 time; verified in a local browser round trip.
-- A shared quote calculation prevents trial/full-plan leakage and aligns checkout, invoices and renewal.
-- Calendar export creates an actual .ics file; the UI explains manual import and does not claim account synchronization.
-- Device-local drafts restore validated state. New tutor selection begins a draft.
-- Reschedule choices exclude overlapping booked sessions; renewal uses the selected booking.
-- The Evidence panel links to the research protocol, IA/decision log, verified desk-research log, clearly labeled synthetic research pipeline, accessibility measurement worksheet, capped self-assessment, author-supplied retest/audit report, evidence addendum and verification scope.
+## Evidence artifacts
 
-The protocol includes recruitment criteria, consent, neutral tasks, success criteria, recording templates, severity rules and planned retesting. The IA document includes a scenario journey, sitemap, hypotheses, alternatives and trade-offs. The simulation materials are AI-generated exercises and cannot substitute for participants. These are preparation artifacts, not completed participant studies.
+- `docs/revision/PORTFOLIO_REVIEW_PHASES_2_4_VI.md` — scoring, detailed critique, top issues and improvement plan.
+- `docs/research/PHASE_2_3_4_EVIDENCE_REVIEW_VI.md` — reconciliation of the three supplied phase PDFs.
+- `docs/research/IA_AND_DECISIONS.md` — parent-first IA, labels, journey and design trade-offs.
+- `docs/research/RESEARCH_KIT.md` — proposed future protocol, separate from the supplied studies.
+- `docs/research/SIMULATED_RESEARCH_VI.md` — synthetic method example, excluded from findings.
+- `docs/research/RETEST_ACCESSIBILITY_REPORT_VI.md` — later, separate retest/audit claim limits.
+- `docs/revision/PORTFOLIO_REVIEW_PHASES_2_4_VI.md` — evidence-based scoring and prioritised gaps.
 
-Manual release check: local in-app browser, 30 October 2026. Trial at 19:30 on 03/11/2026 retained its time after Back/Continue; checkout and simulated confirmation showed 750,000 VND; calendar action showed file-created/manual-import feedback. The 28 slides in English and Vietnamese were checked against footer bounds at the review viewport. Screen-reader and real-device validation remain pending.
+## Publication limits
+
+Do not claim the product is market-validated, payment-ready, independently validated with parents, or WCAG AA compliant. Do not merge n=6 baseline results with the separate n=5 retest. If raw evidence or exact builds are unavailable, attribute findings to the author-supplied reports and keep the scope explicit.

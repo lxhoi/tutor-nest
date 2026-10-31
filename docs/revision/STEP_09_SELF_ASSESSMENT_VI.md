@@ -1,3 +1,5 @@
+> **Cập nhật 31/10/2026:** Bảng điểm dưới đây được viết trước khi tích hợp ba PDF Phase 2–4. Dùng `PORTFOLIO_REVIEW_PHASES_2_4_VI.md` làm bản chấm hiện tại; báo cáo mới tách baseline n=6 khỏi retest n=5 riêng.
+
 # Bước 9 — Tự chấm sau hoàn thiện
 
 **Đầu vào đã bổ sung:** Báo cáo retest/accessibility do tác giả cung cấp, mô tả 5 phụ huynh P1–P5, ba task v1/v2 và audit giới hạn đa môi trường. Điểm dưới đây chấm bản local, 17 regression tests và báo cáo này.

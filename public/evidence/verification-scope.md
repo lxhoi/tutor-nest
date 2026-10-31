@@ -41,6 +41,6 @@ Not currently supported: “validated with parents”, a real usability success 
 
 ## Recorded local walkthrough — 30 October 2026
 
-In-app browser at the review viewport: selected Nguyễn Minh Anh, 03/11/2026 at 19:30–21:00, trial at 750,000 VND. Back/Continue retained the time. Simulated payment confirmation retained the fee and session. Calendar export showed file-created/manual-import feedback. The evidence dialog opened with four document links and initial close-button focus. Layout bounds were checked for all 28 slides in both languages; the journey spacing was corrected after the check. These are evaluator/technical observations, not participant findings.
+In-app browser at the review viewport: selected Nguyễn Minh Anh, 03/11/2026 at 19:30–21:00, trial at 750,000 VND. Back/Continue retained the time. Simulated payment confirmation retained the fee and session. Calendar export showed file-created/manual-import feedback. The evidence dialog opened with four document links and initial close-button focus. The earlier 28-slide version had a layout-bounds review in both languages. The revised 29-slide deck still needs a fresh visual bounds pass. These are evaluator/technical observations, not participant findings.
 
 Final automated run: TypeScript check passed, 17 regression tests passed, production build passed. Vite reports a large JavaScript chunk; performance optimization remains a follow-up.
