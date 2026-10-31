@@ -1,4 +1,4 @@
-export type CaseStudyLayout = 'cover' | 'overview' | 'split' | 'cards' | 'chapter' | 'persona' | 'journey' | 'sitemap' | 'wireframes' | 'responsive' | 'mobile-sizes' | 'mobile-states' | 'flow' | 'study' | 'findings' | 'comparison' | 'gallery' | 'prototype' | 'accessibility' | 'heuristics' | 'takeaways' | 'closing';
+export type CaseStudyLayout = 'cover' | 'overview' | 'split' | 'cards' | 'chapter' | 'persona' | 'journey' | 'sitemap' | 'wireframes' | 'responsive' | 'mobile-sizes' | 'mobile-states' | 'flow' | 'study' | 'research-summary' | 'findings' | 'comparison' | 'gallery' | 'prototype' | 'accessibility' | 'heuristics' | 'takeaways' | 'closing';
 export interface CaseStudySlide {
   title: string;
   chapter: string;
@@ -8,174 +8,164 @@ export interface CaseStudySlide {
   items?: { title: string; text: string; evidence?: string; response?: string; score?: number }[];
   note?: string;
   evidence?: string;
+  researchMethod?: string;
+  journeyPersona?: string;
+  journeyGoal?: string;
+  journeyRows?: { label: string; values: string[] }[];
 }
 export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
   {
     "title": "From scattered search\nto a confident booking.",
-    "chapter": "Overview",
+    "chapter": "Project overview",
     "kicker": "BRYAN LÊ / UX & UI DESIGN",
     "description": "A parent-focused tutoring concept: compare a credible tutor, choose an available trial, and understand the commitment before paying.",
     "layout": "cover",
     "note": "A 10-week UX/UI concept by Bryan Lê. This case study now follows the parent path from discovery to booking. All tutor profiles, verification labels, availability, policies and payment choices in the prototype are demo data."
   },
   {
-    "title": "One clear path\nfor the parent.",
-    "chapter": "Overview",
-    "kicker": "01 / PROJECT OVERVIEW",
-    "description": "TutorNest is a mobile-first concept for parents in Vietnam. This case study focuses on the parent key flow from search through booking confirmation; tutor operations sit outside the design scope.",
+    "title": "Project overview",
+    "chapter": "Project overview",
+    "kicker": "PROJECT OVERVIEW",
+    "description": "TutorNest is a mobile tutoring marketplace concept for parents in Vietnam. This case study follows the parent booking path from search to confirmation.",
     "layout": "overview",
     "items": [
       {
-        "title": "Product & audience",
-        "text": "Mobile tutoring marketplace concept for parents in Vietnam."
+        "title": "Product",
+        "text": "A mobile-first tutoring marketplace concept."
       },
       {
-        "title": "Role & duration",
-        "text": "Bryan Lê — UX and UI design · 10 weeks."
+        "title": "Audience",
+        "text": "Parents in Vietnam looking for tutoring for their child."
       },
       {
-        "title": "Scope & tools",
-        "text": "Parent discovery-to-booking flow · Figma · React prototype."
+        "title": "Core experience",
+        "text": "Search, compare, check availability, book and confirm a lesson."
       }
     ],
-    "note": "The scope is a concept and a local prototype. The author supplied role, duration and tools. No operating service, client team or business outcome is claimed."
+    "note": "All tutor profiles, verification labels, availability, policies and payment choices shown in the prototype are demo data. This is a concept, not a live service."
   },
   {
-    "title": "Parents could find a tutor.\nTrust and payment slowed booking.",
-    "chapter": "Overview",
-    "kicker": "02 / THE PROBLEM & GOAL",
-    "description": "The supplied Phase 4 study notes report that parents wanted more proof about tutor credibility and two of four stopped at payment when only card payment was available.",
+    "title": "Project overview",
+    "chapter": "Project overview",
+    "kicker": "PROJECT OVERVIEW",
+    "description": "Parents could find tutors, but the supplied study notes point to friction when judging tutor credibility, comparing options and completing payment.",
     "layout": "split",
     "items": [
       {
-        "title": "Observed v1 problem",
-        "text": "All 4 parent participants asked for more proof about tutors. Three did not find Compare immediately; 2 of 4 did not complete booking at the card-only payment step."
+        "title": "The problem",
+        "text": "Parents need a clear way to assess tutor fit and trust, choose a workable time, and understand what they will pay before booking."
       },
       {
-        "title": "Design question",
-        "text": "How might we help a parent compare tutor fit, choose an available trial and understand policy and payment before committing?"
+        "title": "The goal",
+        "text": "Help parents compare tutors, select an available lesson and review the booking terms with confidence."
       }
     ],
-    "evidence": "Author-supplied Phase 4 notes · 4 parents · prototype v1",
-    "note": "These counts describe four parent participants in the supplied report, not prevalence among Vietnamese parents. The notes do not include raw recordings, consent records or a versioned prototype file for independent verification."
+    "evidence": "Author-supplied usability notes · parent sample n=4",
+    "note": "The counts describe four parent participants in one reported study. They are not estimates of behavior across Vietnamese parents."
   },
   {
-    "title": "Narrow the work\nto one parent flow.",
-    "chapter": "Overview",
-    "kicker": "03 / DESIGN SCOPE",
-    "description": "A parent can move from tutor search to a reviewed booking. The case study excludes tutor onboarding, tutor earnings and live payment operations.",
+    "title": "Project overview",
+    "chapter": "Project overview",
+    "kicker": "PROJECT OVERVIEW",
+    "description": "A solo UX/UI concept project with a parent-first scope and proposed measures for future validation.",
     "layout": "cards",
     "items": [
       {
-        "title": "In scope",
-        "text": "Search and filters → compare/profile → availability → trial choice → booking review → payment state → confirmation."
+        "title": "My role & duration",
+        "text": "Bryan Lê · UX/UI design · 10 weeks."
       },
       {
-        "title": "Out of scope",
-        "text": "Tutor setup and operations, production verification, live inventory, real payment processing and long-term learning outcomes."
+        "title": "Responsibilities & tools",
+        "text": "Research synthesis, problem framing, IA, parent flow, wireframes, prototype and usability review · Figma and React."
       },
       {
-        "title": "Evidence boundary",
-        "text": "Phase 4 reports n=6 overall, including 4 parents and 2 tutors. Parent-flow findings use only the four parent records."
+        "title": "Scope & success measures",
+        "text": "Search through booking confirmation. Proposed measures cover independent comparison, correct schedule selection, policy/payment understanding and recovery after interruption."
       }
     ],
-    "evidence": "Parent key flow · reported study scope, not a market estimate",
-    "note": "The supplied Phase 3 flow map counts 15 steps and 3 decisions for its shortest parent route. That is a design-flow count, not observed taps or task time."
+    "evidence": "Author-supplied role, duration and project records · measures are proposals",
+    "note": "The concept excludes tutor-side operations, production verification, live inventory and real payment processing. Proposed measures are not achieved results or numeric targets."
   },
   {
-    "title": "Define what makes\na booking clear.",
-    "chapter": "Overview",
-    "kicker": "04 / PROPOSED SUCCESS CRITERIA",
-    "description": "Phase 4 surfaced friction around Compare, trust evidence and payment. The next study should measure task completion and understanding before setting numeric targets.",
-    "layout": "study",
-    "items": [
-      {"title": "Find and compare independently", "text": "Measure the share of parents who find at least two tutors and open Compare without a moderator prompt."},
-      {"title": "Choose the right time", "text": "Measure correct date/time selection for the scenario, corrections, and whether returning loses a selected slot."},
-      {"title": "Understand before committing", "text": "After checkout, ask participants to explain the amount due, lesson type, and cancellation/refund terms."},
-      {"title": "Recover after interruption", "text": "Check whether people distinguish pending, failed and confirmed states, then continue without losing their booking choices."}
-    ],
-    "evidence": "Proposed measures · not observed outcomes or achieved targets",
-    "note": "Do not set thresholds before a standardized protocol and baseline. Choose targets after a pilot, record decision criteria in advance, then retest comparable tasks on the same build."
-  },
-  {
-    "title": "Start with\nthe parent.",
-    "chapter": "Understand",
+    "title": "Understanding the user",
+    "chapter": "Understanding the user",
     "kicker": "CHAPTER 01",
     "description": "Understanding the user",
     "layout": "chapter",
     "items": [
       {
-        "title": "Research",
-        "text": "Questions before solutions"
+        "title": "User research",
+        "text": ""
       },
       {
-        "title": "Persona",
-        "text": "A focused parent scenario"
+        "title": "Personas",
+        "text": ""
       },
       {
-        "title": "Journey",
-        "text": "The moments that matter"
+        "title": "Problem statements",
+        "text": ""
+      },
+      {
+        "title": "User journey maps",
+        "text": ""
       }
     ]
   },
   {
-    "title": "Use the evidence\nfor what it can support.",
-    "chapter": "Understand",
-    "kicker": "05 / METHOD & LIMITATIONS",
-    "description": "Phase 2 frames a parent scenario from secondary research. Phase 3 maps the flow and IA. Phase 4 reports a moderated v1 usability round; the report was supplied by the author and is not independently verified here.",
-    "layout": "cards",
+    "title": "User research: summary",
+    "chapter": "Understanding the user",
+    "kicker": "USER RESEARCH: SUMMARY",
+    "description": "The project records combine competitor and community review with a reported moderated usability study. The study plan and completed-session worksheet do not describe the same evidence.",
+    "researchMethod": "The supplied records include secondary research, a parent booking flow and sitemap, and moderated prototype sessions. No completed interview findings or survey results were supplied; session location and duration are not stated.",
+    "layout": "research-summary",
     "items": [
       {
-        "title": "Phase 2 · desk research",
-        "text": "Competitor and community material informed Linh, a parent proto-persona, and a six-stage journey. It is a starting hypothesis, not interview evidence."
+        "title": "Secondary research",
+        "text": "Competitor and community sources informed a six-stage parent journey and proto-persona Linh. This is a starting hypothesis, not direct interview evidence."
       },
       {
-        "title": "Phase 3 · flow & IA",
-        "text": "A parent booking flow and dual-sided sitemap are documented. This revision keeps the parent flow and removes tutor operations from the case narrative."
+        "title": "Usability sessions",
+        "text": "The worksheet reports six moderated sessions from 2–6 Oct 2026: four parents and two tutors. Findings in this case study use the four parent records."
       },
       {
-        "title": "Phase 4 · usability notes",
-        "text": "The report lists 6 moderated sessions: 4 parents and 2 tutors. This case study uses the four parent records only; consent, raw logs and tested-build mapping were not supplied."
-      },
-      {
-        "title": "What remains separate",
-        "text": "The synthetic S1–S5 dataset is an AI-generated method example and is excluded. A separate author-supplied n=5 retest report covers only three other tasks."
+        "title": "Evidence limits",
+        "text": "No consent records, raw session logs, full task timings, SEQ/SUS results, formal issue severity or tested-build IDs were supplied. Card sorting and tree testing are not reported."
       }
     ],
-    "evidence": "Three supplied phase documents · reported participant results are bounded",
-    "note": "Phase 4 includes a study plan and a separate note-taking summary. The plan proposes measures such as SEQ/SUS, but no SEQ or SUS results appear in the supplied notes. The report describes task-completion codes and qualitative observations."
+    "evidence": "Author-supplied plan and worksheet · n=6 overall · parent findings n=4",
+    "note": "The plan mentions interviews and proposed measures; the supplied worksheet does not include completed interview findings or SEQ/SUS results. It also differs from the plan on task count. Keep the separate n=5 follow-up report and AI-generated sample out of this study."
   },
   {
-    "title": "Three friction points\nin the parent flow.",
-    "chapter": "Understand",
-    "kicker": "06 / REPORTED PARENT FINDINGS",
-    "description": "The Phase 4 report records useful task-level signals in a four-parent sample. They identify prototype issues to address, not market-wide needs.",
+    "title": "User research: pain points",
+    "chapter": "Understanding the user",
+    "kicker": "USER RESEARCH: PAIN POINTS",
+    "description": "The parent-study worksheet records three recurring points of friction in the tested booking concept. The small sample identifies issues to investigate, not market-wide needs.",
     "layout": "findings",
     "items": [
       {
-        "title": "Trust needed context",
-        "text": "4/4 parents asked for more evidence: who verified credentials, whether reviews came from completed lessons, or what the tutor was like with children.",
-        "response": "V2 labels verification data as illustrative. A real verification policy and review provenance are still required."
+        "title": "Trust needed more evidence",
+        "text": "4/4 parents asked who verified tutor details, whether reviews came from completed lessons, or how the tutor teaches children.",
+        "response": "Make evidence and its source visible. The current design labels example verification data as illustrative; real verification and review provenance remain open."
       },
       {
-        "title": "Compare was easy to miss",
-        "text": "3/4 parents did not find Compare on their own right away; one needed a moderator prompt. Several also missed or questioned filters.",
-        "response": "V2 exposes comparison selection and a floating compare action on the results screen. This is an implementation response, not a measured improvement."
+        "title": "Compare and filters were hard to find",
+        "text": "3/4 parents missed Compare at first or needed a prompt; several missed or questioned the available filters.",
+        "response": "Make comparison easier to discover and clarify active filters. The updated interface is a design response, not a measured improvement."
       },
       {
-        "title": "Payment blocked 2/4 bookings",
-        "text": "Two parents stopped when the v1 prototype offered only card payment. Three also raised cancellation, refund or support questions.",
-        "response": "V2 offers simulated VietQR/MoMo paths and clearer demo states. It does not process a real transaction or validate operating policies."
+        "title": "Card-only payment stopped bookings",
+        "text": "2/4 parents stopped at the payment step when only card payment was available. 3/4 also raised cancellation, refund or support questions.",
+        "response": "Show payment, policy and support information before commitment. Demo QR/MoMo paths are simulated and do not validate real payment operations."
       }
     ],
-    "evidence": "Author-supplied Phase 4 usability notes · 4 parents · v1",
-    "note": "Report-level counts: all four parents asked for more trust evidence; three of four did not discover Compare immediately; two of four stopped at card-only payment. Tiny samples and missing raw task logs limit interpretation."
+    "evidence": "Author-supplied parent usability worksheet · n=4",
+    "note": "The worksheet reports task codes and observations but not a full task-level timing or assistance log. Two completed bookings do not establish an unassisted completion rate."
   },
   {
-    "title": "Linh is a starting\nhypothesis, not a study result.",
-    "chapter": "Understand",
-    "kicker": "07 / PERSONA & PROBLEM STATEMENT",
-    "description": "A parent scenario from Phase 2 helps frame the task: find a suitable tutor, verify fit, and book around a family routine.",
+    "title": "Persona: Linh",
+    "chapter": "Understanding the user",
+    "kicker": "PERSONA: LINH",
+    "description": "Linh is a proto-persona synthesized from competitor and community sources. The problem statement below is a design hypothesis, not a profile validated through interviews.",
     "layout": "persona",
     "items": [
       {
@@ -184,108 +174,166 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
       },
       {
         "title": "Friction to investigate",
-        "text": "Scattered listings make credentials, reviews, price and availability hard to compare."
+        "text": "Scattered listings make qualifications, reviews, price and availability difficult to compare."
       },
       {
         "title": "Design need",
-        "text": "A reviewable choice with visible evidence, an available time and a clear amount due."
+        "text": "A choice that is easy to review, with visible evidence, an available time and a clear amount due."
       }
     ],
-    "evidence": "Phase 2 proto-persona · synthesized from secondary research; not a participant",
-    "note": "The Phase 2 PDF describes Linh as a proto-persona drawn from platform/community review and competitor analysis. It does not establish that a person named Linh was interviewed. Phase 4 participants are reported separately and do not validate this segment."
+    "evidence": "Proto-persona from secondary research · not a study participant",
+    "note": "The source material describes Linh as a synthesis of platform/community reviews and competitor analysis. It does not establish that a person named Linh was interviewed; the four parent participants are reported separately."
   },
   {
-    "title": "Map the parent task\nwithout implying full validation.",
-    "chapter": "Understand",
-    "kicker": "08 / USER JOURNEY MAP",
-    "description": "The Phase 2 six-stage journey spans need through follow-up. Phase 4 observes only parts of search, comparison, scheduling and booking; before-search and post-booking remain hypotheses.",
+    "title": "User journey map",
+    "chapter": "Understanding the user",
+    "kicker": "USER JOURNEY MAP",
+    "description": "This map links the parent’s actions and tasks to reported feelings and design opportunities. The six-stage frame comes from secondary research; only parts of search through booking were observed in the parent usability study.",
     "layout": "journey",
+    "journeyPersona": "Parent proto-persona Linh · synthesized from secondary research; not a tested participant profile.",
+    "journeyGoal": "Find a suitable tutor, assess trust and fit, then book a lesson that works for the family’s schedule and budget.",
     "items": [
       {
-        "title": "Recognize need",
-        "text": "Parent/child/school. Clarify need and budget; design: ask about a recent decision.",
-        "evidence": "Untested in Phase 4."
+        "title": "Recognize need"
       },
       {
-        "title": "Find candidates",
-        "text": "Search/referrals. Find options by subject, grade, price and location; design: surface core filters.",
-        "evidence": "4/4 found options; 3/4 had filter friction."
+        "title": "Find candidates"
       },
       {
-        "title": "Vet & compare",
-        "text": "Profiles/reviews. Compare fit; design: explain verification and expose Compare.",
-        "evidence": "4/4 wanted more trust proof; 3/4 missed Compare."
+        "title": "Vet & compare"
       },
       {
-        "title": "Check availability",
-        "text": "Calendar. Match an open time; design: clarify date and selected state.",
-        "evidence": "3/4 chose a slot easily; one corrected a date."
+        "title": "Check availability"
       },
       {
-        "title": "Book & pay",
-        "text": "Summary/checkout. Review trial and cost; design: show payment, policy and support.",
-        "evidence": "2/4 completed; 2/4 stopped at card-only payment."
+        "title": "Book & pay"
       },
       {
-        "title": "Learn & continue",
-        "text": "Lessons/messages. Attend or rebook; design: test follow-up and schedule changes.",
-        "evidence": "Debrief expectations only; no longitudinal data."
+        "title": "Learn & continue"
       }
     ],
-    "evidence": "Six journey stages · partial task evidence from Phase 4",
-    "note": "The feeling labels in the Phase 2 journey are hypotheses. Phase 4 begins inside the prototype and does not measure real-life discovery or long-term learning."
+    "journeyRows": [
+      {
+        "label": "Action",
+        "values": [
+          "Recognize a need for tutoring.",
+          "Search and filter tutors.",
+          "Review profiles and compare.",
+          "Choose a date and time.",
+          "Review terms and attempt payment.",
+          "Attend, manage or rebook lessons."
+        ]
+      },
+      {
+        "label": "Task list",
+        "values": [
+          "Clarify subject, grade and budget.",
+          "Find candidates with relevant filters.",
+          "Check fit, qualifications and reviews.",
+          "Select and confirm an available slot.",
+          "Understand trial terms and amount due.",
+          "Track lessons and decide whether to continue."
+        ]
+      },
+      {
+        "label": "Feeling / evidence",
+        "values": [
+          "Hypothesis · need not observed.",
+          "4/4 found candidates; 3/4 had filter friction.",
+          "4/4 wanted more trust proof; 3/4 missed Compare.",
+          "3/4 chose a slot easily; one corrected a date.",
+          "2/4 completed; 2/4 stopped at card-only payment.",
+          "Unknown · no longitudinal evidence."
+        ]
+      },
+      {
+        "label": "Improvement opportunity",
+        "values": [
+          "Explore the family’s latest tutoring decision.",
+          "Use plain filters and show active criteria.",
+          "Expose Compare; explain verification and review sources.",
+          "Clarify selected date/time and preserve it on Back.",
+          "Show cost and policy before payment.",
+          "Research follow-up, rescheduling and rebooking."
+        ]
+      }
+    ],
+    "evidence": "Secondary-research journey framework · partial task evidence from parent usability study",
+    "note": "Feelings in the journey are hypotheses, not direct quotes. The parent study provides task observations for a small parent sample, not a complete journey validation. The final stage and its opportunities require follow-up research."
   },
   {
-    "title": "Make the next\nstep obvious.",
-    "chapter": "Explore",
+    "title": "Starting the design",
+    "chapter": "Starting the design",
     "kicker": "CHAPTER 02",
     "description": "Starting the design",
     "layout": "chapter",
     "items": [
       {
-        "title": "Structure",
-        "text": "Sitemap & core flow"
+        "title": "Sitemap",
+        "text": ""
       },
       {
-        "title": "Explore",
-        "text": "Wireframes & variations"
+        "title": "Paper wireframes",
+        "text": ""
       },
       {
-        "title": "Evaluate",
-        "text": "Prototype & study plan"
+        "title": "Digital wireframes",
+        "text": ""
+      },
+      {
+        "title": "Low-fidelity prototype",
+        "text": ""
+      },
+      {
+        "title": "Usability studies",
+        "text": ""
       }
     ]
   },
   {
-    "title": "A parent-first map\nfor finding and booking.",
-    "chapter": "Explore",
-    "kicker": "09 / SITEMAP",
+    "title": "Sitemap",
+    "chapter": "Starting the design",
+    "kicker": "SITEMAP",
     "description": "The revised IA follows the decision sequence parents used in the study: find options, compare evidence, choose a time, review terms and manage the booking.",
     "layout": "sitemap",
-    "note": "This is a design synthesis of the Phase 3 sitemap, narrowed to parent tasks. It was not validated with card sorting or tree testing. Phase 4 observations support specific findability issues around filters and Compare."
+    "note": "This is a design synthesis of the sitemap and flow documentation, narrowed to parent tasks. It was not validated with card sorting or tree testing. Observations from the parent study support specific findability issues around filters and Compare."
   },
   {
-    "title": "Explore the layout\nbefore the details.",
-    "chapter": "Explore",
-    "kicker": "10 / LAYOUT EXPLORATIONS",
-    "description": "Early layout exploration can prioritize tutor information, calendar visibility, and a clear next action before adding visual polish.",
+    "title": "Paper wireframes",
+    "chapter": "Starting the design",
+    "kicker": "PAPER WIREFRAMES",
+    "description": "Retrospective low-fidelity layouts explore the information parents need while finding a tutor, reviewing a profile and planning a lesson.",
     "layout": "wireframes",
-    "evidence": "Retrospective diagrams · not original paper sketches",
-    "note": "These diagrams explain the design hierarchy retrospectively. They are not represented as historical evidence of paper sketching."
+    "evidence": "Wireframe-style reconstructions · original paper sketches not supplied",
+    "note": "These diagrams explain hierarchy and task order. They are not presented as historical paper sketches."
   },
   {
-    "title": "Keep the essentials\nwithin reach.",
-    "chapter": "Explore",
-    "kicker": "11 / RESPONSIVE LAYOUT CONCEPT",
-    "description": "Explore how tutor information and the booking action could adapt from a compact phone to a wider screen without changing the task order.",
-    "layout": "responsive",
-    "evidence": "Concept exploration · wider layouts proposed",
-    "note": "Responsive variations are proposed concepts. The existing product is primarily a mobile prototype."
+    "title": "Paper wireframe screen size variations",
+    "chapter": "Starting the design",
+    "kicker": "PAPER WIREFRAME SCREEN SIZE VARIATIONS",
+    "description": "The same core search screen is explored at three illustrative mobile widths to show how the layout could adapt.",
+    "layout": "mobile-sizes",
+    "evidence": "Illustrative width variations · no original device measurements supplied",
+    "note": "These are retrospective wireframe reconstructions, not original paper variations or a responsive-device test.",
+    "items": [
+      {
+        "title": "Compact",
+        "text": ""
+      },
+      {
+        "title": "Standard",
+        "text": ""
+      },
+      {
+        "title": "Roomier",
+        "text": ""
+      }
+    ]
   },
   {
-    "title": "Make the trade-offs\nvisible.",
-    "chapter": "Explore",
-    "kicker": "12 / DIGITAL WIREFRAMES",
+    "title": "Digital wireframes",
+    "chapter": "Starting the design",
+    "kicker": "DIGITAL WIREFRAMES",
     "description": "The final hierarchy balances concise tutor cards with deeper profiles, explicit lesson choices, and a persistent booking summary.",
     "layout": "wireframes",
     "evidence": "Reconstructed low-fidelity layouts",
@@ -302,29 +350,19 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     ]
   },
   {
-    "title": "Mobile first.\nClear choices.",
-    "chapter": "Explore",
-    "kicker": "13 / DIGITAL WIREFRAME VARIATIONS",
-    "description": "Three mobile wireframes connect tutor discovery, profile details and scheduling, with one clear next action per screen.",
-    "layout": "wireframes",
-    "evidence": "Reconstructed mobile wireframes · retrospective layout exploration",
-    "note": "Mobile only. These diagrams explain the final hierarchy retrospectively, rather than documenting original sketches.",
-    "items": [
-      {
-        "title": "Find the right tutor",
-        "text": "Scan key details before exploring the profile."
-      },
-      {
-        "title": "Plan the next step",
-        "text": "Group lesson choices above the booking action."
-      }
-    ]
+    "title": "Digital wireframe screen size variation(s)",
+    "chapter": "Starting the design",
+    "kicker": "DIGITAL WIREFRAME SCREEN SIZE VARIATION(S)",
+    "description": "A wider-screen concept shows how tutor details and the booking action could adapt while keeping the parent task order.",
+    "layout": "responsive",
+    "evidence": "Proposed wider layout · not a tested responsive product",
+    "note": "The implemented concept is primarily mobile. These layout variations are proposals and have not been validated across devices."
   },
   {
-    "title": "The parent booking flow\nhas three decision gates.",
-    "chapter": "Explore",
-    "kicker": "14 / LOW-FIDELITY PROTOTYPE",
-    "description": "Phase 3 documents a shortest route of 15 steps and 3 decisions from app entry to booking confirmation. The count describes the supplied flow diagram, not observed taps or time.",
+    "title": "Low-fidelity prototype",
+    "chapter": "Starting the design",
+    "kicker": "LOW-FIDELITY PROTOTYPE",
+    "description": "the parent-flow diagram shows a shortest route of 15 steps and 3 decisions from app entry to booking confirmation. The count describes the supplied flow diagram, not observed taps or time.",
     "layout": "flow",
     "items": [
       {
@@ -344,138 +382,128 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
         "text": "Review booking and payment, then reach confirmation."
       }
     ],
-    "evidence": "Phase 3 parent flow · 15 diagram steps · 3 decisions",
-    "note": "The Phase 3 PDF says 15 steps and 3 decisions on the shortest path. The current local V2 route has seven primary screens from Home through confirmation (six transitions), excluding data entry and branches; these counts use different units."
+    "evidence": "Documented parent flow · 15 diagram steps · 3 decisions",
+    "note": "The flow-map document says 15 steps and 3 decisions on the shortest path. The current local prototype route has seven primary screens from Home through confirmation (six transitions), excluding data entry and branches; these counts use different units."
   },
   {
-    "title": "The reported v1 study\nfocused on real parent tasks.",
-    "chapter": "Explore",
-    "kicker": "15 / REPORTED STUDY DESIGN & NOTES",
-    "description": "The supplied Phase 4 notes describe moderated sessions on prototype v1, with think-aloud prompts and task observations. The records cover parent search, compare and booking as well as tutor tasks.",
+    "title": "Usability study: parameters",
+    "chapter": "Starting the design",
+    "kicker": "USABILITY STUDY: PARAMETERS",
+    "description": "The completed-session worksheet is the available record of a moderated prototype study. Details absent from that record remain unreported.",
     "layout": "study",
     "items": [
       {
-        "title": "Sample in the report",
-        "text": "6 participants: 4 parents of children in grades 2–11 and 2 tutors; sessions are dated 2–6 October 2026."
+        "title": "Study type",
+        "text": "Moderated usability sessions on a prototype. The plan and worksheet differ on the number of tasks."
       },
       {
-        "title": "Parent tasks recorded",
-        "text": "Find candidates within a budget, compare tutors, choose a lesson time, and attempt a trial booking."
+        "title": "Participants & dates",
+        "text": "Six reported participants: four parents and two tutors. Sessions are dated 2–6 Oct 2026."
       },
       {
-        "title": "Measures shown",
-        "text": "Task-completion codes (easy / difficulty / not completed), observations, selected path notes and post-choice confidence ratings."
+        "title": "Tasks",
+        "text": "Parent tasks covered finding tutors, comparing options, selecting a schedule and attempting a trial booking."
       },
       {
-        "title": "Measures not shown",
-        "text": "No task-level timing table, SEQ/SUS results, formal severity ratings, consent records or raw observation/recording links in the supplied PDF."
+        "title": "Measures & gaps",
+        "text": "The worksheet codes outcomes as easy, difficulty or not completed and records observations. Location, duration, full task timings, SEQ/SUS and formal severity are not reported. Future measures should include independent discovery, schedule accuracy, policy comprehension and recovery."
       }
     ],
-    "evidence": "Author-supplied report · n=6 overall · parent analysis n=4",
-    "note": "The plan in the PDF and the completed note-taking sheet differ: the plan proposes interviews plus two tasks per role, while the sheet records multiple tasks and does not show completed interview records. This case study reports only what the notes actually contain."
+    "evidence": "Author-supplied worksheet · parent-only analysis n=4",
+    "note": "Consent, recording links and exact tested-build IDs were not supplied. Do not infer these from the study plan or from the separate follow-up report."
   },
   {
-    "title": "Correct the prototype\nbefore polishing it.",
-    "chapter": "Explore",
-    "kicker": "16 / IMPLEMENTATION REVIEW",
-    "description": "An evaluator walkthrough exposed state and pricing defects in the local prototype. Regression checks confirm specific code behavior; they do not measure parent usability.",
+    "title": "Usability study: findings",
+    "chapter": "Starting the design",
+    "kicker": "USABILITY STUDY: FINDINGS",
+    "description": "The worksheet reports task-level signals from four parents. These findings point to prototype issues; they do not establish prevalence or market fit.",
     "layout": "findings",
     "items": [
       {
-        "title": "An edit changed the time",
-        "text": "A 19:30 selection reverted to 18:00 after Back/Continue. The schedule now restores the valid saved slot instead of a fixed default."
+        "title": "Trust needed context",
+        "text": "4/4 parents asked for more evidence: who verified credentials, whether reviews came from completed lessons, or what the tutor was like with children.",
+        "response": "The updated design labels verification data as illustrative. A real verification policy and review provenance are still required."
       },
       {
-        "title": "Amounts could disagree",
-        "text": "A trial inherited a full-course discount in the invoice. Shared quote rules now make trial, weekly and full amounts consistent."
+        "title": "Compare was easy to miss",
+        "text": "3/4 parents did not find Compare on their own right away; one needed a moderator prompt. Several also missed or questioned filters.",
+        "response": "The updated design makes comparison selection and a floating compare action on the results screen. This is an implementation response, not a measured improvement."
       },
       {
-        "title": "Feedback overstated reality",
-        "text": "The calendar button claimed sync without integration. It now downloads a real .ics file and explains that import is manual."
+        "title": "Payment blocked 2/4 bookings",
+        "text": "Two parents stopped when the initial prototype offered only card payment. Three also raised cancellation, refund or support questions.",
+        "response": "The updated design offers simulated VietQR/MoMo paths and clearer demo states. It does not process a real transaction or validate operating policies."
       }
     ],
-    "evidence": "Evaluator observations + 17 regression checks · no usability effect claimed",
-    "note": "These findings come from implementation review, separate from the Phase 4 parent sessions. The regression suite does not prove comprehension or task success."
+    "evidence": "Author-supplied usability worksheet · parent sample n=4",
+    "note": "The separate n=5 report covers three other tasks and is not a retest of this baseline. The reports have not been independently reconciled to raw task logs or tested builds."
   },
   {
-    "title": "Clarity in\nevery detail.",
-    "chapter": "Refine",
+    "title": "Refining the design",
+    "chapter": "Refining the design",
     "kicker": "CHAPTER 03",
     "description": "Refining the design",
     "layout": "chapter",
     "items": [
       {
         "title": "Mockups",
-        "text": "From intent to interface"
+        "text": ""
       },
       {
-        "title": "Prototype",
-        "text": "A connected booking journey"
+        "title": "High-fidelity prototype",
+        "text": ""
       },
       {
         "title": "Accessibility",
-        "text": "Designing for understanding"
+        "text": ""
       }
     ]
   },
   {
-    "title": "Turn the findings\ninto bounded responses.",
-    "chapter": "Refine",
-    "kicker": "17 / V2 DESIGN RESPONSES",
-    "description": "The current V2 prototype responds to the v1 issues. These changes are visible in the implementation; only the separate author-supplied retest report speaks to measured before/after results for three other tasks.",
+    "title": "Mockups",
+    "chapter": "Refining the design",
+    "kicker": "MOCKUPS",
+    "description": "The updated design responds to the reported trust, comparison and payment issues. Separate evaluator review also corrected schedule, quote and calendar-feedback defects in the local prototype.",
     "layout": "comparison",
-    "evidence": "Design response in current code · payment and tutor data remain simulated",
-    "note": "The Phase 4 PDF does not contain a v2 retest. Do not attribute the later n=5 report to this study; the separate report covers quote, payment recovery and reschedule tasks, with build mapping still pending.",
+    "evidence": "Design response in current implementation · no user improvement claim",
+    "note": "Implementation review also fixed a saved 19:30 slot reverting after Back, a trial receiving the full-course discount, and a calendar button claiming sync without integration. Regression checks confirm code behavior, not usability. The baseline study does not retest these changes; a separate n=5 report covers three other tasks and still needs build mapping.",
     "items": [
       {
         "title": "Make comparison visible",
-        "text": "V2 shows compare selection on result cards and a floating action bar after two tutors are selected. The Phase 4 files do not report a retest of this change."
+        "text": "Show comparison selection on result cards and a persistent action after two tutors are chosen. The baseline report does not measure the effect."
       },
       {
-        "title": "Offer familiar demo payment paths",
-        "text": "V2 presents VietQR and MoMo as simulated choices. QR artwork cannot be scanned for payment; there is no real provider integration."
+        "title": "Clarify payment and terms",
+        "text": "Present simulated VietQR/MoMo choices and clearer amount/policy context. No real payment provider or verified operating policy is connected."
       },
       {
-        "title": "Make trust claims precise",
-        "text": "V2 marks verification and tutor data as illustrative. Real verification evidence, review provenance, refund terms and support operations remain unimplemented."
+        "title": "State trust evidence precisely",
+        "text": "Label tutor and verification details as examples. Real verification evidence, review provenance and support operations remain unimplemented."
       }
     ]
   },
   {
-    "title": "A clear path\nfrom search to session.",
-    "chapter": "Refine",
-    "kicker": "18 / MOCKUPS: ORIGINAL SCREEN SIZE",
-    "description": "The mobile experience connects tutor discovery, profile review, scheduling, and payment with consistent visual cues.",
+    "title": "Mockups: Original screen size",
+    "chapter": "Refining the design",
+    "kicker": "MOCKUPS: ORIGINAL SCREEN SIZE",
+    "description": "The mobile mockups connect tutor discovery, profile review, scheduling, payment and confirmation.",
     "layout": "gallery",
-    "note": "These are live, non-interactive previews of the V2 components in this repository. Tutor profiles and payment details are demonstration data."
+    "note": "These are previews of the implemented concept, not evidence of production use.",
+    "evidence": "Live mobile component previews · profile and payment data are illustrative"
   },
   {
-    "title": "One mobile journey.\nThree decision states.",
-    "chapter": "Refine",
-    "kicker": "19 / MOBILE STATES",
-    "description": "Three mobile states make different decisions visible: evaluate a tutor, select a lesson, then review commitment before payment.",
-    "layout": "mobile-states",
-    "evidence": "Live mobile components · fixture data and payment remain simulated",
-    "note": "These are state examples, not a responsive-device study. They show the implemented mobile flow after the copy and status corrections.",
-    "items": [
-      {
-        "title": "Evaluate",
-        "text": "Tutor profile and available bands"
-      },
-      {
-        "title": "Choose",
-        "text": "Date, duration and time slot"
-      },
-      {
-        "title": "Review",
-        "text": "Amount due and payment state"
-      }
-    ]
+    "title": "Mockups: Screen size variations",
+    "chapter": "Refining the design",
+    "kicker": "MOCKUPS: SCREEN SIZE VARIATIONS",
+    "description": "A wider-screen mockup concept explores how the parent booking flow could work beyond the primary mobile layout.",
+    "layout": "responsive",
+    "evidence": "Proposed wider-screen concept · not a validated responsive release",
+    "note": "The mobile design is the primary prototype. Wider-screen layouts are exploratory and have not been tested with parents."
   },
   {
-    "title": "Experience the\nbooking journey.",
-    "chapter": "Refine",
-    "kicker": "20 / HIGH-FIDELITY PROTOTYPE",
+    "title": "High-fidelity prototype",
+    "chapter": "Refining the design",
+    "kicker": "HIGH-FIDELITY PROTOTYPE",
     "description": "Explore the working prototype from tutor search through scheduling, checkout, confirmation, and ongoing lesson management.",
     "layout": "prototype",
     "items": [
@@ -492,39 +520,16 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
         "text": "See upcoming lessons and payment status."
       }
     ],
-    "note": "Use Open interactive prototype to enter the local V2 experience. The Figma link opens the final design board. Payment actions are simulated."
+    "note": "Use Open interactive prototype to enter the local updated-design experience. The Figma link opens the final design board. Payment actions are simulated."
   },
   {
-    "title": "Reported audit.\nDefined scope.",
-    "chapter": "Refine",
-    "kicker": "21 / ACCESSIBILITY CONSIDERATIONS",
-    "description": "An author-supplied report records a limited audit across iOS, Android and desktop. Its results are not generalized into a whole-product conformance claim.",
-    "layout": "accessibility",
-    "items": [
-      {
-        "title": "Multiple environments",
-        "text": "The report names VoiceOver on iPhone 14, TalkBack on Galaxy S23, and keyboard testing on a MacBook Pro."
-      },
-      {
-        "title": "Reported results",
-        "text": "It records 4.54:1 and 8.6:1 for two samples, plus passing 200% zoom, focus and touch-target checks within its scope."
-      },
-      {
-        "title": "Claim limit",
-        "text": "There is no component/state inventory or independent audit. The case study does not claim whole-product WCAG AA conformance."
-      }
-    ],
-    "evidence": "Author-supplied audit report · limited scope",
-    "note": "Open Evidence for the original report and reconciliation addendum. Complete raw-log/build mapping before making a stronger claim."
-  },
-  {
-    "title": "Ten heuristics.\nFour issues still visible.",
-    "chapter": "Refine",
-    "kicker": "22 / HEURISTIC REVIEW",
-    "description": "Evaluator desk review of the current parent flow, cross-checked against the supplied v1 observations. Scores are reviewer judgments, not participant ratings or WCAG results.",
+    "title": "Accessibility considerations",
+    "chapter": "Refining the design",
+    "kicker": "ACCESSIBILITY CONSIDERATIONS",
+    "description": "A limited author-supplied accessibility audit is described alongside a ten-part evaluator heuristic review. Neither is a whole-product accessibility certification.",
     "layout": "heuristics",
-    "evidence": "Evaluator review · provisional heuristic scores, not user metrics",
-    "note": "Nielsen heuristics are applied as a structured expert review. Ratings summarize the current local implementation and evidence on hand; they are not a usability scale. User validation and an expanded accessibility audit remain separate.",
+    "evidence": "Limited accessibility audit · evaluator heuristic review",
+    "note": "The report names VoiceOver on iPhone 14, TalkBack on Galaxy S23, and keyboard testing on a MacBook Pro. It records 4.54:1 and 8.6:1 for two samples, plus passing 200% zoom, focus and touch-target checks within its scope. No full component/state inventory or independent audit was supplied.",
     "items": [
       {
         "title": "Visibility of system status",
@@ -544,7 +549,7 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
       {
         "title": "Consistency and standards",
         "score": 7,
-        "text": "Shared components and tokens; v1 notes small text and date controls."
+        "text": "Shared components and tokens; notes from the initial prototype small text and date controls."
       },
       {
         "title": "Error prevention",
@@ -559,7 +564,7 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
       {
         "title": "Flexibility and efficiency",
         "score": 6,
-        "text": "Filters and Compare exist; v1 users missed controls or wanted more filters."
+        "text": "Filters and Compare exist; users of the initial prototype missed controls or wanted more filters."
       },
       {
         "title": "Aesthetic and minimalist design",
@@ -574,58 +579,54 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
       {
         "title": "Help and documentation",
         "score": 5,
-        "text": "Support was unclear in v1; no real service support exists."
+        "text": "Support was unclear in the initial prototype; no real service support exists."
       }
     ]
   },
   {
-    "title": "A foundation\nfor what comes next.",
-    "chapter": "Reflect",
+    "title": "Going forward",
+    "chapter": "Going forward",
     "kicker": "CHAPTER 04",
     "description": "Going forward",
     "layout": "chapter",
     "items": [
       {
-        "title": "Reflect",
-        "text": "Design intent & lessons"
+        "title": "Takeaways",
+        "text": ""
       },
       {
-        "title": "Validate",
-        "text": "Close the evidence gaps"
-      },
-      {
-        "title": "Improve",
-        "text": "Next product iterations"
+        "title": "Next steps",
+        "text": ""
       }
     ]
   },
   {
-    "title": "Separate baseline evidence\nfrom the later retest.",
-    "chapter": "Reflect",
-    "kicker": "23 / WHAT THE EVIDENCE SUPPORTS",
-    "description": "The Phase 4 PDF reports a v1 baseline with six participants; a separate report in the project describes a later five-parent retest on three tasks. Keep the rounds distinct.",
+    "title": "Takeaways",
+    "chapter": "Going forward",
+    "kicker": "TAKEAWAYS",
+    "description": "The work combines a small reported baseline, a parent-first design response and a separate follow-up report that must remain distinct.",
     "layout": "takeaways",
     "items": [
       {
         "title": "Parent-first scope",
-        "text": "The case study follows search, compare, schedule and booking; tutor-side operations are excluded from the narrative."
+        "text": "The case study follows discovery, comparison, scheduling and booking. Tutor operations and live transactions are outside scope."
       },
       {
-        "title": "Baseline v1 report",
-        "text": "2/4 parents completed the booking task; the other two stopped at card-only payment. 4/4 asked for more trust proof."
+        "title": "What the baseline says",
+        "text": "Four parents asked for more trust evidence; three missed Compare initially; two stopped at card-only payment. Treat these as small-sample signals."
       },
       {
-        "title": "Separate v1/v2 retest",
-        "text": "A different author-supplied report states 5/5 completion on v2 for three tasks only. Keep it separate from the Phase 4 baseline and label its limits."
+        "title": "What remains unknown",
+        "text": "A separate author-supplied report describes five parents completing three other tasks. It does not validate this full flow or prove the design changes caused better outcomes."
       }
     ],
-    "evidence": "Two author-supplied reports · neither independently verified in this review",
-    "note": "The Phase 4 PDF reports n=6 overall, with n=4 parents and two booking failures at payment. A separate report describes 5/5 completion on v2 for quote, payment recovery and reschedule. The latter does not cover search, comparison, onboarding or the whole flow; raw artifacts and build mapping remain outstanding."
+    "evidence": "Two author-supplied reports · not independently verified",
+    "note": "Keep study rounds, tasks, sample sizes and prototype builds separate. Do not claim production impact or market fit."
   },
   {
-    "title": "Close the evidence gaps\nbefore claiming a validated flow.",
-    "chapter": "Reflect",
-    "kicker": "24 / NEXT STEPS",
+    "title": "Next steps",
+    "chapter": "Going forward",
+    "kicker": "NEXT STEPS",
     "description": "The fastest credibility gains come from reconciling the supplied sessions and retesting the parent booking decisions that the baseline exposed.",
     "layout": "cards",
     "items": [
@@ -635,7 +636,7 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
       },
       {
         "title": "Next 1–2 weeks",
-        "text": "Recover consent and task-level records; map exact v1/v2 builds; run a comparable parent retest for Compare, trust cues, fee/policy comprehension and payment recovery."
+        "text": "Recover consent and task-level records; map exact builds of the initial and updated prototypes; run a comparable parent retest for Compare, trust cues, fee/policy comprehension and payment recovery."
       },
       {
         "title": "Longer term",
@@ -645,11 +646,11 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "note": "If raw session evidence, consent or tested builds do not exist, retain the reports as author-supplied evidence and do not imply independent verification."
   },
   {
-    "title": "Better tutoring\nstarts with a clearer choice.",
-    "chapter": "Reflect",
-    "kicker": "THANK YOU / LET’S CONNECT",
-    "description": "Bryan Lê · UX and UI design · 10-week concept project. A parent-first case study grounded in supplied research artifacts, bounded by what those artifacts can verify.",
+    "title": "Let’s connect!",
+    "chapter": "Going forward",
+    "kicker": "LET’S CONNECT!",
+    "description": "Bryan Lê · UX and UI design · 10-week concept project. A parent-first case study grounded in supplied research artifacts and limited to what those materials support.",
     "layout": "closing",
-    "note": "Contact details are supplied by the project author for publication. This case study documents a concept and its limitations; it does not claim production deployment or participant research."
+    "note": "Contact details are supplied by the project author. This concept is not a production service and does not claim participant research beyond the author-supplied records."
   }
 ];

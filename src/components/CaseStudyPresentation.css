@@ -48,3 +48,93 @@
 .cs-heuristics-grid p{font-size:10.5px;line-height:1.22;color:#5e6d58;margin:0;max-width:540px}
 .cs-heuristics-note{font-size:10px;color:#71806a;margin-top:5px}
 .cs-presentation[lang=vi] .cs-heuristics-grid h2{font-size:13px}
+
+/* Reference-led research summary and journey map layouts. */
+.cs-layout-research-summary .cs-slide-body,
+.cs-layout-journey .cs-slide-body { padding-top: 18px; }
+.cs-research-heading h1,.cs-journey-heading h1 { font-size: 55px; letter-spacing: -1.8px; }
+.cs-research-summary { display:flex; flex-direction:column; align-items:center; padding-top:18px; }
+.cs-research-icon { width:82px; height:82px; border-radius:50%; display:grid; place-items:center; color:#1d6c5d; background:#e8eadf; margin:0 auto 22px; }
+.cs-research-purpose { max-width:1100px; text-align:center; font-size:21px; line-height:1.55; color:#273b38; margin:0 auto 20px; }
+.cs-research-method { max-width:1080px; text-align:center; font-size:17px; line-height:1.55; color:#637064; margin:0 auto 24px; }
+.cs-research-phases { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; gap:18px; margin-top:7px; }
+.cs-research-phases article { min-height:140px; padding:15px 18px 14px; border-top:2px solid #4b8976; background:#eeeee4; }
+.cs-research-phases article>span { display:block; color:#9a684b; font-size:10px; letter-spacing:1px; margin-bottom:8px; }
+.cs-research-phases h2 { font-size:17px; margin:0 0 7px; }
+.cs-research-phases p { margin:0; color:#626f62; font-size:13px; line-height:1.42; }
+.cs-journey-heading { margin-bottom:10px; }
+.cs-journey-heading .cs-eyebrow { margin-bottom:8px; }
+.cs-journey-layout { display:grid; grid-template-columns:270px minmax(0,1fr); gap:22px; height:510px; }
+.cs-journey-aside { display:flex; flex-direction:column; min-width:0; padding:10px 10px 0 0; }
+.cs-journey-explainer { color:#59695d; font-size:15px; line-height:1.48; margin:0 0 12px; }
+.cs-journey-persona,.cs-journey-goal { border-top:1px solid #cbd2c7; padding:10px 0 8px; }
+.cs-journey-persona small,.cs-journey-goal small { display:block; color:#8b664c; font-size:9px; letter-spacing:1.2px; font-weight:700; margin-bottom:5px; }
+.cs-journey-persona p,.cs-journey-goal p { color:#273a36; font-size:12px; line-height:1.4; margin:0; }
+.cs-journey-legend { display:grid; grid-template-columns:10px 1fr; gap:7px; align-items:start; margin-top:auto; padding:10px 0; border-top:1px solid #cbd2c7; color:#647064; font-size:10px; line-height:1.3; }
+.cs-journey-legend i { width:8px; height:8px; border-radius:50%; background:#397a68; margin-top:2px; }
+.cs-journey-legend i.cs-legend-hypothesis { background:#c39165; }
+.cs-journey-table-wrap { min-width:0; overflow:hidden; border-top:1px solid #c4c9bf; }
+.cs-journey-table-meta { height:32px; display:flex; align-items:center; color:#53645b; font-size:10px; letter-spacing:1.3px; font-weight:700; }
+.cs-journey-table { width:100%; height:calc(100% - 32px); border-collapse:collapse; table-layout:fixed; }
+.cs-journey-table thead { height:62px; }
+.cs-journey-table th,.cs-journey-table td { border:1px solid #f8f8f3; vertical-align:top; }
+.cs-journey-table thead th { background:#b7d0c4; color:#1e403a; text-align:left; padding:7px 7px; font-size:11px; line-height:1.18; font-weight:600; }
+.cs-journey-table thead th:first-child { width:102px; background:#17443c; color:#fff; vertical-align:middle; }
+.cs-journey-table thead th span { display:block; color:#a5c5b3; font-size:9px; margin-bottom:5px; }
+.cs-journey-table tbody th { background:#17443c; color:#fff; text-align:left; vertical-align:middle; padding:6px 7px; font-size:10px; line-height:1.22; font-weight:600; }
+.cs-journey-table tbody td { background:#f0f1e9; padding:6px 7px; color:#35433d; font-size:10px; line-height:1.25; white-space:pre-line; }
+.cs-journey-table tbody tr:nth-child(2) td { background:#f6f6ef; }
+.cs-journey-table tbody tr:nth-child(3) td { background:#ecefe7; }
+.cs-journey-table tbody tr:nth-child(4) td { background:#e5ebe1; }
+.cs-journey-table .cs-journey-hypothesis { color:#7c644f; font-style:italic; }
+.cs-journey-table tbody tr:nth-child(1) { height:50px; }
+.cs-journey-table tbody tr:nth-child(2) { height:118px; }
+.cs-journey-table tbody tr:nth-child(3) { height:100px; }
+.cs-journey-table tbody tr:nth-child(4) { height:100px; }
+
+/* Parent journey redesign: six focused cards replace the compressed six-column matrix. */
+.cs-layout-journey .cs-slide-body { padding-top: 10px; }
+.cs-journey-heading { margin:0 0 5px; }
+.cs-journey-heading .cs-eyebrow { margin-bottom:4px; }
+.cs-journey-heading h1 { font-size:52px; line-height:1.04; }
+.cs-journey-intro { margin:7px 0 10px; max-width:1220px; color:#5d6c61; font-size:15px; line-height:1.35; }
+.cs-journey-context { display:grid; grid-template-columns:.8fr 1.2fr; gap:18px; padding:8px 14px; margin-bottom:12px; background:#e9ebdf; border-left:3px solid #397a68; color:#29433b; font-size:12px; line-height:1.35; }
+.cs-journey-context span { min-width:0; }
+.cs-journey-context small,.cs-journey-card small { display:block; margin-bottom:4px; color:#8b694f; font-size:9px; line-height:1.1; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; }
+.cs-journey-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(0,1fr)); gap:12px; height:414px; }
+.cs-journey-card { position:relative; min-width:0; overflow:hidden; display:flex; flex-direction:column; padding:13px 15px 11px; background:#f0f0e8; border:1px solid #dce1d7; border-top:3px solid #77a18b; border-radius:3px; }
+.cs-journey-card:nth-child(4),.cs-journey-card:nth-child(5) { border-top-color:#c08a5f; }
+.cs-journey-card:nth-child(6) { border-top-color:#9eaa91; }
+.cs-journey-card header { display:flex; align-items:center; gap:11px; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid #d9ded4; }
+.cs-journey-card header>span { display:grid; flex:none; width:27px; height:27px; place-items:center; border-radius:50%; background:#17443c; color:#fff; font-size:10px; }
+.cs-journey-card header h2 { margin:0; color:#203e37; font-size:18px; line-height:1.15; font-weight:600; }
+.cs-journey-card-task p,.cs-journey-card-signal p,.cs-journey-card-opportunity p { margin:0; color:#3e4d45; font-size:14px; line-height:1.3; }
+.cs-journey-card-signal { margin-top:8px; padding:7px 9px; background:#e2ece3; border-radius:2px; }
+.cs-journey-card-signal p { color:#285849; font-weight:600; }
+.cs-journey-card-signal.is-hypothesis { background:#f1e8dc; }
+.cs-journey-card-signal.is-hypothesis p { color:#795b42; font-weight:500; }
+.cs-journey-card-opportunity { margin-top:auto; padding-top:8px; }
+.cs-journey-card-opportunity p { color:#526858; }
+
+/* Section breaks mirror the requested chapter treatment; content slides remain unchanged. */
+.cs-layout-chapter .cs-slide-body { display:flex; align-items:center; padding:0 90px; }
+.cs-layout-chapter .cs-slide { background:var(--section-bg,#2d63b8); color:var(--section-fg,#fff); }
+.cs-section-break { width:100%; display:grid; grid-template-columns:1fr 2px 1.12fr; align-items:center; gap:54px; padding:0 12px; color:var(--section-fg,#fff); }
+.cs-section-break-01 { --section-bg:#2d63b8; --section-fg:#fff; }
+.cs-section-break-02 { --section-bg:#88b5ed; --section-fg:#101820; }
+.cs-section-break-03 { --section-bg:#898f97; --section-fg:#fff; }
+.cs-section-break-04 { --section-bg:#244f86; --section-fg:#fff; }
+.cs-section-title { text-align:right; }
+.cs-section-title>span { display:block; margin-bottom:14px; color:currentColor; opacity:.72; font-size:12px; font-weight:600; letter-spacing:2px; }
+.cs-section-title h1 { white-space:pre-line; font-family:Arial,Helvetica,sans-serif; font-size:61px; line-height:1.12; letter-spacing:-1.6px; font-weight:750; }
+.cs-section-divider { width:2px; height:260px; background:currentColor; opacity:.84; }
+.cs-section-break ul { display:grid; gap:21px; margin:0; padding:0; list-style:none; }
+.cs-section-break li { position:relative; padding-left:28px; color:var(--section-fg); font-size:27px; line-height:1.28; font-weight:400; }
+.cs-section-break li::before { content:""; position:absolute; left:0; top:.48em; width:12px; height:12px; border-radius:50%; background:currentColor; }
+.cs-presentation[lang=vi] .cs-section-break li { font-size:25px; }
+.cs-presentation[lang=vi] .cs-section-title h1 { font-size:58px; }
+/* Same parent search wireframe at three illustrative viewport widths. */
+.cs-mobile-wireframe-sizes { height: 420px; align-items: flex-end; gap: 42px; }
+.cs-mobile-wireframe-sizes > div { flex: 1; min-width: 0; }
+.cs-mobile-wireframe-size { height: 370px; width: 100%; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.cs-mobile-wireframe-sizes .cs-wireframe { border-radius: 3px; border-color: #848b78; background: #f6f0df; box-shadow: 4px 6px 0 #dfe0d1; }
