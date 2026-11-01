@@ -301,7 +301,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
-              <span>Học thử 1 buổi</span>
+              <span data-lowfi-keep="true">Học thử 1 buổi</span>
               <span className="text-[11px] text-emerald-600 font-medium">Điều khoản học thử minh họa</span>
             </Button>
 
@@ -313,7 +313,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
-              <span>Lịch theo tuần</span>
+              <span data-lowfi-keep="true">Lịch theo tuần</span>
               <span className="text-[11px] text-neutral-500 font-normal">Gia hạn từng tuần linh hoạt</span>
             </Button>
           </div>
@@ -476,7 +476,7 @@ export const V2ScheduleTimeScreen: React.FC<V2ScheduleTimeScreenProps> = ({
                           : 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 font-medium'
                       }`}
                     >
-                      <div className="text-xs font-extrabold">{item.label}</div>
+                      <div data-lowfi-keep="true" className="text-xs font-extrabold">{item.label}</div>
                       <div className={`text-[11px] ${cycleWeeks === item.weeks ? 'text-emerald-100' : 'text-neutral-500'}`}>
                         {item.weeks * selectedDays.length} buổi
                       </div>

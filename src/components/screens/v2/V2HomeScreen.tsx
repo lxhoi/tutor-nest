@@ -125,7 +125,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
                   <div data-v3-category={s.category} className={`w-9 h-9 rounded-xl ${s.bg} ${s.color} border flex items-center justify-center mb-1`}>
                     <Icon className="w-4 h-4 stroke-[2.2]" />
                   </div>
-                  <span className="text-[11px] font-bold text-neutral-800 truncate w-full text-center">
+                  <span data-lowfi-keep="true" className="text-[11px] font-bold text-neutral-800 truncate w-full text-center">
                     {s.label}
                   </span>
                 </Button>
@@ -179,7 +179,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
                       </div>
 
                       {/* Rating */}
-                      <div className="flex items-center space-x-0.5 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 text-amber-800 text-[11px] font-bold shrink-0">
+                      <div data-lowfi-keep="true" className="flex items-center space-x-0.5 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 text-amber-800 text-[11px] font-bold shrink-0">
                         <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                         <span>{tutor.rating}</span>
                         <span className="text-neutral-500">({tutor.reviewsCount})</span>
@@ -187,7 +187,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
                     </div>
 
                     {/* Subject & Experience */}
-                    <div className="text-[11px] text-neutral-600 font-medium mt-0.5">
+                    <div data-lowfi-keep="true" className="text-[11px] text-neutral-600 font-medium mt-0.5">
                       {tutor.subject} • {tutor.gradeRange} • {tutor.university?.replace('Đại học', 'ĐH')}
                     </div>
 
@@ -209,7 +209,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
                 {/* Bottom Row: Price & Action */}
                 <div className="mt-2.5 pt-2 border-t border-neutral-100 flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-extrabold text-emerald-700">{formatCurrency(tutor.hourlyRate)}</span>
+                    <span data-lowfi-keep="true" className="text-xs font-extrabold text-emerald-700">{formatCurrency(tutor.hourlyRate)}</span>
                     <span className="text-[11px] text-neutral-500 font-medium"> / giờ</span>
                   </div>
 
@@ -236,7 +236,7 @@ export const V2HomeScreen: React.FC<V2HomeScreenProps> = ({
       </div>
 
       {/* Bottom Navigation Bar V2: 100% Chuẩn Tiếng Việt, Touch target 44px */}
-      <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
+      <nav data-lowfi-keep-icons="true" className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
         <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-3 cursor-pointer text-emerald-700 font-bold min-h-[44px] min-w-[44px]"

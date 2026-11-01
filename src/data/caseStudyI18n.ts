@@ -7,7 +7,7 @@ const vi: Record<string,string> = {
  'Check: restore the second-evening slot on Back/Continue.':'Kiểm tra: quay lại rồi tiếp tục vẫn giữ khung giờ 19:30.',
  'Check: a trial never receives a full-course discount.':'Kiểm tra: học thử không nhận nhầm giảm giá trọn gói.',
  'Check: export actual calendar events without claiming sync.':'Kiểm tra: xuất sự kiện lịch thật, không báo đã đồng bộ.',
- 'RELEASE SCOPE':'PHẠM VI BẢN PHÁT HÀNH',
+ 'RELEASE SCOPE':'PHẠM VI BẢN PHÁT HÀNH','IMPACT':'TÁC ĐỘNG','Impact':'Tác động','What I learned':'Điều tôi học được','Reconcile the study records':'Đối chiếu hồ sơ nghiên cứu','Retest the key decisions':'Thử lại các quyết định chính','Validate the wider experience':'Kiểm chứng trải nghiệm rộng hơn',
  'VERIFICATION':'KIỂM CHỨNG',
  'Concept case study · English':'Case study concept · Tiếng Việt',
  'REVIEW FINDING 0':'PHÁT HIỆN RÀ SOÁT 0',

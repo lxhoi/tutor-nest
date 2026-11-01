@@ -215,7 +215,7 @@ export const V2ScheduleManageScreen: React.FC<V2ScheduleManageScreenProps> = ({
       </div>
 
       {/* Bottom Nav Bar */}
-      <nav className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
+      <nav data-lowfi-keep-icons="true" className="w-full bg-white border-t border-neutral-200 py-1.5 px-3 flex items-center justify-around shadow-sm shrink-0 z-30">
         <Button variant="legacy"
           onClick={() => onNavigate('v2_home')}
           className="flex flex-col items-center justify-center py-1 px-2 cursor-pointer text-neutral-500 hover:text-neutral-900 font-medium min-h-[44px] min-w-[44px]"

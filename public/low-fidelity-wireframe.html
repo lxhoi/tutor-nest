@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Low-fidelity wireframe · Search Results</title>
+  <style>
+    :root {
+      --white: #fff;
+      --section: #f2f2f2;
+      --placeholder: #d9d9d9;
+      --line: #b8b8b8;
+      --ink: #111;
+      --muted: #444;
+      --button: #333;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--white);
+    }
+    * { box-sizing: border-box; border-radius: 0 !important; box-shadow: none !important; }
+    body { margin: 0; background: var(--white); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+    button, input { font: inherit; }
+    button, summary { cursor: pointer; }
+    .site-header { height: 64px; border-bottom: 1px solid #ddd; background: var(--white); }
+    .header-inner { max-width: 1180px; height: 100%; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .logo { width: 84px; height: 32px; background: var(--button); color: var(--white); display: grid; place-items: center; font-size: 12px; }
+    .header-actions { display: flex; align-items: center; gap: 22px; }
+    .search-form { display: flex; align-items: center; gap: 7px; }
+    .search-input { width: 180px; height: 30px; padding: 5px 8px; border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+    .search-input::placeholder { color: #666; }
+    .search-icon { width: 13px; height: 13px; position: relative; display: inline-block; }
+    .search-icon::before { content: ""; position: absolute; width: 8px; height: 8px; border: 1px solid #333; left: 0; top: 0; }
+    .search-icon::after { content: ""; position: absolute; height: 5px; border-left: 1px solid #333; transform: rotate(-45deg); left: 10px; top: 8px; }
+    .menu { min-height: 30px; display: flex; align-items: center; gap: 8px; border: 0; padding: 4px 0; background: transparent; color: var(--ink); font-size: 13px; }
+    .menu-lines, .menu-lines::before, .menu-lines::after { width: 15px; height: 1px; background: #333; display: block; position: relative; }
+    .menu-lines::before, .menu-lines::after { content: ""; position: absolute; left: 0; }
+    .menu-lines::before { top: -5px; } .menu-lines::after { top: 5px; }
+    .menu-panel { position: absolute; right: 28px; top: 54px; z-index: 5; width: 150px; padding: 12px; border: 1px solid #999; background: var(--white); }
+    .menu-panel a { display: block; padding: 7px 4px; color: var(--ink); text-decoration: none; font-size: 12px; }
+    .hero { min-height: 142px; padding: 28px max(28px, calc((100vw - 1180px) / 2)); background: var(--section); }
+    .eyebrow { margin: 0 0 7px; font-size: 14px; font-weight: 700; }
+    .hero h1 { margin: 0; font-size: 28px; line-height: 1.15; font-weight: 400; color: #444; }
+    main { max-width: 1180px; margin: 0 auto; padding: 28px; }
+    .results-heading { margin: 0 0 18px; font-size: 20px; line-height: 1.35; }
+    .results-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .result-card { position: relative; min-width: 0; min-height: 292px; padding: 12px; border: 1px solid transparent; background: var(--section); display: flex; flex-direction: column; }
+    .result-card:has(.select-card:checked) { border: 2px solid #111; padding: 11px; }
+    .select-card { position: absolute; top: 12px; right: 12px; width: 18px; height: 18px; margin: 0; appearance: none; border: 1px solid #555; background: var(--white); cursor: pointer; }
+    .select-card:checked { border: 2px solid #111; background: var(--button); }
+    .select-card:checked::after { content: "✓"; display: block; margin-top: -2px; color: var(--white); text-align: center; font-size: 14px; line-height: 16px; }
+    .photo-placeholder { width: 100%; aspect-ratio: 1 / .78; background: var(--placeholder); }
+    .card-name { margin: 10px 0 4px; max-width: 180px; font-size: 12px; line-height: 1.25; font-weight: 700; }
+    .card-meta { margin: 0 0 8px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+    .card-actions { margin-top: auto; display: grid; gap: 5px; }
+    .card-actions details { font-size: 10px; }
+    .card-actions summary { width: fit-content; list-style: none; color: #222; }
+    .card-actions summary::-webkit-details-marker { display: none; }
+    .card-actions summary::before { content: "+"; display: inline-block; width: 13px; font-size: 12px; font-weight: 700; }
+    .card-actions details[open] summary::before { content: "−"; }
+    .card-actions details p { margin: 5px 0 2px 13px; color: var(--muted); line-height: 1.4; }
+    .contact { width: fit-content; min-height: 18px; padding: 0; border: 0; background: transparent; color: #222; text-align: left; font-size: 10px; }
+    .contact::before { content: "+"; display: inline-block; width: 13px; font-size: 12px; font-weight: 700; }
+    .contact-note { display: none; margin: 2px 0 0 13px; color: var(--muted); font-size: 10px; }
+    .contact-wrap[data-open="true"] .contact-note { display: block; }
+    .compare-row { position: relative; display: flex; justify-content: center; padding: 20px 0 26px; }
+    .compare-button { min-width: 132px; min-height: 40px; padding: 9px 26px; border: 0; border-radius: 999px !important; background: var(--button); color: var(--white); font-size: 13px; font-weight: 700; }
+    .compare-button:disabled { cursor: not-allowed; background: #777; }
+    .selection-count { position: absolute; right: 0; top: 30px; color: #555; font-size: 11px; }
+    .annotation { position: absolute; z-index: 3; }
+    .annotation-button { width: 22px; height: 22px; border: 1px solid white; background: #333; color: white; font-size: 11px; font-weight: 700; }
+    .annotation-tooltip { display: none; position: absolute; left: 27px; top: 0; width: 220px; padding: 9px; border: 1px solid #777; background: white; color: #222; font-size: 11px; line-height: 1.4; }
+    .annotation:hover .annotation-tooltip, .annotation:focus-within .annotation-tooltip { display: block; }
+    .compare-note { left: calc(50% + 80px); top: 28px; }
+    .trust-note { right: 12px; top: 120px; }
+    footer { min-height: 100px; padding: 22px max(28px, calc((100vw - 1180px) / 2)); background: var(--section); }
+    .footer-inner { max-width: 1180px; margin: 0 auto; }
+    .footer-rule { height: 1px; margin: 12px 0; background: #ccc; }
+    .footer-copy { margin: 0; color: #555; font-size: 10px; line-height: 1.5; }
+    .compare-dialog { width: min(520px, calc(100vw - 32px)); padding: 22px; border: 1px solid #333; background: white; color: #111; }
+    .compare-dialog::backdrop { background: #0006; }
+    .dialog-close { float: right; width: 30px; height: 30px; border: 1px solid #777; background: white; }
+    .compare-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 18px 0; }
+    .compare-item { padding: 10px; border: 1px solid #999; background: #f2f2f2; }
+    .compare-item .photo-placeholder { margin-bottom: 9px; }
+    .compare-item p { margin: 5px 0; font-size: 12px; }
+    @media (max-width: 760px) {
+      .header-inner { padding: 0 16px; gap: 12px; }
+      .search-input { width: 120px; }
+      .hero { min-height: 120px; padding: 24px 16px; }
+      main { padding: 20px 16px; }
+      .results-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .result-card { min-height: 265px; padding: 10px; }
+      .result-card:has(.select-card:checked) { padding: 9px; }
+      .selection-count { display: none; }
+      footer { padding: 20px 16px; }
+    }
+    @media (max-width: 390px) {
+      .search-input { width: 86px; }
+      .header-actions { gap: 12px; }
+      .results-grid { grid-template-columns: 1fr; }
+      .result-card { min-height: 0; }
+      .photo-placeholder { aspect-ratio: 1.8 / 1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo" aria-label="Logo">Logo</div>
+      <div class="header-actions">
+        <form class="search-form" role="search" onsubmit="event.preventDefault()">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input class="search-input" type="search" aria-label="Search" placeholder="Search">
+        </form>
+        <details class="menu-wrap">
+          <summary class="menu"><span>Menu</span><span class="menu-lines" aria-hidden="true"></span></summary>
+          <nav class="menu-panel" aria-label="Menu"><a href="#results">Search Results</a><a href="#footer">Contact</a></nav>
+        </details>
+      </div>
+    </div>
+  </header>
+  <section class="hero" aria-labelledby="page-title">
+    <p class="eyebrow">Lorem Ipsum Dolor</p>
+    <h1 id="page-title">Search Results</h1>
+  </section>
+  <main id="results">
+    <h2 class="results-heading">Results for “Lorem Ipsum”.</h2>
+    <section class="results-grid" aria-label="Search result cards">
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 1"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 2" checked><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div><div class="annotation trust-note"><button class="annotation-button" aria-label="Finding 2">2</button><div class="annotation-tooltip">Parents wanted more context to assess the provider’s background and trustworthiness.</div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 3"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 4"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 5"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 6"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 7"><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+      <article class="result-card"><input class="select-card" type="checkbox" aria-label="Select result 8" checked><div class="photo-placeholder" role="img" aria-label="Image placeholder"></div><h3 class="card-name">Name Middle Name Last Name</h3><p class="card-meta">Specialty | Location</p><div class="card-actions"><details><summary>See more details</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></details><div class="contact-wrap"><button class="contact" type="button" aria-expanded="false">Contact</button><p class="contact-note">Lorem ipsum dolor sit amet.</p></div></div></article>
+    </section>
+    <div class="compare-row">
+      <button class="compare-button" id="compare" type="button">Compare</button>
+      <span class="selection-count" id="selection-count" aria-live="polite">2 selected</span>
+      <div class="annotation compare-note"><button class="annotation-button" aria-label="Finding 1">1</button><div class="annotation-tooltip">Parents did not always notice the compare action or the available filters.</div></div>
+    </div>
+  </main>
+  <footer id="footer"><div class="footer-inner"><div class="logo" aria-label="Logo">Logo</div><div class="footer-rule"></div><p class="footer-copy">© 2026 Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div></footer>
+  <dialog class="compare-dialog" id="compare-dialog"><button class="dialog-close" id="close-dialog" aria-label="Close">×</button><h2>Compare</h2><div class="compare-items" id="compare-items"></div></dialog>
+  <script>
+    const checkboxes = [...document.querySelectorAll('.select-card')];
+    const compareButton = document.getElementById('compare');
+    const selectionCount = document.getElementById('selection-count');
+    const dialog = document.getElementById('compare-dialog');
+    const compareItems = document.getElementById('compare-items');
+    const updateSelection = () => {
+      const selected = checkboxes.filter(box => box.checked);
+      selectionCount.textContent = `${selected.length} selected`;
+      compareButton.disabled = selected.length < 2;
+      compareButton.setAttribute('aria-label', `Compare ${selected.length} selected results`);
+    };
+    checkboxes.forEach(box => box.addEventListener('change', updateSelection));
+    compareButton.addEventListener('click', () => {
+      const selected = checkboxes.filter(box => box.checked);
+      compareItems.innerHTML = selected.map(() => '<div class="compare-item"><div class="photo-placeholder"></div><p><strong>Name Middle Name Last Name</strong></p><p>Specialty | Location</p><p>Lorem ipsum dolor sit amet.</p></div>').join('');
+      dialog.showModal();
+    });
+    document.getElementById('close-dialog').addEventListener('click', () => dialog.close());
+    document.querySelectorAll('.contact').forEach(button => button.addEventListener('click', () => {
+      const wrap = button.parentElement;
+      const open = wrap.dataset.open !== 'true';
+      wrap.dataset.open = String(open);
+      button.setAttribute('aria-expanded', String(open));
+    }));
+    updateSelection();
+  </script>
+</body>
+</html>

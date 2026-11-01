@@ -593,20 +593,16 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "title": "Điều rút ra",
     "chapter": "Tiến về phía trước",
     "kicker": "ĐIỀU RÚT RA",
-    "description": "Dự án gồm baseline usability test quy mô nhỏ, phản hồi thiết kế tập trung vào phụ huynh và một báo cáo follow-up riêng cần được phân biệt.",
+    "description": "Nghiên cứu nhỏ với phụ huynh đã làm thay đổi thiết kế ra sao, và tôi học được gì khi bằng chứng còn hạn chế.",
     "layout": "takeaways",
     "items": [
       {
-        "title": "Tập trung vào phụ huynh",
-        "text": "Case study theo luồng tìm, so sánh, chọn lịch và đặt học. Vận hành gia sư và giao dịch thật nằm ngoài phạm vi."
+        "title": "Tác động",
+        "text": "Phụ huynh có thể bối rối khi chọn gia sư cho con, nhất là khi khó đánh giá kinh nghiệm, so sánh các lựa chọn hoặc hiểu rõ lịch học và chi phí. Để giải quyết những băn khoăn này, tôi thiết kế luồng đặt học dành cho phụ huynh, kết nối thông tin gia sư, bước so sánh, lên lịch học và chi tiết thanh toán theo cách rõ ràng hơn."
       },
       {
-        "title": "Baseline ghi nhận gì",
-        "text": "4 phụ huynh muốn thêm bằng chứng tin cậy; 3 người ban đầu bỏ lỡ So sánh; 2 người dừng ở thanh toán chỉ có thẻ. Đây là tín hiệu từ mẫu nhỏ."
-      },
-      {
-        "title": "Điều chưa rõ",
-        "text": "Một báo cáo do tác giả cung cấp nói 5 phụ huynh hoàn thành ba tác vụ khác. Báo cáo đó không xác nhận toàn bộ luồng hay chứng minh thay đổi thiết kế tạo ra kết quả tốt hơn."
+        "title": "Điều tôi học được",
+        "text": "Khi thiết kế luồng đặt lịch dành cho phụ huynh, tôi nhận ra chỉ một vài điểm chưa rõ cũng có thể làm gián đoạn một quyết định quan trọng. Phụ huynh cần biết mình đang chọn ai, lịch có phù hợp không và sẽ phải trả bao nhiêu. Tôi học được cách sắp xếp câu trả lời theo hành trình đặt học, giải thích rõ bước tiếp theo và xem thanh toán là một phần của toàn bộ trải nghiệm."
       }
     ],
     "evidence": "Hai báo cáo do tác giả cung cấp · chưa kiểm chứng độc lập",
@@ -616,20 +612,20 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "title": "Bước tiếp theo",
     "chapter": "Tiến về phía trước",
     "kicker": "BƯỚC TIẾP THEO",
-    "description": "Cách tăng độ tin cậy nhanh nhất là đối chiếu phiên được báo cáo và retest các quyết định đặt lịch mà baseline đã bộc lộ.",
+    "description": "Ba việc tập trung sẽ giúp case study đáng tin hơn và giúp đánh giá luồng đặt lịch của phụ huynh tốt hơn.",
     "layout": "cards",
     "items": [
       {
-        "title": "1–2 ngày tới",
-        "text": "Giữ deck tập trung parent; đối chiếu baseline n=6 với retest n=5 riêng; lập bảng nguồn đã ẩn danh và bỏ khẳng định quá rộng về thị trường."
+        "title": "Đối chiếu hồ sơ nghiên cứu",
+        "text": "Kiểm tra ghi chép và tác vụ gốc. Tách nghiên cứu ban đầu với 6 phụ huynh khỏi báo cáo 5 phụ huynh, vì báo cáo đó dùng tác vụ khác. Ghi rõ mỗi nguồn có thể và không thể chứng minh điều gì."
       },
       {
-        "title": "1–2 tuần tới",
-        "text": "Tìm lại consent và ghi chép từng tác vụ; định danh build hai phiên bản prototype; retest phụ huynh với So sánh, tín hiệu tin cậy, hiểu học phí/chính sách và khôi phục thanh toán."
+        "title": "Thử lại các quyết định chính",
+        "text": "Nhờ phụ huynh so sánh gia sư, đánh giá thông tin tạo niềm tin, hiểu học phí và chính sách, rồi xử lý tình huống thanh toán gặp lỗi. Dùng cùng tác vụ và cách đo để so sánh kết quả."
       },
       {
-        "title": "Dài hạn",
-        "text": "Thực hiện card sorting/tree testing; kiểm tra nhiều con và tác vụ sau booking; xác thực vận hành lịch, hỗ trợ và thanh toán thật."
+        "title": "Kiểm chứng trải nghiệm rộng hơn",
+        "text": "Kiểm tra cách phụ huynh tìm các mục, quản lý lịch học cho nhiều con và tìm trợ giúp sau khi đặt. Trước khi ra mắt, cần xác minh lịch gia sư, hỗ trợ và quy trình thanh toán thật."
       }
     ],
     "note": "Nếu không có dữ liệu phiên, consent hay build đã test, hãy giữ báo cáo ở mức bằng chứng do tác giả cung cấp và không ngụ ý xác minh độc lập."

@@ -1,8 +1,8 @@
 # TutorNest — parent-flow concept case study
 
-Author: Bryan Lê
-Role: UX and UI design
-Project duration: 10 weeks
+Author: Bryan Lê  
+Role: UX and UI design  
+Project duration: 10 weeks  
 Release review: 31 October 2026
 
 ## Scope and evidence

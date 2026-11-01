@@ -9,6 +9,7 @@ import { DRAFT_KEY, restoreDemoBooking } from './lib/demoStorage';
 import { calendarFor, tutorDays } from './lib/booking';
 import { Button } from './components/ui/button';
 import { CaseStudyPresentation } from './components/CaseStudyPresentation';
+import { LowFidelityPrototype } from './components/LowFidelityPrototype';
 
 // Version 1 Screens
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -64,7 +65,7 @@ export default function App() {
   const [appVersion, setAppVersion] = useState<AppVersion>('v2');
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('v2_home');
   const [history, setHistory] = useState<ScreenId[]>(['v2_home']);
-  const [viewMode, setViewMode] = useState<'iphone' | 'board' | 'presentation'>(new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
+  const [viewMode, setViewMode] = useState<'iphone' | 'lowfi' | 'board' | 'presentation'>(new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'lowfi' ? 'lowfi' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
   const [booking, setBooking] = useState<BookingState>(()=>{try{return restoreDemoBooking(localStorage.getItem(DRAFT_KEY),INITIAL_BOOKING,TUTORS);}catch{return INITIAL_BOOKING;}});
   const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
   const [scale, setScale] = useState<number>(0.95);
@@ -77,7 +78,7 @@ export default function App() {
   useEffect(() => {
     if (viewMode !== 'presentation') {
       const url = new URL(window.location.href);
-      url.searchParams.set('view', viewMode === 'board' ? 'board' : 'prototype');
+      url.searchParams.set('view', viewMode === 'board' ? 'board' : viewMode === 'lowfi' ? 'lowfi' : 'prototype');
       url.searchParams.delete('slide');
       window.history.replaceState(null, '', url);
     }
@@ -403,7 +404,7 @@ export default function App() {
           <span className={`${viewMode === 'presentation' ? 'hidden' : 'hidden sm:inline-block'} text-neutral-700`}>|</span>
 
           {/* Version Switcher Segmented Control */}
-          <div className={`${viewMode === 'presentation' ? 'hidden' : 'flex'} items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner`}>
+          <div className={`${viewMode === 'presentation' || viewMode === 'lowfi' ? 'hidden' : 'flex'} items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner`}>
             <button
               onClick={() => handleSwitchVersion('v1')}
               className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
@@ -510,7 +511,16 @@ export default function App() {
           {/* View Mode Toggle */}
           <div className="flex items-center bg-neutral-800 p-0.5 rounded-lg border border-neutral-700">
             <button
+              onClick={() => setViewMode('lowfi')}
+              aria-pressed={viewMode === 'lowfi'}
+              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${viewMode === 'lowfi' ? 'bg-amber-600 text-white shadow-xs' : 'text-neutral-400 hover:text-neutral-200'}`}
+            >
+              <span className="hidden md:inline">Low-fidelity prototype</span>
+              <span className="md:hidden">Low-fi</span>
+            </button>
+            <button
               onClick={() => setViewMode('iphone')}
+              aria-pressed={viewMode === 'iphone'}
               className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'iphone'
                   ? 'bg-emerald-600 text-white shadow-xs'
@@ -518,7 +528,8 @@ export default function App() {
               }`}
             >
               <Smartphone className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">iPhone 16 Pro Max</span>
+              <span className="hidden md:inline">High-fidelity prototype</span>
+              <span className="md:hidden">High-fi</span>
             </button>
 
             <button
@@ -592,6 +603,15 @@ export default function App() {
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center p-2 relative overflow-auto">
+            {viewMode === 'iphone' && <aside className="absolute left-4 top-20 z-20 hidden w-[270px] rounded-xl border border-emerald-900/40 bg-[#0d1717]/95 p-4 text-[11px] text-emerald-50 shadow-xl xl:block" aria-label="High-fidelity improvements">
+              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-300">High-fidelity · after usability findings</p>
+              <div className="space-y-3">
+                <p><strong className="block text-emerald-200">1 · Compare</strong>Comparison is surfaced from search results with a persistent action.</p>
+                <p><strong className="block text-emerald-200">2 · Tutor trust</strong>Verification, qualifications, and review context are easier to scan.</p>
+                <p><strong className="block text-emerald-200">3 · Booking & payment</strong>Schedule, amount due, policies, and simulated payment alternatives are shown in the flow.</p>
+              </div>
+              <p className="mt-3 border-t border-emerald-900 pt-2 text-[9px] leading-4 text-emerald-100/60">Design responses to findings reported in the case study. No retest result is implied.</p>
+            </aside>}
             {/* Interactive Phone Controls Bar */}
             <div className="absolute top-3 left-4 right-4 flex items-center justify-between pointer-events-none z-30">
               {/* Step indicator tag */}
@@ -634,12 +654,8 @@ export default function App() {
               }}
               className="transition-transform duration-200 mt-6 md:mt-2"
             >
-              <IPhone16ProMaxFrame
-                currentTime="9:41"
-                frameColor="black"
-                showReflection={true}
-              >
-                {renderScreenContent()}
+              <IPhone16ProMaxFrame currentTime="9:41" frameColor="black" showReflection={viewMode !== 'lowfi'}>
+                {viewMode === 'lowfi' ? <LowFidelityPrototype screen={String(currentScreen)}>{renderScreenContent()}</LowFidelityPrototype> : renderScreenContent()}
               </IPhone16ProMaxFrame>
             </div>
           </div>

@@ -1,5 +1,117 @@
 @import "tailwindcss";
 
+.lowfi-mode,
+.lowfi-mode * {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.lowfi-mode {
+  filter: grayscale(1);
+}
+
+.lowfi-mode img:not([alt="TutorNest"]) {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23D9D9D9'/%3E%3C/svg%3E") !important;
+  object-fit: cover !important;
+}
+
+.lowfi-mode img[alt="TutorNest"] {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 42'%3E%3Crect width='160' height='42' fill='%23333'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3ELogo%3C/text%3E%3C/svg%3E") !important;
+  object-fit: contain !important;
+}
+
+.lowfi-mode input:not([type="checkbox"]):not([type="radio"]),
+.lowfi-mode textarea,
+.lowfi-mode select {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background-color: #d9d9d9 !important;
+}
+
+.lowfi-mode input::placeholder,
+.lowfi-mode textarea::placeholder {
+  color: #333 !important;
+  -webkit-text-fill-color: #333 !important;
+}
+
+.lowfi-mode input[type="checkbox"],
+.lowfi-mode input[type="radio"] {
+  accent-color: #333 !important;
+}
+
+/* Keep the main path legible in the low-fi duplicate; omit supporting labels and metadata. */
+.lowfi-mode button,
+.lowfi-mode [role="button"] {
+  min-width: 0 !important;
+  max-width: 100%;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.lowfi-mode button > span,
+.lowfi-mode [role="button"] > span {
+  min-width: 0 !important;
+  max-width: 100%;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.lowfi-mode small,
+.lowfi-mode [class*="text-[8px]"],
+.lowfi-mode [class*="text-[9px]"],
+.lowfi-mode [class*="text-[10px]"],
+.lowfi-mode article p,
+.lowfi-mode [class*="text-[11px]"]:not(button *):not([role="button"] *):not([data-lowfi-keep]),
+.lowfi-mode article .inline-flex:not(button *),
+.lowfi-mode .v3-semantic-availability {
+  display: none !important;
+}
+
+.lowfi-mode [role="alert"],
+.lowfi-mode [role="alert"] *,
+.lowfi-mode [role="status"],
+.lowfi-mode [role="status"] * {
+  display: revert !important;
+}
+
+.lowfi-mode[data-lowfi-screen="v2_search"] header > div:nth-child(2),
+.lowfi-mode[data-lowfi-screen="v2_search"] details {
+  display: none !important;
+}
+
+.lowfi-mode header small,
+.lowfi-mode header [class*="text-[8px]"],
+.lowfi-mode header [class*="text-[9px]"],
+.lowfi-mode header [class*="text-[10px]"] {
+  display: revert !important;
+}
+
+.lowfi-mode button:not([aria-label*="Quay lại"]) svg,
+.lowfi-mode [role="button"] svg {
+  display: none !important;
+}
+
+.lowfi-mode nav button svg {
+  display: revert !important;
+}
+
+.lowfi-mode [data-lowfi-keep-icons] button svg {
+  display: inline-block !important;
+}
+
+.lowfi-mode button[aria-label^="Đóng"] svg {
+  display: inline-block !important;
+}
+
+.lowfi-mode button[aria-label^="Đóng"] {
+  border-radius: 50% !important;
+}
+
 /* TutorNest mobile flow palette from the parent app Figma screens. */
 .app-version-v2 {
   --color-emerald-50: #effaf8;

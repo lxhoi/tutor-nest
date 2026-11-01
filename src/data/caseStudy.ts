@@ -604,20 +604,16 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "title": "Takeaways",
     "chapter": "Going forward",
     "kicker": "TAKEAWAYS",
-    "description": "The work combines a small reported baseline, a parent-first design response and a separate follow-up report that must remain distinct.",
+    "description": "What the small parent study changed in the design—and what I learned from working with limited evidence.",
     "layout": "takeaways",
     "items": [
       {
-        "title": "Parent-first scope",
-        "text": "The case study follows discovery, comparison, scheduling and booking. Tutor operations and live transactions are outside scope."
+        "title": "Impact",
+        "text": "Parents can feel uncertain when choosing a tutor for their child, especially when it is hard to judge a tutor’s experience, compare options, or understand the schedule and cost. To address these concerns, I designed a parent-first booking experience that brings tutor details, comparison, lesson planning, and payment information together in a clearer flow."
       },
       {
-        "title": "What the baseline says",
-        "text": "Four parents asked for more trust evidence; three missed Compare initially; two stopped at card-only payment. Treat these as small-sample signals."
-      },
-      {
-        "title": "What remains unknown",
-        "text": "A separate author-supplied report describes five parents completing three other tasks. It does not validate this full flow or prove the design changes caused better outcomes."
+        "title": "What I learned",
+        "text": "Designing a parent-first booking flow taught me that small points of uncertainty can interrupt an important decision. Parents need to understand who they are choosing, whether the schedule fits, and what they will pay. I learned to organize those answers around the booking journey, explain the next step clearly, and treat payment as part of the overall experience."
       }
     ],
     "evidence": "Two author-supplied reports · not independently verified",
@@ -627,20 +623,20 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "title": "Next steps",
     "chapter": "Going forward",
     "kicker": "NEXT STEPS",
-    "description": "The fastest credibility gains come from reconciling the supplied sessions and retesting the parent booking decisions that the baseline exposed.",
+    "description": "Three focused actions would make the case study more reliable and the parent booking flow easier to assess.",
     "layout": "cards",
     "items": [
       {
-        "title": "Next 1–2 days",
-        "text": "Keep the deck parent-only; reconcile n=6 baseline vs separate n=5 retest; publish anonymized source mapping and remove unsupported market-wide claims."
+        "title": "Reconcile the study records",
+        "text": "Check the original notes and task records. Keep the six-parent baseline separate from the five-parent report, which covered different tasks. Document what each source can and cannot support."
       },
       {
-        "title": "Next 1–2 weeks",
-        "text": "Recover consent and task-level records; map exact builds of the initial and updated prototypes; run a comparable parent retest for Compare, trust cues, fee/policy comprehension and payment recovery."
+        "title": "Retest the key decisions",
+        "text": "Ask parents to compare tutors, judge trust cues, understand fees and policies, and recover from a payment issue. Use the same tasks and measures so results can be compared."
       },
       {
-        "title": "Longer term",
-        "text": "Run card sorting/tree testing, test multiple children and post-booking tasks, then validate real availability, support and payment operations with appropriate safeguards."
+        "title": "Validate the wider experience",
+        "text": "Test how parents find sections, manage lessons for more than one child, and get help after booking. Before launch, verify real tutor availability, support and payment processes."
       }
     ],
     "note": "If raw session evidence, consent or tested builds do not exist, retain the reports as author-supplied evidence and do not imply independent verification."

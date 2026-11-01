@@ -289,13 +289,13 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                           <div className="flex items-center space-x-1.5">
                             <h3 className="text-sm font-bold text-neutral-900 truncate">{tutor.name}</h3>
                           </div>
-                          <div className="text-[11px] font-medium text-neutral-600 mt-0.5">
+                          <div data-lowfi-keep="true" className="text-[11px] font-medium text-neutral-600 mt-0.5">
                             {tutor.subject} • {tutor.gradeRange} • {tutor.university}
                           </div>
                         </div>
 
                         {/* Rating Badge */}
-                        <div className="flex items-center space-x-1 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200 text-amber-900 text-xs font-bold shrink-0">
+                        <div data-lowfi-keep="true" className="flex items-center space-x-1 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200 text-amber-900 text-xs font-bold shrink-0">
                           <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                           <span>{tutor.rating}</span>
                           <span className="text-neutral-500 font-normal">({tutor.reviewsCount})</span>
@@ -320,7 +320,7 @@ export const V2SearchScreen: React.FC<V2SearchScreenProps> = ({
                   {/* Bottom Row: Price & Compare Toggle Button */}
                   <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-extrabold text-emerald-700">{formatCurrency(tutor.hourlyRate)}</span>
+                      <span data-lowfi-keep="true" className="text-sm font-extrabold text-emerald-700">{formatCurrency(tutor.hourlyRate)}</span>
                       <span className="text-[11px] text-neutral-500 font-medium"> / giờ</span>
                     </div>
 
