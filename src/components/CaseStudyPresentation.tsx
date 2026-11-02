@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ArrowRight, ArrowLeft, Maximize2, Minimize2, Grid2X2, PanelLeftClose, PanelLeftOpen, StickyNote, Check, ShieldCheck, CalendarDays, CreditCard, Shapes, Route, BookOpen, X } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { ArrowUpRight, ArrowRight, ArrowLeft, Maximize2, Minimize2, Grid2X2, PanelLeftClose, PanelLeftOpen, StickyNote, Check, ShieldCheck, CalendarDays, CreditCard, Shapes, Route, BookOpen, X, FileDown } from 'lucide-react';
 import { CASE_STUDY_SLIDES, CaseStudySlide } from '../data/caseStudy';
 import { CASE_STUDY_SLIDES_VI } from '../data/caseStudy.vi';
 import { CASE_STUDY_V2_SLIDES } from '../data/caseStudy.v2';
+import { CASE_STUDY_V3_SLIDES } from '../data/caseStudy.v3';
+import { CASE_STUDY_V4_SLIDES } from '../data/caseStudy.v4';
 import { CaseStudyLanguageContext, translateCaseStudy, useCaseStudyTranslation, type CaseStudyLanguage } from '../data/caseStudyI18n';
 import { INITIAL_BOOKING } from '../data/mockData';
 import { V2HomeScreen } from './screens/v2/V2HomeScreen';
@@ -86,8 +90,11 @@ function SlideContent({ slide, index, onOpenPrototype }: { slide: CaseStudySlide
   }
 }
 
-export function CaseStudyPresentation({ onOpenPrototype, variant = 'v1' }: { onOpenPrototype: () => void; variant?: 'v1' | 'v2' }) {
+export function CaseStudyPresentation({ onOpenPrototype, variant = 'v1' }: { onOpenPrototype: () => void; variant?: 'v1' | 'v2' | 'v3' | 'v4' }) {
   const isV2 = variant === 'v2';
+  const isV3 = variant === 'v3';
+  const isV4 = variant === 'v4';
+  const isEditableDeck = isV2 || isV3 || isV4;
   const [language, setLanguage] = useState<CaseStudyLanguage>(() => {
     const requested = new URLSearchParams(window.location.search).get('lang');
     if (requested === 'en' || requested === 'vi') return requested;
@@ -95,13 +102,15 @@ export function CaseStudyPresentation({ onOpenPrototype, variant = 'v1' }: { onO
     catch { return 'en'; }
   });
   const t = (text: string) => translateCaseStudy(text, language);
-  const slides = isV2 ? CASE_STUDY_V2_SLIDES : language === 'vi' ? CASE_STUDY_SLIDES_VI : CASE_STUDY_SLIDES;
-  const [index, setIndex] = useState(() => Math.min((isV2 ? CASE_STUDY_V2_SLIDES : CASE_STUDY_SLIDES).length - 1, Math.max(0, Math.floor(Number(new URLSearchParams(window.location.search).get('slide') || 1)) - 1)) || 0);
+  const slides = isV2 ? CASE_STUDY_V2_SLIDES : isV3 ? CASE_STUDY_V3_SLIDES : isV4 ? CASE_STUDY_V4_SLIDES : language === 'vi' ? CASE_STUDY_SLIDES_VI : CASE_STUDY_SLIDES;
+  const [index, setIndex] = useState(() => Math.min((isV2 ? CASE_STUDY_V2_SLIDES : isV3 ? CASE_STUDY_V3_SLIDES : isV4 ? CASE_STUDY_V4_SLIDES : CASE_STUDY_SLIDES).length - 1, Math.max(0, Math.floor(Number(new URLSearchParams(window.location.search).get('slide') || 1)) - 1)) || 0);
   const [sidebar, setSidebar] = useState(() => window.innerWidth >= 1000);
   const [showEvidence, setShowEvidence] = useState(false);
   const [overview, setOverview] = useState(false);
   const [notes, setNotes] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [printing, setPrinting] = useState(false);
+  const [preparingPdf, setPreparingPdf] = useState(false);
   const [scale, setScale] = useState(0.7);
   const root = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -111,7 +120,7 @@ export function CaseStudyPresentation({ onOpenPrototype, variant = 'v1' }: { onO
     const url = new URL(window.location.href);
     url.searchParams.set('lang',language);
     try { localStorage.setItem('tutornest.case-study.language', language); } catch { /* Storage may be unavailable. */ }
-    url.searchParams.set('view', isV2 ? 'case-study-v2' : 'case-study'); url.searchParams.set('slide', String(index + 1));
+    url.searchParams.set('view', isV2 ? 'case-study-v2' : isV3 ? 'case-study-v3' : isV4 ? 'case-study-v4' : 'case-study'); url.searchParams.set('slide', String(index + 1));
     window.history.replaceState(null, '', url);
   }, [index, language, isV2]);
   useEffect(() => {
@@ -140,16 +149,45 @@ export function CaseStudyPresentation({ onOpenPrototype, variant = 'v1' }: { onO
     try { if(document.fullscreenElement) await document.exitFullscreen(); else await root.current?.requestFullscreen(); }
     catch { setSidebar(false); }
   };
+  const exportPdf = async () => {
+    if (preparingPdf) return;
+    setPreparingPdf(true);
+    setPrinting(true);
+    try {
+      await new Promise<void>((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(() => window.setTimeout(resolve, 250))));
+      await document.fonts?.ready;
+      const pages = Array.from(root.current?.querySelectorAll<HTMLElement>('.cs-print-deck .cs-slide') || []);
+      if (!pages.length) throw new Error('No slides were prepared for export.');
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1440, 810], compress: true });
+      for (const [pageIndex, page] of pages.entries()) {
+        const canvas = await html2canvas(page, { backgroundColor: '#f8f6ef', scale: 1, useCORS: true, logging: false, width: 1440, height: 810, windowWidth: 1440, windowHeight: 810 });
+        if (pageIndex) pdf.addPage([1440, 810], 'landscape');
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1440, 810, undefined, 'FAST');
+      }
+      pdf.save(`tutornest-case-study-${variant}.pdf`);
+    } catch {
+      window.alert('PDF export could not complete. Please try again after the slides finish loading.');
+    } finally {
+      setPreparingPdf(false);
+      setPrinting(false);
+    }
+  };
+  useEffect(() => {
+    const done = () => setPrinting(false);
+    window.addEventListener('afterprint', done);
+    return () => window.removeEventListener('afterprint', done);
+  }, []);
   return <CaseStudyLanguageContext.Provider value={language}><div className="cs-presentation" lang={language} ref={root}>
-    {sidebar&&<aside className="cs-sidebar" aria-label={t("Presentation slides")}><div className="cs-sidebar-title"><span>{isV2 ? 'EDITABLE V2 DECK' : t("THE CASE STUDY")}</span><strong>TutorNest<span>®</span></strong><p>{slides.length} {isV2 ? 'editable slides · evidence-bounded' : t("slides · parent booking flow")}</p></div><nav>{slides.map((s,i)=><React.Fragment key={`${s.kicker}-${i}`}>{(i===0||s.chapter!==slides[i-1].chapter)&&<div className="cs-nav-section">{s.chapter}</div>}<button data-slide={i} onClick={()=>select(i)} aria-current={i===index?'step':undefined} className={i===index?'cs-nav-active':''}><span>{String(i+1).padStart(2,'0')}</span><span>{i===0?t('Cover'):s.layout==='chapter'?s.description:s.kicker.replace(/^\d+ \/ /,'').toLowerCase()}</span>{i===index&&<i/>}</button></React.Fragment>)}</nav><div className="cs-sidebar-bottom"><span className="cs-live-dot"/>{isV2 ? 'Editable portfolio deck · English' : t("Concept case study · English")}</div></aside>}
+    {sidebar&&<aside className="cs-sidebar" aria-label={t("Presentation slides")}><div className="cs-sidebar-title"><span>{isEditableDeck ? `EDITABLE ${isV4 ? 'V4 TARGET' : isV3 ? 'V3 TARGET' : 'V2'} DECK` : t("THE CASE STUDY")}</span><strong>TutorNest<span>®</span></strong><div className="cs-audit-score" title={isV3 || isV4 ? 'Target score pending evidence reconciliation.' : 'Strict evidence-based audit. Not a product outcome.'}><span>{isV4 ? 'V4 target score' : isV3 ? 'V3 target score' : language === 'vi' ? `Điểm audit ${isV2 ? 'V2' : 'V1'}` : `${isV2 ? 'V2' : 'V1'} audit score`}</span><b>{isV4 ? '9.0' : isV3 ? '8.0' : isV2 ? '60.0' : '58.3'}<span>/100</span></b><small>{isV3 || isV4 ? 'Target · pending evidence reconciliation' : language === 'vi' ? 'Trung bình · giới hạn bằng chứng' : 'Average · evidence-limited'}</small></div><p>{slides.length} {isEditableDeck ? 'editable slides · evidence-bounded' : t("slides · parent booking flow")}</p></div><nav>{slides.map((s,i)=><React.Fragment key={`${s.kicker}-${i}`}>{(i===0||s.chapter!==slides[i-1].chapter)&&<div className="cs-nav-section">{s.chapter}</div>}<button data-slide={i} onClick={()=>select(i)} aria-current={i===index?'step':undefined} className={i===index?'cs-nav-active':''}><span>{String(i+1).padStart(2,'0')}</span><span>{isEditableDeck?s.title.replace(/\n/g,' '):i===0?t('Cover'):s.layout==='chapter'?s.description:s.kicker.replace(/^\d+ \/ /,'').toLowerCase()}</span>{i===index&&<i/>}</button></React.Fragment>)}</nav><div className="cs-sidebar-bottom"><span className="cs-live-dot"/>{isEditableDeck ? 'Editable portfolio deck · English' : t("Concept case study · English")}</div></aside>}
     <div className="cs-workspace"><div className="cs-toolbar"><div><button onClick={()=>setSidebar(!sidebar)} title={t(sidebar?'Hide slide list':'Show slide list')} aria-label={t(sidebar?'Hide slide list':'Show slide list')}>{sidebar?<PanelLeftClose size={18}/>:<PanelLeftOpen size={18}/>}</button><span className="cs-toolbar-divider"/><span>{slide.chapter}</span><span className="cs-toolbar-breadcrumb">/ {index===0?t('Cover'):slide.layout==='chapter'?slide.description:slide.kicker.replace(/^\d+ \/ /,'').toLowerCase()}</span></div><div>{!isV2&&<div className="cs-language-switch" role="group" aria-label={language === 'vi' ? 'Ngôn ngữ trình bày' : 'Presentation language'}>
         <button type="button" lang="en" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button>
         <button type="button" lang="vi" aria-pressed={language === 'vi'} onClick={() => setLanguage('vi')}>Tiếng Việt</button>
-      </div>}<button onClick={()=>setShowEvidence(true)} className="cs-evidence-trigger">{isV2 ? 'Evidence limits' : language==='vi'?'Bằng chứng':'Evidence'}</button><button onClick={()=>setOverview(!overview)} aria-pressed={overview} title={t("Slide overview")} aria-label={t("Slide overview")}>{overview?<X size={17}/>:<Grid2X2 size={17}/>}</button><button onClick={()=>setNotes(!notes)} aria-pressed={notes} title={t("Speaker notes")} aria-label={t("Speaker notes")}><StickyNote size={17}/></button><button onClick={toggleFullscreen} title={t("Full screen")} aria-label={t("Full screen")}>{fullscreen?<Minimize2 size={17}/>:<Maximize2 size={17}/>}</button></div></div>
-      {overview?<div className="cs-overview-grid" aria-label={`${t("All slides")} (${slides.length})`}>{slides.map((s,i)=><button className={`${s.layout==='chapter'?'cs-grid-chapter':''} ${index===i?'cs-grid-selected':''}`} onClick={()=>select(i)} key={i}><span>{String(i+1).padStart(2,'0')} / {s.chapter}</span><strong>{s.title}</strong><small>{s.layout==='chapter'?s.description:s.kicker.replace(/^\d+ \/ /,'')}</small></button>)}</div>:<div className="cs-stage" ref={stage}><div className="cs-scaled-wrap" style={{width:1440*scale,height:810*scale}}><section className={`cs-slide cs-layout-${slide.layout}`} style={{transform:`scale(${scale})`}} aria-label={`Slide ${index+1}: ${slide.title.replace('\n',' ')}`}>{!isV2&&<div className="cs-slide-brand"><img src="/tutornest-logo.svg" alt="TutorNest"/><span>{t("DESIGNING FOR CONFIDENCE")}</span></div>}<div className="cs-slide-body">{isV2 ? <ExactPdfSlideContent slide={slide}/> : <SlideContent slide={slide} index={index} onOpenPrototype={onOpenPrototype}/>}</div>{!isV2&&<footer className="cs-slide-footer"><span>{t("TUTOR NEST / UX CASE STUDY")}</span>{slide.evidence&&<span className="cs-evidence">{slide.evidence}</span>}<span>{String(index+1).padStart(2,'0')} <i>/</i> {slides.length}</span></footer>}</section></div></div>}
+      </div>}<button onClick={exportPdf} disabled={preparingPdf} className="cs-evidence-trigger" title="Save this case study version as PDF"><FileDown size={15}/>{preparingPdf ? 'Preparing slides…' : 'Export PDF'}</button><button onClick={()=>setShowEvidence(true)} className="cs-evidence-trigger">{isEditableDeck ? 'Evidence limits' : language==='vi'?'Bằng chứng':'Evidence'}</button><button onClick={()=>setOverview(!overview)} aria-pressed={overview} title={t("Slide overview")} aria-label={t("Slide overview")}>{overview?<X size={17}/>:<Grid2X2 size={17}/>}</button><button onClick={()=>setNotes(!notes)} aria-pressed={notes} title={t("Speaker notes")} aria-label={t("Speaker notes")}><StickyNote size={17}/></button><button onClick={toggleFullscreen} title={t("Full screen")} aria-label={t("Full screen")}>{fullscreen?<Minimize2 size={17}/>:<Maximize2 size={17}/>}</button></div></div>
+      {overview?<div className="cs-overview-grid" aria-label={`${t("All slides")} (${slides.length})`}>{slides.map((s,i)=><button className={`${s.layout==='chapter'?'cs-grid-chapter':''} ${index===i?'cs-grid-selected':''}`} onClick={()=>select(i)} key={i}><span>{String(i+1).padStart(2,'0')} / {s.chapter}</span><strong>{s.title}</strong><small>{s.layout==='chapter'?s.description:s.kicker.replace(/^\d+ \/ /,'')}</small></button>)}</div>:<div className="cs-stage" ref={stage}><div className="cs-scaled-wrap" style={{width:1440*scale,height:810*scale}}><section className={`cs-slide cs-layout-${slide.layout}`} style={{transform:`scale(${scale})`}} aria-label={`Slide ${index+1}: ${slide.title.replace('\n',' ')}`}>{!isEditableDeck&&<div className="cs-slide-brand"><img src="/tutornest-logo.svg" alt="TutorNest"/><span>{t("DESIGNING FOR CONFIDENCE")}</span></div>}<div className="cs-slide-body">{isEditableDeck ? <ExactPdfSlideContent slide={slide}/> : <SlideContent slide={slide} index={index} onOpenPrototype={onOpenPrototype}/>}</div>{!isEditableDeck&&<footer className="cs-slide-footer"><span>{t("TUTOR NEST / UX CASE STUDY")}</span>{slide.evidence&&<span className="cs-evidence">{slide.evidence}</span>}<span>{String(index+1).padStart(2,'0')} <i>/</i> {slides.length}</span></footer>}</section></div></div>}
       {notes&&<div className="cs-speaker-notes"><span>{t("SPEAKER NOTES")}</span><p>{slide.note || t('Explain the design intent shown on this slide. Distinguish proposed ideas from research-backed conclusions.')}</p></div>}
       <div className="cs-deck-controls"><span className="cs-keyboard-hint">{t("← → to navigate")}<span>·</span>{t("Home / End to jump")}</span><div className="cs-pagination"><button onClick={()=>select(index-1)} disabled={index===0} aria-label={t("Previous slide")}><ArrowLeft size={18}/></button><label><span className="sr-only">{t("Go to slide")}</span><select value={index} onChange={e=>select(Number(e.target.value))}>{slides.map((_,i)=><option key={i} value={i}>{String(i+1).padStart(2,'0')}</option>)}</select><span>/ {slides.length}</span></label><button onClick={()=>select(index+1)} disabled={index===slides.length-1} aria-label={t("Next slide")}><ArrowRight size={18}/></button></div><span className="cs-deck-label">TUTOR NEST <span>{t("CASE STUDY")}</span></span></div><div className="cs-progress-track"><div style={{width:`${((index+1)/slides.length)*100}%`}}/></div>
     </div>
+    {printing&&<div className="cs-print-deck cs-pdf-rendering">{slides.map((printSlide, printIndex)=><section key={printIndex} className={`cs-slide cs-layout-${printSlide.layout}`}><div className="cs-slide-body">{isEditableDeck ? <ExactPdfSlideContent slide={printSlide}/> : <SlideContent slide={printSlide} index={printIndex} onOpenPrototype={onOpenPrototype}/>}</div></section>)}</div>}
     {showEvidence && <CaseStudyEvidence language={language} onClose={()=>setShowEvidence(false)}/>}
   </div></CaseStudyLanguageContext.Provider>;
 }

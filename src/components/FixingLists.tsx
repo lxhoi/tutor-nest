@@ -7,7 +7,7 @@ type ChecklistItem = {
 };
 
 const LEVEL_EIGHT: ChecklistItem[] = [
-  { title: 'Bối cảnh dự án', evidence: 'Project brief 1 trang: đây là solo concept hay dự án thật, mục tiêu, nền tảng mobile, đối tượng, giới hạn và phần việc cá nhân.', action: 'Ghi đúng sự thật về phạm vi; không suy diễn client, team hoặc business constraint khi chưa có.' },
+  { title: 'Bối cảnh dự án', evidence: 'TutorNest là solo UX/UI concept trong 10 tuần của Bryan Lê: ứng dụng mobile iOS/Android hỗ trợ phụ huynh tại Việt Nam tìm, so sánh, đặt lịch và quản lý buổi học với gia sư.', action: 'Giữ disclosure này xuyên suốt case study: không có client/team được xác minh, tutor profiles–verification–availability–payment là dữ liệu minh họa, không phải dịch vụ vận hành.' },
   { title: 'Kế hoạch nghiên cứu', evidence: 'Research plan với 3–5 research questions, phương pháp, thời lượng, cách ghi nhận và tiêu chí tuyển người tham gia.', action: 'Chốt success criteria trước khi test, không viết sau khi đã xem kết quả.' },
   { title: 'Người tham gia', evidence: 'Bảng participant đã ẩn danh: ID, vai trò, nhóm tuổi/trẻ, kinh nghiệm tìm gia sư và thiết bị.', action: 'Có tối thiểu 5 phụ huynh phù hợp với đối tượng mục tiêu.' },
   { title: 'Usability test cơ bản', evidence: 'Task script và bảng task × participant: completion, time, errors, moderator assistance và ghi chú.', action: 'Test các tác vụ tìm gia sư, Compare, chọn lịch, thanh toán thử và recovery.' },

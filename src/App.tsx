@@ -57,7 +57,7 @@ export default function App() {
   const [appVersion, setAppVersion] = useState<AppVersion>('v2');
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('v2_home');
   const [history, setHistory] = useState<ScreenId[]>(['v2_home']);
-  const [viewMode, setViewMode] = useState<'iphone' | 'lowfi' | 'board' | 'presentation' | 'presentation-v2' | 'fixing-lists'>(new URLSearchParams(window.location.search).get('view') === 'fixing-lists' ? 'fixing-lists' : new URLSearchParams(window.location.search).get('view') === 'case-study-v2' ? 'presentation-v2' : new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'lowfi' ? 'lowfi' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
+  const [viewMode, setViewMode] = useState<'iphone' | 'lowfi' | 'board' | 'presentation' | 'presentation-v2' | 'presentation-v3' | 'presentation-v4' | 'fixing-lists'>(new URLSearchParams(window.location.search).get('view') === 'fixing-lists' ? 'fixing-lists' : new URLSearchParams(window.location.search).get('view') === 'case-study-v4' ? 'presentation-v4' : new URLSearchParams(window.location.search).get('view') === 'case-study-v3' ? 'presentation-v3' : new URLSearchParams(window.location.search).get('view') === 'case-study-v2' ? 'presentation-v2' : new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'lowfi' ? 'lowfi' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
   const [booking, setBooking] = useState<BookingState>(()=>{try{return restoreDemoBooking(localStorage.getItem(DRAFT_KEY),INITIAL_BOOKING,TUTORS);}catch{return INITIAL_BOOKING;}});
   const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
   const [scale, setScale] = useState<number>(0.95);
@@ -67,7 +67,7 @@ export default function App() {
   useEffect(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify({version:1,booking}));}catch{/* Private browsing may disable storage. */}},[booking]);
 
   useEffect(() => {
-    if (viewMode !== 'presentation' && viewMode !== 'presentation-v2' && viewMode !== 'fixing-lists') {
+    if (viewMode !== 'presentation' && viewMode !== 'presentation-v2' && viewMode !== 'presentation-v3' && viewMode !== 'presentation-v4' && viewMode !== 'fixing-lists') {
       const url = new URL(window.location.href);
       url.searchParams.set('view', viewMode === 'board' ? 'board' : viewMode === 'lowfi' ? 'lowfi' : 'prototype');
       url.searchParams.delete('slide');
@@ -408,13 +408,21 @@ export default function App() {
             {caseStudyMenuOpen && <div role="menu" className="absolute left-0 top-full z-50 mt-2 w-52 rounded-xl border border-neutral-700 bg-neutral-900 p-1.5 shadow-2xl">
               <button role="menuitem" onClick={() => { setViewMode('presentation'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V1</button>
               <button role="menuitem" onClick={() => { setViewMode('presentation-v2'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V2</button>
-              <button role="menuitem" onClick={() => { setViewMode('fixing-lists'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Fixing lists</button>
+              <button role="menuitem" onClick={() => { setViewMode('presentation-v3'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V3 · target 8</button>
+              <button role="menuitem" onClick={() => { setViewMode('presentation-v4'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V4 · target 9</button>
             </div>}
           </div>
+          <button
+            onClick={() => setViewMode('fixing-lists')}
+            aria-pressed={viewMode === 'fixing-lists'}
+            className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors ${viewMode === 'fixing-lists' ? 'border-amber-500 bg-amber-600 text-white' : 'border-neutral-700 bg-neutral-800 text-neutral-200 hover:bg-neutral-700'}`}
+          >
+            Fixing lists
+          </button>
         </div>
 
         {/* Center: Step Selector & Navigation */}
-        <div className={`${viewMode === 'presentation' || viewMode === 'presentation-v2' || viewMode === 'fixing-lists' ? 'hidden' : 'flex'} items-center space-x-1.5 md:space-x-2`}>
+        <div className={`${viewMode === 'presentation' || viewMode === 'presentation-v2' || viewMode === 'presentation-v3' || viewMode === 'presentation-v4' || viewMode === 'fixing-lists' ? 'hidden' : 'flex'} items-center space-x-1.5 md:space-x-2`}>
           <button
             onClick={goToPreviousStep}
             disabled={!isCompareScreen && currentStepIndex <= 0}
@@ -468,10 +476,10 @@ export default function App() {
         <button onClick={resetFlow} className="p-1.5 rounded-lg border border-neutral-700 bg-neutral-800 text-neutral-300 transition-colors hover:bg-neutral-700" title="Đặt lại flow ban đầu"><RotateCcw className="h-3.5 w-3.5" /></button>
       </header>
 
-      {!['presentation', 'presentation-v2', 'fixing-lists'].includes(viewMode) && <div className="text-center text-[11px] py-1 bg-amber-950/40 text-amber-100 border-b border-amber-800/30">Prototype mô phỏng · Dữ liệu minh họa · Không thực hiện giao dịch thật · Mốc lịch demo: 30/10/2026</div>}
+      {!['presentation', 'presentation-v2', 'presentation-v3', 'presentation-v4', 'fixing-lists'].includes(viewMode) && <div className="text-center text-[11px] py-1 bg-amber-950/40 text-amber-100 border-b border-amber-800/30">Prototype mô phỏng · Dữ liệu minh họa · Không thực hiện giao dịch thật · Mốc lịch demo: 30/10/2026</div>}
       {/* Main Workspace Area */}
       <main className="flex-1 relative overflow-hidden flex items-center justify-center">
-        {viewMode === 'fixing-lists' ? <FixingLists /> : viewMode === 'presentation-v2' ? <CaseStudyPresentation onOpenPrototype={() => setViewMode('iphone')} variant="v2" /> : viewMode === 'presentation' ? (
+        {viewMode === 'fixing-lists' ? <FixingLists /> : viewMode === 'presentation-v4' ? <CaseStudyPresentation onOpenPrototype={() => setViewMode('iphone')} variant="v4" /> : viewMode === 'presentation-v3' ? <CaseStudyPresentation onOpenPrototype={() => setViewMode('iphone')} variant="v3" /> : viewMode === 'presentation-v2' ? <CaseStudyPresentation onOpenPrototype={() => setViewMode('iphone')} variant="v2" /> : viewMode === 'presentation' ? (
           <CaseStudyPresentation onOpenPrototype={() => { handleSwitchVersion('v2'); setViewMode('iphone'); }} />
         ) : viewMode === 'board' ? (
           <FlowOverviewBoard
