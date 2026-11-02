@@ -3,13 +3,11 @@ import { ScreenId, BookingState, Tutor, AppVersion } from './types';
 import { INITIAL_BOOKING, FLOW_STEPS_V1, FLOW_STEPS_V2, TUTORS } from './data/mockData';
 import { IPhone16ProMaxFrame } from './components/IPhone16ProMaxFrame';
 import { FlowOverviewBoard } from './components/FlowOverviewBoard';
-import { OriginalReferenceModal } from './components/OriginalReferenceModal';
-import { DesignSystemModal } from './components/DesignSystemModal';
 import { DRAFT_KEY, restoreDemoBooking } from './lib/demoStorage';
 import { calendarFor, tutorDays } from './lib/booking';
-import { Button } from './components/ui/button';
 import { CaseStudyPresentation } from './components/CaseStudyPresentation';
 import { LowFidelityPrototype } from './components/LowFidelityPrototype';
+import { FixingLists } from './components/FixingLists';
 
 // Version 1 Screens
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -47,15 +45,9 @@ import {
 } from './components/screens/v2/V2UtilityScreens';
 import { V2BankTransferPaymentScreen, V2VietQrPaymentScreen } from './components/screens/v2/V2PaymentScreens';
 import {
-  Smartphone,
-  LayoutGrid,
   ChevronLeft,
   ChevronRight,
   RotateCcw,
-  Sparkles,
-  Image as ImageIcon,
-  Palette,
-  Presentation,
   ZoomIn,
   ZoomOut,
   Info,
@@ -65,18 +57,17 @@ export default function App() {
   const [appVersion, setAppVersion] = useState<AppVersion>('v2');
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('v2_home');
   const [history, setHistory] = useState<ScreenId[]>(['v2_home']);
-  const [viewMode, setViewMode] = useState<'iphone' | 'lowfi' | 'board' | 'presentation'>(new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'lowfi' ? 'lowfi' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
+  const [viewMode, setViewMode] = useState<'iphone' | 'lowfi' | 'board' | 'presentation' | 'presentation-v2' | 'fixing-lists'>(new URLSearchParams(window.location.search).get('view') === 'fixing-lists' ? 'fixing-lists' : new URLSearchParams(window.location.search).get('view') === 'case-study-v2' ? 'presentation-v2' : new URLSearchParams(window.location.search).get('view') === 'prototype' ? 'iphone' : new URLSearchParams(window.location.search).get('view') === 'lowfi' ? 'lowfi' : new URLSearchParams(window.location.search).get('view') === 'board' ? 'board' : 'presentation');
   const [booking, setBooking] = useState<BookingState>(()=>{try{return restoreDemoBooking(localStorage.getItem(DRAFT_KEY),INITIAL_BOOKING,TUTORS);}catch{return INITIAL_BOOKING;}});
   const [comparisonTutors, setComparisonTutors] = useState<Tutor[]>([]);
   const [scale, setScale] = useState<number>(0.95);
-  const [showReferenceModal, setShowReferenceModal] = useState(false);
-  const [showDesignSystemModal, setShowDesignSystemModal] = useState(false);
+  const [caseStudyMenuOpen, setCaseStudyMenuOpen] = useState(false);
   const [showHotspots, setShowHotspots] = useState(false);
 
   useEffect(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify({version:1,booking}));}catch{/* Private browsing may disable storage. */}},[booking]);
 
   useEffect(() => {
-    if (viewMode !== 'presentation') {
+    if (viewMode !== 'presentation' && viewMode !== 'presentation-v2' && viewMode !== 'fixing-lists') {
       const url = new URL(window.location.href);
       url.searchParams.set('view', viewMode === 'board' ? 'board' : viewMode === 'lowfi' ? 'lowfi' : 'prototype');
       url.searchParams.delete('slide');
@@ -396,66 +387,34 @@ export default function App() {
 
   return (
     <div className={`flex flex-col h-screen w-screen overflow-hidden bg-[#0a0e14] text-neutral-100 font-sans ${appVersion === 'v3' ? 'app-version-v3' : appVersion === 'v2' ? 'app-version-v2' : ''}`}>
-      {/* Top Prototype Navigation Bar */}
-      <header className="h-14 gap-4 overflow-x-auto [&>div]:shrink-0 border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
-        {/* Brand & Version Switcher */}
-        <div className="flex items-center space-x-2 md:space-x-3">
-          <img src="/tutornest-logo.svg" alt="TutorNest" className="h-[18px] w-auto shrink-0" />
-          <span className={`${viewMode === 'presentation' ? 'hidden' : 'hidden sm:inline-block'} text-neutral-700`}>|</span>
-
-          {/* Version Switcher Segmented Control */}
-          <div className={`${viewMode === 'presentation' || viewMode === 'lowfi' ? 'hidden' : 'flex'} items-center bg-neutral-900 p-0.5 rounded-xl border border-neutral-700/80 shadow-inner`}>
+      <header className="h-14 gap-4 overflow-visible border-b border-neutral-800 bg-[#0d121a]/95 backdrop-blur-md px-3 md:px-4 flex items-center justify-between shrink-0 z-40">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => { handleSwitchVersion('v2'); setViewMode('iphone'); }}
+            aria-pressed={viewMode === 'iphone'}
+            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${viewMode === 'iphone' ? 'bg-emerald-600 text-white' : 'bg-neutral-800 text-neutral-200 hover:bg-neutral-700'}`}
+          >
+            V2: Tinh gọn <span className="ml-1 rounded bg-emerald-800 px-1 py-0.5 text-[10px] font-mono text-white">Cải tiến</span>
+          </button>
+          <div className="relative">
             <button
-              onClick={() => handleSwitchVersion('v1')}
-              className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
-                appVersion === 'v1'
-                  ? 'bg-neutral-800 text-amber-400 border border-amber-500/50 shadow-xs'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-              title="Version 1: Bản thiết kế gốc"
+              onClick={() => setCaseStudyMenuOpen((open) => !open)}
+              aria-expanded={caseStudyMenuOpen}
+              aria-haspopup="menu"
+              className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors ${['presentation', 'presentation-v2', 'fixing-lists'].includes(viewMode) ? 'border-emerald-500 bg-emerald-600 text-white' : 'border-neutral-700 bg-neutral-800 text-neutral-200 hover:bg-neutral-700'}`}
             >
-              <span>V1: Gốc</span>
-              <span className="text-[10px] px-1 py-0.2 rounded bg-neutral-950/80 text-amber-300 font-mono">Bản đầu</span>
+              Case study <ChevronRight className={`h-3.5 w-3.5 transition-transform ${caseStudyMenuOpen ? 'rotate-90' : ''}`} />
             </button>
-
-            <button
-              onClick={() => handleSwitchVersion('v2')}
-              className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center space-x-1 ${
-                appVersion === 'v2'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-              title="Version 2: Bản tinh gọn"
-            >
-              <Sparkles className="w-3 h-3 text-amber-300" />
-              <span>V2: Tinh gọn</span>
-              <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-800 text-white font-mono font-bold">Cải tiến</span>
-            </button>
-
-            {appVersion === 'v3' ? (
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => handleSwitchVersion('v3')}
-                className="px-2 py-1 rounded-lg text-xs font-bold shadow-xs"
-                title="Version 3: Bảng màu Primary, Secondary, Tertiary"
-              >
-                V3: Palette
-              </Button>
-            ) : (
-              <button
-                onClick={() => handleSwitchVersion('v3')}
-                className="px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer text-neutral-400 hover:text-neutral-200"
-                title="Version 3: Bảng màu Primary, Secondary, Tertiary"
-              >
-                <span>V3: Palette</span>
-              </button>
-            )}
+            {caseStudyMenuOpen && <div role="menu" className="absolute left-0 top-full z-50 mt-2 w-52 rounded-xl border border-neutral-700 bg-neutral-900 p-1.5 shadow-2xl">
+              <button role="menuitem" onClick={() => { setViewMode('presentation'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V1</button>
+              <button role="menuitem" onClick={() => { setViewMode('presentation-v2'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Case study V2</button>
+              <button role="menuitem" onClick={() => { setViewMode('fixing-lists'); setCaseStudyMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-100 hover:bg-neutral-800">Fixing lists</button>
+            </div>}
           </div>
         </div>
 
         {/* Center: Step Selector & Navigation */}
-        <div className={`${viewMode === 'presentation' ? 'hidden' : 'flex'} items-center space-x-1.5 md:space-x-2`}>
+        <div className={`${viewMode === 'presentation' || viewMode === 'presentation-v2' || viewMode === 'fixing-lists' ? 'hidden' : 'flex'} items-center space-x-1.5 md:space-x-2`}>
           <button
             onClick={goToPreviousStep}
             disabled={!isCompareScreen && currentStepIndex <= 0}
@@ -506,89 +465,13 @@ export default function App() {
           </button>
         </div>
 
-        {/* Right Action Controls */}
-        <div className="flex items-center space-x-1.5 md:space-x-2">
-          {/* View Mode Toggle */}
-          <div className="flex items-center bg-neutral-800 p-0.5 rounded-lg border border-neutral-700">
-            <button
-              onClick={() => setViewMode('lowfi')}
-              aria-pressed={viewMode === 'lowfi'}
-              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${viewMode === 'lowfi' ? 'bg-amber-600 text-white shadow-xs' : 'text-neutral-400 hover:text-neutral-200'}`}
-            >
-              <span className="hidden md:inline">Low-fidelity prototype</span>
-              <span className="md:hidden">Low-fi</span>
-            </button>
-            <button
-              onClick={() => setViewMode('iphone')}
-              aria-pressed={viewMode === 'iphone'}
-              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                viewMode === 'iphone'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">High-fidelity prototype</span>
-              <span className="md:hidden">High-fi</span>
-            </button>
-
-            <button
-              onClick={() => setViewMode('board')}
-              className={`flex items-center space-x-1 px-2 md:px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                viewMode === 'board'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">User Flow Board</span>
-            </button>
-          </div>
-
-          <button
-            onClick={() => setViewMode('presentation')}
-            aria-pressed={viewMode === 'presentation'}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${viewMode === 'presentation' ? 'bg-emerald-600 text-white border-emerald-500' : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'}`}
-          >
-            <Presentation className="w-4 h-4" />
-            <span>Case Study Presentation</span>
-          </button>
-
-          {/* Design System modal button */}
-          <button
-            onClick={() => setShowDesignSystemModal(true)}
-            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs border border-neutral-700 cursor-pointer shadow-xs transition-colors"
-            title="Xem hệ thống biến Design System (Tokens)"
-          >
-            <Palette className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden md:inline">Design System</span>
-          </button>
-
-          {/* Original reference modal button */}
-          <button
-            onClick={() => setShowReferenceModal(true)}
-            className="hidden lg:flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs border border-neutral-700 cursor-pointer"
-            title="Xem hình ảnh thiết kế gốc"
-          >
-            <ImageIcon className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Figma Gốc</span>
-          </button>
-
-          {/* Reset flow */}
-          <button
-            onClick={resetFlow}
-            className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 border border-neutral-700 cursor-pointer transition-colors"
-            title="Đặt lại flow ban đầu"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-          </button>
-        </div>
+        <button onClick={resetFlow} className="p-1.5 rounded-lg border border-neutral-700 bg-neutral-800 text-neutral-300 transition-colors hover:bg-neutral-700" title="Đặt lại flow ban đầu"><RotateCcw className="h-3.5 w-3.5" /></button>
       </header>
 
-      {viewMode !== 'presentation' && <div className="text-center text-[11px] py-1 bg-amber-950/40 text-amber-100 border-b border-amber-800/30">Prototype mô phỏng · Dữ liệu minh họa · Không thực hiện giao dịch thật · Mốc lịch demo: 30/10/2026</div>}
+      {!['presentation', 'presentation-v2', 'fixing-lists'].includes(viewMode) && <div className="text-center text-[11px] py-1 bg-amber-950/40 text-amber-100 border-b border-amber-800/30">Prototype mô phỏng · Dữ liệu minh họa · Không thực hiện giao dịch thật · Mốc lịch demo: 30/10/2026</div>}
       {/* Main Workspace Area */}
       <main className="flex-1 relative overflow-hidden flex items-center justify-center">
-        {viewMode === 'presentation' ? (
+        {viewMode === 'fixing-lists' ? <FixingLists /> : viewMode === 'presentation-v2' ? <CaseStudyPresentation onOpenPrototype={() => setViewMode('iphone')} variant="v2" /> : viewMode === 'presentation' ? (
           <CaseStudyPresentation onOpenPrototype={() => { handleSwitchVersion('v2'); setViewMode('iphone'); }} />
         ) : viewMode === 'board' ? (
           <FlowOverviewBoard
@@ -662,18 +545,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Original Image Modal */}
-      <OriginalReferenceModal
-        isOpen={showReferenceModal}
-        onClose={() => setShowReferenceModal(false)}
-      />
-
-      {/* Design System Tokens Modal */}
-      <DesignSystemModal
-        isOpen={showDesignSystemModal}
-        onClose={() => setShowDesignSystemModal(false)}
-        version={appVersion}
-      />
     </div>
   );
 }

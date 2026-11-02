@@ -297,25 +297,25 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "note": "Sơ đồ giải thích thứ bậc thông tin và thứ tự tác vụ. Không trình bày chúng như bản phác giấy lịch sử."
   },
   {
-    "title": "Biến thể kích thước wireframe trên giấy",
+    "title": "Biến thể kích thước wireframe mobile",
     "chapter": "Bắt đầu thiết kế",
-    "kicker": "BIẾN THỂ KÍCH THƯỚC WIREFRAME TRÊN GIẤY",
-    "description": "Cùng một màn hình tìm kiếm được phác họa ở ba độ rộng di động minh họa để xem bố cục có thể thay đổi ra sao.",
+    "kicker": "BIẾN THỂ KÍCH THƯỚC WIREFRAME MOBILE",
+    "description": "Hồ sơ gia sư được khám phá ở kích thước Android/iOS nhỏ, chuẩn và lớn mà không thay đổi trình tự đặt lịch.",
     "layout": "mobile-sizes",
-    "evidence": "Các độ rộng minh họa · không có kích thước thiết bị gốc",
-    "note": "Đây là bản tái dựng wireframe, không phải bản phác giấy gốc hay kiểm thử khả năng hiển thị trên nhiều thiết bị.",
+    "evidence": "Khám phá mobile-only · mục tiêu Android/iOS",
+    "note": "TutorNest chỉ thiết kế cho Android và iOS. Đây là bản tái dựng wireframe, không phải kiểm thử responsive đa nền tảng.",
     "items": [
       {
-        "title": "Gọn",
-        "text": ""
+        "title": "Android nhỏ",
+        "text": "Ưu tiên màn hình hẹp"
       },
       {
-        "title": "Tiêu chuẩn",
-        "text": ""
+        "title": "Mobile chuẩn",
+        "text": "Luồng đặt lịch chính"
       },
       {
-        "title": "Rộng hơn",
-        "text": ""
+        "title": "Mobile lớn",
+        "text": "Nhiều không gian đọc hơn"
       }
     ]
   },
@@ -339,13 +339,18 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     ]
   },
   {
-    "title": "Biến thể kích thước wireframe kỹ thuật số",
+    "title": "Biến thể wireframe kỹ thuật số mobile",
     "chapter": "Bắt đầu thiết kế",
-    "kicker": "BIẾN THỂ KÍCH THƯỚC WIREFRAME KỸ THUẬT SỐ",
-    "description": "Bố cục màn hình rộng minh họa cách hiển thị hồ sơ gia sư và hành động đặt lịch mà vẫn giữ nguyên thứ tự tác vụ của phụ huynh.",
-    "layout": "responsive",
-    "evidence": "Đề xuất bố cục màn hình rộng · chưa kiểm thử",
-    "note": "Concept tập trung vào di động. Các biến thể màn hình rộng mới là đề xuất, chưa được phụ huynh kiểm chứng."
+    "kicker": "BIẾN THỂ WIREFRAME KỸ THUẬT SỐ MOBILE",
+    "description": "Wireframe Android/iOS giữ thông tin gia sư và hành động đặt lịch dễ dùng ở kích thước mobile nhỏ, chuẩn và lớn.",
+    "layout": "mobile-sizes",
+    "evidence": "Khám phá bố cục mobile-only · không phải kiểm thử thiết bị",
+    "note": "TutorNest là concept chỉ dành cho Android/iOS. Các ví dụ giải thích phân cấp mobile, không phải bản desktop hoặc cross-platform.",
+    "items": [
+      {"title":"Android nhỏ","text":"Ưu tiên thông tin thiết yếu"},
+      {"title":"Mobile chuẩn","text":"Luồng chính"},
+      {"title":"Mobile lớn","text":"Nhiều không gian đọc hơn"}
+    ]
   },
   {
     "title": "Prototype độ chi tiết thấp",
@@ -481,13 +486,27 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "evidence": "Bản xem trước thành phần di động · hồ sơ và thanh toán là dữ liệu minh họa"
   },
   {
-    "title": "Mockup: biến thể kích thước màn hình",
+    "title": "Một hành trình mobile.\nBa trạng thái quyết định.",
     "chapter": "Hoàn thiện thiết kế",
-    "kicker": "MOCKUP: BIẾN THỂ KÍCH THƯỚC MÀN HÌNH",
-    "description": "Concept màn hình rộng minh họa cách luồng đặt lịch cho phụ huynh có thể hoạt động ngoài bố cục di động chính.",
-    "layout": "responsive",
-    "evidence": "Concept màn hình rộng · chưa xác thực",
-    "note": "Prototype chính tập trung vào di động. Bố cục rộng là ý tưởng khám phá, chưa được thử với phụ huynh."
+    "kicker": "TRẠNG THÁI QUYẾT ĐỊNH MOBILE",
+    "description": "Ba trạng thái mobile làm rõ ba quyết định: đánh giá gia sư, chọn buổi học và xem lại cam kết trước thanh toán.",
+    "layout": "mobile-states",
+    "evidence": "Component mobile đang chạy · fixture và thanh toán vẫn là mô phỏng",
+    "note": "Đây là ví dụ state Android/iOS, không phải kiểm tra responsive đa thiết bị. Các hình thể hiện luồng mobile đã cập nhật copy và trạng thái.",
+    "items": [
+      {
+        "title": "Đánh giá",
+        "text": "Hồ sơ gia sư và buổi rảnh"
+      },
+      {
+        "title": "Chọn",
+        "text": "Ngày, thời lượng và khung giờ"
+      },
+      {
+        "title": "Xem lại",
+        "text": "Khoản cần trả và trạng thái thanh toán"
+      }
+    ]
   },
   {
     "title": "Prototype độ chi tiết cao",
@@ -515,10 +534,10 @@ export const CASE_STUDY_SLIDES_VI: CaseStudySlide[] = [
     "title": "Các cân nhắc về khả năng tiếp cận",
     "chapter": "Hoàn thiện thiết kế",
     "kicker": "CÁC CÂN NHẮC VỀ KHẢ NĂNG TIẾP CẬN",
-    "description": "Báo cáo do tác giả cung cấp mô tả một đợt rà soát khả năng tiếp cận giới hạn, đi kèm đánh giá 10 heuristic của reviewer. Đây không phải chứng nhận toàn bộ sản phẩm đạt WCAG.",
+    "description": "Báo cáo do tác giả cung cấp mô tả một đợt rà soát khả năng tiếp cận mobile giới hạn, đi kèm đánh giá 10 heuristic của reviewer. Đây không phải chứng nhận toàn bộ sản phẩm đạt WCAG.",
     "layout": "heuristics",
     "evidence": "Audit giới hạn · đánh giá heuristic của reviewer",
-    "note": "Báo cáo nêu VoiceOver trên iPhone 14, TalkBack trên Galaxy S23 và kiểm thử bàn phím trên MacBook Pro. Báo cáo ghi 4.54:1 và 8.6:1 cho hai mẫu, đồng thời cho biết zoom 200%, focus và touch target đạt trong phạm vi kiểm tra. Không có danh mục đầy đủ component/trạng thái hay audit độc lập.",
+    "note": "Phạm vi mobile nêu VoiceOver trên iPhone 14 và TalkBack trên Galaxy S23. Báo cáo ghi 4.54:1 và 8.6:1 cho hai mẫu, đồng thời cho biết zoom 200%, focus và touch target đạt trong phạm vi kiểm tra. Không có danh mục đầy đủ component/trạng thái hay audit độc lập.",
     "items": [
       {
         "title": "Hiển thị trạng thái hệ thống",

@@ -1,11 +1,11 @@
-export type CaseStudyLayout = 'cover' | 'overview' | 'split' | 'cards' | 'chapter' | 'persona' | 'journey' | 'sitemap' | 'wireframes' | 'responsive' | 'mobile-sizes' | 'mobile-states' | 'flow' | 'study' | 'research-summary' | 'findings' | 'comparison' | 'gallery' | 'prototype' | 'accessibility' | 'heuristics' | 'takeaways' | 'closing';
+export type CaseStudyLayout = 'cover' | 'overview' | 'split' | 'cards' | 'chapter' | 'persona' | 'journey' | 'sitemap' | 'wireframes' | 'mobile-sizes' | 'mobile-states' | 'flow' | 'study' | 'research-summary' | 'findings' | 'comparison' | 'gallery' | 'prototype' | 'accessibility' | 'heuristics' | 'takeaways' | 'closing';
 export interface CaseStudySlide {
   title: string;
   chapter: string;
   kicker: string;
   description: string;
   layout: CaseStudyLayout;
-  items?: { title: string; text: string; evidence?: string; response?: string; score?: number }[];
+  items?: { title: string; text?: string; evidence?: string; response?: string; score?: number }[];
   note?: string;
   evidence?: string;
   researchMethod?: string;
@@ -308,25 +308,25 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "note": "These diagrams explain hierarchy and task order. They are not presented as historical paper sketches."
   },
   {
-    "title": "Paper wireframe screen size variations",
+    "title": "Mobile wireframe size variations",
     "chapter": "Starting the design",
-    "kicker": "PAPER WIREFRAME SCREEN SIZE VARIATIONS",
-    "description": "The same core search screen is explored at three illustrative mobile widths to show how the layout could adapt.",
+    "kicker": "MOBILE WIREFRAME SIZE VARIATIONS",
+    "description": "The tutor profile is explored at compact, standard, and large Android/iOS sizes without changing the booking sequence.",
     "layout": "mobile-sizes",
-    "evidence": "Illustrative width variations · no original device measurements supplied",
-    "note": "These are retrospective wireframe reconstructions, not original paper variations or a responsive-device test.",
+    "evidence": "Mobile-only concept exploration · Android/iOS target",
+    "note": "TutorNest is designed only for Android and iOS. These are retrospective wireframe reconstructions, not a cross-platform responsive study.",
     "items": [
       {
-        "title": "Compact",
-        "text": ""
+        "title": "Compact Android",
+        "text": "Small-screen priority"
       },
       {
-        "title": "Standard",
-        "text": ""
+        "title": "Standard mobile",
+        "text": "Primary booking flow"
       },
       {
-        "title": "Roomier",
-        "text": ""
+        "title": "Large mobile",
+        "text": "More reading room"
       }
     ]
   },
@@ -350,13 +350,18 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     ]
   },
   {
-    "title": "Digital wireframe screen size variation(s)",
+    "title": "Digital mobile wireframe variations",
     "chapter": "Starting the design",
-    "kicker": "DIGITAL WIREFRAME SCREEN SIZE VARIATION(S)",
-    "description": "A wider-screen concept shows how tutor details and the booking action could adapt while keeping the parent task order.",
-    "layout": "responsive",
-    "evidence": "Proposed wider layout · not a tested responsive product",
-    "note": "The implemented concept is primarily mobile. These layout variations are proposals and have not been validated across devices."
+    "kicker": "DIGITAL MOBILE WIREFRAME VARIATIONS",
+    "description": "Android/iOS wireframes keep tutor details and the booking action usable at compact, standard, and large mobile sizes.",
+    "layout": "mobile-sizes",
+    "evidence": "Mobile-only layout exploration · not a device-validation study",
+    "note": "TutorNest is an Android/iOS-only concept. These examples explain mobile hierarchy, not a desktop or cross-platform release.",
+    "items": [
+      {"title":"Compact Android","text":"Essential details first"},
+      {"title":"Standard mobile","text":"Primary flow"},
+      {"title":"Large mobile","text":"More reading room"}
+    ]
   },
   {
     "title": "Low-fidelity prototype",
@@ -492,13 +497,27 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "evidence": "Live mobile component previews · profile and payment data are illustrative"
   },
   {
-    "title": "Mockups: Screen size variations",
+    "title": "One mobile journey.\nThree decision states.",
     "chapter": "Refining the design",
-    "kicker": "MOCKUPS: SCREEN SIZE VARIATIONS",
-    "description": "A wider-screen mockup concept explores how the parent booking flow could work beyond the primary mobile layout.",
-    "layout": "responsive",
-    "evidence": "Proposed wider-screen concept · not a validated responsive release",
-    "note": "The mobile design is the primary prototype. Wider-screen layouts are exploratory and have not been tested with parents."
+    "kicker": "MOBILE DECISION STATES",
+    "description": "Three mobile states make different decisions visible: evaluate a tutor, select a lesson, then review commitment before payment.",
+    "layout": "mobile-states",
+    "evidence": "Live mobile components · fixture data and payment remain simulated",
+    "note": "These are Android/iOS state examples, not a cross-device responsive study. They show the implemented mobile flow after the copy and status corrections.",
+    "items": [
+      {
+        "title": "Evaluate",
+        "text": "Tutor profile and available bands"
+      },
+      {
+        "title": "Choose",
+        "text": "Date, duration and time slot"
+      },
+      {
+        "title": "Review",
+        "text": "Amount due and payment state"
+      }
+    ]
   },
   {
     "title": "High-fidelity prototype",
@@ -526,10 +545,10 @@ export const CASE_STUDY_SLIDES: CaseStudySlide[] = [
     "title": "Accessibility considerations",
     "chapter": "Refining the design",
     "kicker": "ACCESSIBILITY CONSIDERATIONS",
-    "description": "A limited author-supplied accessibility audit is described alongside a ten-part evaluator heuristic review. Neither is a whole-product accessibility certification.",
+    "description": "A limited author-supplied mobile accessibility audit is described alongside a ten-part evaluator heuristic review. Neither is a whole-product accessibility certification.",
     "layout": "heuristics",
     "evidence": "Limited accessibility audit · evaluator heuristic review",
-    "note": "The report names VoiceOver on iPhone 14, TalkBack on Galaxy S23, and keyboard testing on a MacBook Pro. It records 4.54:1 and 8.6:1 for two samples, plus passing 200% zoom, focus and touch-target checks within its scope. No full component/state inventory or independent audit was supplied.",
+    "note": "The mobile scope names VoiceOver on iPhone 14 and TalkBack on Galaxy S23. It records 4.54:1 and 8.6:1 for two samples, plus passing 200% zoom, focus and touch-target checks within its scope. No full component/state inventory or independent audit was supplied.",
     "items": [
       {
         "title": "Visibility of system status",
